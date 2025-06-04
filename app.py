@@ -323,15 +323,15 @@ st.markdown(f"""
     }}
     */
 
-    /* === Main Navigation Button Styling (Attempt 4 - More Specific Selector) === */
+    /* === Main Navigation Button Styling (Attempt 5 - Combining Selectors) === */
 
-    /* Base style for ALL main navigation buttons - Targeting the specific structure */
-    div[data-testid="stHorizontalBlock"] div[data-testid="column"] div[data-testid="stButton"] > button[key*="main_"] {{
+    /* Base style for ALL main navigation buttons - Combining .stButton with data-testid */
+    div[data-testid="stHorizontalBlock"] div[data-testid="column"] .stButton > button[key*="main_"] {{
         background-color: #f0f0f0 !important; /* (2) Background abu */
         color: #333 !important; /* Teks gelap */
         border: none !important; /* Hapus semua border default */
         border-bottom: 5px solid #0070c0 !important; /* (2) Garis biru bawah (default) */
-        padding: 15px 5px !important; /* Padding vertikal 15px (sama), horizontal 5px (adjusted) */
+        padding: 15px 5px !important; /* Padding vertikal 15px (sama), horizontal 5px */
         font-weight: bold !important;
         border-radius: 0px !important; /* Sudut tidak melengkung */
         width: 100% !important; /* Lebar penuh */
@@ -349,7 +349,7 @@ st.markdown(f"""
     }}
 
     /* Hover state for main navigation buttons */
-    div[data-testid="stHorizontalBlock"] div[data-testid="column"] div[data-testid="stButton"] > button[key*="main_"]:hover {{
+    div[data-testid="stHorizontalBlock"] div[data-testid="column"] .stButton > button[key*="main_"]:hover {{
         background-color: #e0e0e0 !important; /* Abu-abu lebih gelap (sama seperti sidebar hover) */
         color: #333 !important;
         border-bottom-color: #005090 !important; /* Biru sedikit lebih gelap saat hover */
@@ -357,8 +357,8 @@ st.markdown(f"""
 
     /* Focus and Active (click) state for main navigation buttons */
     /* Ini hanya saat tombol ditekan/difokuskan, BUKAN state terpilih */
-    div[data-testid="stHorizontalBlock"] div[data-testid="column"] div[data-testid="stButton"] > button[key*="main_"]:focus,
-    div[data-testid="stHorizontalBlock"] div[data-testid="column"] div[data-testid="stButton"] > button[key*="main_"]:active {{
+    div[data-testid="stHorizontalBlock"] div[data-testid="column"] .stButton > button[key*="main_"]:focus,
+    div[data-testid="stHorizontalBlock"] div[data-testid="column"] .stButton > button[key*="main_"]:active {{
         background-color: #d0d0d0 !important; /* Abu-abu sedikit lebih gelap saat diklik (hindari biru langsung) */
         color: #111 !important; 
         border-bottom-color: navy !important; /* Garis bawah navy saat diklik */
@@ -368,7 +368,7 @@ st.markdown(f"""
 
     /* Style for the *currently selected* main navigation button */
     /* Ini menimpa gaya dasar dan focus/active HANYA untuk tombol yang sedang dipilih */
-    div[data-testid="stHorizontalBlock"] div[data-testid="column"] div[data-testid="stButton"] > button[key="main_{st.session_state.main_tab}"] {{
+    div[data-testid="stHorizontalBlock"] div[data-testid="column"] .stButton > button[key="main_{st.session_state.main_tab}"] {{
         background-color: #0070c0 !important; /* (2) Background biru saat terpilih */
         color: white !important; /* (2) Teks putih saat terpilih */
         border: none !important; /* Hapus border lain */
