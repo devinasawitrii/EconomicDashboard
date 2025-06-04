@@ -6,6 +6,7 @@ import plotly.express as px
 import plotly.graph_objects as go
 from datetime import datetime
 import base64
+from streamlit_option_menu import option_menu # Import the new component
 
 # Set page configuration
 st.set_page_config(
@@ -20,15 +21,20 @@ if 'main_tab' not in st.session_state:
 if 'side_tab' not in st.session_state:
     st.session_state.side_tab = 'Pertumbuhan Ekonomi y-o-y'
 
-# Custom CSS for styling
+# Custom CSS for styling (Keep sidebar styles, remove old main nav styles)
 st.markdown("""
 <style>
+    /* Remove top padding */
+    .block-container { 
+        padding-top: 1rem !important; 
+    }
     .header-container {
         display: flex;
         justify-content: space-between;
         align-items: center;
         padding: 0px;
         background-color: white;
+        margin-bottom: 1rem; /* Add some space below header */
     }
     .logo-title {
         color: navy;
@@ -99,68 +105,7 @@ st.markdown("""
         font-size: 16px;
     }
     
-    /* Main navigation tabs styling - consistent with sidebar */
-    .main-nav-container {
-        display: flex;
-        gap: 8px;
-        margin: 20px 0;
-        justify-content: center;
-        align-items: center;
-    }
-    
-    /* Override Streamlit's default column styling for main navigation */
-    div[data-testid="column"] {
-        padding: 0 !important;
-    }
-    
-    /* Main navigation buttons - same style as sidebar */
-    .main-nav-button {
-        background-color: #f0f0f0 !important;
-        color: #333 !important;
-        border: none !important;
-        border-left: 5px solid #0070c0 !important;
-        padding: 12px 16px !important;
-        font-weight: bold !important;
-        margin: 0 !important;
-        border-radius: 0px !important;
-        transition: all 0.3s !important;
-        width: 100% !important;
-        min-height: 50px !important;
-        display: flex !important;
-        align-items: center !important;
-        justify-content: center !important;
-        text-align: center !important;
-        font-size: 14px !important;
-        cursor: pointer !important;
-    }
-    
-    .main-nav-button:hover {
-        background-color: #e0e0e0 !important;
-        color: #333 !important;
-        transform: none !important;
-        box-shadow: none !important;
-    }
-    
-    .main-nav-button:focus {
-        background-color: #0070c0 !important;
-        color: white !important;
-        box-shadow: none !important;
-        outline: none !important;
-    }
-    
-    .main-nav-button:active {
-        background-color: #0070c0 !important;
-        color: white !important;
-    }
-    
-    /* Active state for main navigation */
-    .main-nav-active {
-        background-color: #0070c0 !important;
-        color: white !important;
-        border-left: 5px solid navy !important;
-    }
-    
-    /* Sidebar buttons styling */
+    /* Sidebar buttons styling - KEEP THIS */
     .stButton > button {
         width: 100% !important;
         background-color: #f0f0f0 !important;
@@ -176,6 +121,7 @@ st.markdown("""
         display: flex !important;
         align-items: center !important;
         justify-content: flex-start !important;
+        text-align: left !important; /* Align text left for sidebar */
     }
     
     .stButton > button:hover {
@@ -194,26 +140,13 @@ st.markdown("""
         background-color: #0070c0 !important;
         color: white !important;
     }
-    
-    /* Active state for sidebar */
-    .sidebar-active {
-        background-color: #0070c0 !important;
-        color: white !important;
-        border-left: 5px solid navy !important;
-    }
-    
+        
     /* Remove default Streamlit button focus states */
     .stButton > button:focus:not(:active) {
         border-color: transparent !important;
         box-shadow: none !important;
     }
-    
-    /* Ensure consistent spacing for main navigation columns */
-    .main-nav-column {
-        flex: 1;
-        margin: 0 4px;
-    }
-    
+        
     /* Hide Streamlit's default focus outline */
     button:focus {
         outline: none !important;
@@ -253,151 +186,71 @@ with col3:
     </div>
     """, unsafe_allow_html=True)
 
-# Main Navigation Menu with improved spacing and consistent design
-st.markdown("<div style='margin: 20px 0;'></div>", unsafe_allow_html=True)
+# Main Navigation Menu using streamlit-option-menu
+main_tabs_list = ['Neraca Nasional', 'Indeks Harga', 'Ekspor-Impor', 'APBN', 'Ketenagakerjaan', 'Kemiskinan', 'IPM']
 
-main_tabs = ['Neraca Nasional', 'Indeks Harga', 'Ekspor-Impor', 'APBN', 'Ketenagakerjaan', 'Kemiskinan', 'IPM']
+# Find the index of the current main_tab for default_index
+try:
+    default_main_index = main_tabs_list.index(st.session_state.main_tab)
+except ValueError:
+    default_main_index = 0 # Default to first tab if not found
 
-# Create main navigation with consistent spacing
-main_nav_cols = st.columns(len(main_tabs))
+# Use option_menu for horizontal navigation
+selected_main_tab = option_menu(
+    menu_title=None,  # No title needed
+    options=main_tabs_list,
+    icons=None, # No icons needed
+    menu_icon=None, # No menu icon needed
+    default_index=default_main_index,
+    orientation="horizontal",
+    styles={
+        "container": {"padding": "0px !important", "background-color": "white", "margin-bottom": "1rem", "flex-wrap": "nowrap"}, # Ensure it stays horizontal
+        "nav-link": {
+            "font-size": "14px", 
+            "font-weight": "bold",
+            "color": "#333",
+            "background-color": "#f0f0f0", 
+            "text-align": "center", 
+            "padding": "15px 10px", # Adjusted padding
+            "margin":"0px 2px !important", # Spacing between tabs
+            "border-radius": "0px !important",
+            "border-bottom": "5px solid #0070c0",
+            "transition": "background-color 0.2s, color 0.2s, border-color 0.2s",
+            "white-space": "nowrap" # Prevent wrapping
+        },
+        "nav-link-selected": {
+            "background-color": "#0070c0", 
+            "color": "white",
+            "border-bottom": "5px solid navy"
+        },
+        "nav-link:hover": {
+            "background-color": "#e0e0e0",
+            "border-bottom-color": "#005090"
+        }
+    }
+)
 
-for i, tab in enumerate(main_tabs):
-    with main_nav_cols[i]:
-        # Add custom CSS class for active state
-        button_class = "main-nav-active" if st.session_state.main_tab == tab else ""
-        
-        if st.button(tab, key=f"main_{tab}", help=f"Pilih {tab}"):
-            st.session_state.main_tab = tab
-            # Reset side tab when main tab changes
-            if tab == 'Neraca Nasional':
-                st.session_state.side_tab = 'Pertumbuhan Ekonomi y-o-y'
-            elif tab == 'Indeks Harga':
-                st.session_state.side_tab = 'IHK Umum'
-            elif tab == 'Ekspor-Impor':
-                st.session_state.side_tab = 'Nilai Ekspor'
-            elif tab == 'APBN':
-                st.session_state.side_tab = 'Pendapatan Negara'
-            elif tab == 'Ketenagakerjaan':
-                st.session_state.side_tab = 'Tingkat Pengangguran'
-            elif tab == 'Kemiskinan':
-                st.session_state.side_tab = 'Persentase Penduduk Miskin'
-            elif tab == 'IPM':
-                st.session_state.side_tab = 'IPM Nasional'
-            st.rerun()
+# Update session state and reset side tab if main tab changed
+if selected_main_tab != st.session_state.main_tab:
+    st.session_state.main_tab = selected_main_tab
+    # Reset side tab when main tab changes
+    if selected_main_tab == 'Neraca Nasional':
+        st.session_state.side_tab = 'Pertumbuhan Ekonomi y-o-y'
+    elif selected_main_tab == 'Indeks Harga':
+        st.session_state.side_tab = 'IHK Umum'
+    elif selected_main_tab == 'Ekspor-Impor':
+        st.session_state.side_tab = 'Nilai Ekspor'
+    elif selected_main_tab == 'APBN':
+        st.session_state.side_tab = 'Pendapatan Negara'
+    elif selected_main_tab == 'Ketenagakerjaan':
+        st.session_state.side_tab = 'Tingkat Pengangguran'
+    elif selected_main_tab == 'Kemiskinan':
+        st.session_state.side_tab = 'Persentase Penduduk Miskin'
+    elif selected_main_tab == 'IPM':
+        st.session_state.side_tab = 'IPM Nasional'
+    st.rerun()
 
-# Additional CSS to override Streamlit's button styling for main navigation
-st.markdown(f"""
-<style>
-    /* === Sidebar Button Styling (Reference) === */
-    /*
-    .stButton > button {{
-        width: 100% !important;
-        background-color: #f0f0f0 !important; 
-        color: #333 !important;
-        border: none !important;
-        border-left: 5px solid #0070c0 !important; 
-        padding: 15px !important;
-        font-weight: bold !important;
-        margin-bottom: 2px !important;
-        border-radius: 0px !important;
-        transition: all 0.3s !important;
-        min-height: 50px !important;
-        display: flex !important;
-        align-items: center !important;
-        justify-content: flex-start !important;
-    }}
-    .stButton > button:hover {{
-        background-color: #e0e0e0 !important;
-        color: #333 !important;
-    }}
-    .stButton > button:focus {{
-        background-color: #0070c0 !important;
-        color: white !important;
-        box-shadow: none !important;
-        outline: none !important;
-    }}
-    button[key="side_{st.session_state.side_tab}_{st.session_state.main_tab}"] {{
-        background-color: #0070c0 !important;
-        color: white !important;
-        border-left: 5px solid navy !important;
-    }}
-    */
-
-    /* === Main Navigation Button Styling (Attempt 5 - Combining Selectors) === */
-
-    /* Base style for ALL main navigation buttons - Combining .stButton with data-testid */
-    div[data-testid="stHorizontalBlock"] div[data-testid="column"] .stButton > button[key*="main_"] {{
-        background-color: #f0f0f0 !important; /* (2) Background abu */
-        color: #333 !important; /* Teks gelap */
-        border: none !important; /* Hapus semua border default */
-        border-bottom: 5px solid #0070c0 !important; /* (2) Garis biru bawah (default) */
-        padding: 15px 5px !important; /* Padding vertikal 15px (sama), horizontal 5px */
-        font-weight: bold !important;
-        border-radius: 0px !important; /* Sudut tidak melengkung */
-        width: 100% !important; /* Lebar penuh */
-        transition: background-color 0.2s, color 0.2s, border-color 0.2s !important; /* Transisi halus */
-        margin: 0px !important;
-        min-height: 50px !important; /* Tinggi minimum sama */
-        display: flex !important;
-        align-items: center !important;
-        justify-content: center !important; /* Teks di tengah */
-        text-align: center !important;
-        outline: none !important; /* (2) Hilangkan outline focus default (mencegah merah) */
-        box-shadow: none !important; /* (2) Hilangkan shadow default (mencegah merah) */
-        line-height: 1.3 !important; /* Adjust line-height */
-        font-size: 13px !important; /* Explicitly set font size */
-    }}
-
-    /* Hover state for main navigation buttons */
-    div[data-testid="stHorizontalBlock"] div[data-testid="column"] .stButton > button[key*="main_"]:hover {{
-        background-color: #e0e0e0 !important; /* Abu-abu lebih gelap (sama seperti sidebar hover) */
-        color: #333 !important;
-        border-bottom-color: #005090 !important; /* Biru sedikit lebih gelap saat hover */
-    }}
-
-    /* Focus and Active (click) state for main navigation buttons */
-    /* Ini hanya saat tombol ditekan/difokuskan, BUKAN state terpilih */
-    div[data-testid="stHorizontalBlock"] div[data-testid="column"] .stButton > button[key*="main_"]:focus,
-    div[data-testid="stHorizontalBlock"] div[data-testid="column"] .stButton > button[key*="main_"]:active {{
-        background-color: #d0d0d0 !important; /* Abu-abu sedikit lebih gelap saat diklik (hindari biru langsung) */
-        color: #111 !important; 
-        border-bottom-color: navy !important; /* Garis bawah navy saat diklik */
-        outline: none !important; /* (2) Pastikan tidak ada outline merah */
-        box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1) !important; /* Subtle inner shadow on click */
-    }}
-
-    /* Style for the *currently selected* main navigation button */
-    /* Ini menimpa gaya dasar dan focus/active HANYA untuk tombol yang sedang dipilih */
-    div[data-testid="stHorizontalBlock"] div[data-testid="column"] .stButton > button[key="main_{st.session_state.main_tab}"] {{
-        background-color: #0070c0 !important; /* (2) Background biru saat terpilih */
-        color: white !important; /* (2) Teks putih saat terpilih */
-        border: none !important; /* Hapus border lain */
-        border-bottom: 5px solid navy !important; /* (2) Garis bawah navy tebal saat terpilih */
-        box-shadow: none !important; /* Ensure no shadow on selected */
-    }}
-    
-    /* === Spacing for Main Navigation Columns === */
-
-    /* (1) Ensure equal spacing between columns */
-    div[data-testid="stHorizontalBlock"] > div[data-testid="column"] {{
-        flex: 1 1 0px; /* Allow columns to shrink and grow equally */
-        min-width: 0; /* Prevent overflow issues */
-        padding-left: 3px !important;  /* Jarak kiri antar tombol (adjusted) */
-        padding-right: 3px !important; /* Jarak kanan antar tombol (adjusted) */
-    }}
-    
-    /* Remove padding from the first column's left edge */
-    div[data-testid="stHorizontalBlock"] > div[data-testid="column"]:first-child {{
-        padding-left: 0 !important;
-    }}
-    
-    /* Remove padding from the last column's right edge */
-     div[data-testid="stHorizontalBlock"] > div[data-testid="column"]:last-child {{
-        padding-right: 0 !important;
-    }}
-
-</style>
-""", unsafe_allow_html=True)
+# --- REMOVED OLD MAIN NAVIGATION CODE USING st.columns and st.button --- 
 
 # Define side tabs for each main tab
 side_tabs_config = {
@@ -454,8 +307,6 @@ side_tabs_config = {
     ]
 }
 
-st.markdown("<div style='margin: 20px 0;'></div>", unsafe_allow_html=True)
-
 # Create layout with sidebar and main content
 col1, col2 = st.columns([1, 3])
 
@@ -463,24 +314,30 @@ with col1:
     # Get current side tabs for selected main tab
     current_side_tabs = side_tabs_config.get(st.session_state.main_tab, ['Default Tab'])
     
-    # Display side navigation items
+    # Display side navigation items using st.button (Keep existing sidebar logic)
     for tab in current_side_tabs:
-        # Add custom CSS class for active state
-        if st.button(tab, key=f"side_{tab}_{st.session_state.main_tab}"):
+        # Add custom CSS class for active state via markdown injection
+        button_key = f"side_{tab}_{st.session_state.main_tab}"
+        is_active = st.session_state.side_tab == tab
+        
+        if st.button(tab, key=button_key):
             st.session_state.side_tab = tab
             st.rerun()
+        
+        # Inject CSS for the active button AFTER the button is created
+        if is_active:
+            st.markdown(f"""
+            <style>
+                button[data-testid="stButton"] > button[key="{button_key}"] {{
+                    background-color: #0070c0 !important;
+                    color: white !important;
+                    border-left: 5px solid navy !important;
+                }}
+            </style>
+            """, unsafe_allow_html=True)
 
-# Additional CSS for sidebar active states
-st.markdown(f"""
-<style>
-    /* Active state for current side tab */
-    button[key="side_{st.session_state.side_tab}_{st.session_state.main_tab}"] {{
-        background-color: #0070c0 !important;
-        color: white !important;
-        border-left: 5px solid navy !important;
-    }}
-</style>
-""", unsafe_allow_html=True)
+# --- REMOVED OLD SIDEBAR ACTIVE STATE CSS --- 
+# The active state is now handled by injecting CSS specifically for the active button
 
 with col2:
     # Main content area - changes based on selected tabs
@@ -574,51 +431,69 @@ with col2:
                 'Period': pd.date_range('2023-01', periods=12, freq='M').strftime('%Y-%m'),
                 'Value': np.random.uniform(100, 120, 12)
             })
-            title = f"{st.session_state.side_tab}"
+            title = f"{st.session_state.side_tab} (Indeks)"
             
-        elif 'Nilai' in st.session_state.side_tab:
-            # Value data (in billions)
+        elif 'Inflasi' in st.session_state.side_tab:
+            # Inflation data
             sample_data = pd.DataFrame({
                 'Period': pd.date_range('2023-01', periods=12, freq='M').strftime('%Y-%m'),
-                'Value': np.random.uniform(15, 25, 12)
-            })
-            title = f"{st.session_state.side_tab} (Miliar USD)"
-            
-        elif 'Tingkat' in st.session_state.side_tab or 'Persentase' in st.session_state.side_tab:
-            # Percentage data
-            sample_data = pd.DataFrame({
-                'Period': [f"2023 Q{i}" for i in range(1, 5)] + [f"2024 Q{i}" for i in range(1, 5)],
-                'Value': np.random.uniform(3, 12, 8)
+                'Value': np.random.uniform(-1, 5, 12)
             })
             title = f"{st.session_state.side_tab} (%)"
             
-        else:
-            # Default data
+        elif 'Ekspor' in st.session_state.side_tab or 'Impor' in st.session_state.side_tab or 'Neraca' in st.session_state.side_tab:
+            # Trade data
             sample_data = pd.DataFrame({
                 'Period': pd.date_range('2023-01', periods=12, freq='M').strftime('%Y-%m'),
-                'Value': np.random.randn(12).cumsum() + 100
+                'Value': np.random.uniform(10000, 30000, 12)
             })
-            title = st.session_state.side_tab
-        
-        # Create chart
-        fig = px.line(sample_data, x='Period', y='Value', 
-                     title=title,
-                     markers=True)
-        
-        fig.update_traces(line=dict(color='navy', width=2), marker=dict(size=6, color='navy'))
-        fig.update_layout(
-            height=500,
-            plot_bgcolor='white',
-            xaxis=dict(showgrid=True, gridwidth=1, gridcolor='lightgray'),
-            yaxis=dict(showgrid=True, gridwidth=1, gridcolor='lightgray'),
-            margin=dict(l=40, r=40, t=60, b=40)
-        )
-        
-        st.plotly_chart(fig, use_container_width=True)
-        
-        # Add some insights
-        st.markdown("---")
-        st.markdown("**Insight:**")
-        st.info(f"Analisis untuk {st.session_state.side_tab} menunjukkan tren yang perlu diperhatikan untuk pengambilan keputusan strategis.")
-    
+            title = f"{st.session_state.side_tab} (Juta USD)"
+            
+        elif 'APBN' in st.session_state.main_tab:
+             # APBN data
+            sample_data = pd.DataFrame({
+                'Period': [f"2023 Q{i}" for i in range(1, 5)] + [f"2024 Q{i}" for i in range(1, 5)],
+                'Value': np.random.uniform(500, 1500, 8)
+            })
+            title = f"{st.session_state.side_tab} (Triliun Rupiah)"
+            
+        elif 'Ketenagakerjaan' in st.session_state.main_tab:
+            # Employment data
+            sample_data = pd.DataFrame({
+                'Period': ['Agu 2022', 'Feb 2023', 'Agu 2023', 'Feb 2024'],
+                'Value': np.random.uniform(3, 7, 4) if 'Tingkat' in st.session_state.side_tab else np.random.uniform(100, 200, 4)
+            })
+            unit = "(%)" if 'Tingkat' in st.session_state.side_tab else "(Juta Orang)"
+            title = f"{st.session_state.side_tab} {unit}"
+            
+        elif 'Kemiskinan' in st.session_state.main_tab:
+            # Poverty data
+            sample_data = pd.DataFrame({
+                'Period': ['Mar 2022', 'Sep 2022', 'Mar 2023', 'Sep 2023'],
+                'Value': np.random.uniform(9, 11, 4) if 'Persentase' in st.session_state.side_tab else np.random.uniform(25, 30, 4)
+            })
+            unit = "(%)" if 'Persentase' in st.session_state.side_tab else "(Juta Orang)"
+            title = f"{st.session_state.side_tab} {unit}"
+            
+        elif 'IPM' in st.session_state.main_tab:
+            # IPM data
+            sample_data = pd.DataFrame({
+                'Period': [str(y) for y in range(2020, 2024)],
+                'Value': np.random.uniform(70, 75, 4)
+            })
+            title = f"{st.session_state.side_tab}"
+            
+        else:
+            # Default fallback
+            sample_data = pd.DataFrame({'Period': ['A', 'B', 'C'], 'Value': [1, 3, 2]})
+            title = f"Data for {st.session_state.main_tab} - {st.session_state.side_tab}"
+
+        # Display sample chart
+        fig_sample = px.line(sample_data, x='Period', y='Value', title=title, markers=True)
+        fig_sample.update_traces(line=dict(color='teal', width=2), marker=dict(size=6, color='teal'))
+        fig_sample.update_layout(height=500, plot_bgcolor='white', margin=dict(l=40, r=40, t=60, b=40))
+        st.plotly_chart(fig_sample, use_container_width=True)
+        st.caption("Note: Sample data shown for demonstration.")
+
     st.markdown('</div>', unsafe_allow_html=True)
+
