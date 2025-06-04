@@ -288,63 +288,99 @@ for i, tab in enumerate(main_tabs):
 # Additional CSS to override Streamlit's button styling for main navigation
 st.markdown(f"""
 <style>
-    /* === Main Navigation Button Styling === */
+    /* === Sidebar Button Styling (Reference) === */
+    /*
+    .stButton > button {{
+        width: 100% !important;
+        background-color: #f0f0f0 !important; 
+        color: #333 !important;
+        border: none !important;
+        border-left: 5px solid #0070c0 !important; 
+        padding: 15px !important;
+        font-weight: bold !important;
+        margin-bottom: 2px !important;
+        border-radius: 0px !important;
+        transition: all 0.3s !important;
+        min-height: 50px !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: flex-start !important;
+    }}
+    .stButton > button:hover {{
+        background-color: #e0e0e0 !important;
+        color: #333 !important;
+    }}
+    .stButton > button:focus {{
+        background-color: #0070c0 !important;
+        color: white !important;
+        box-shadow: none !important;
+        outline: none !important;
+    }}
+    button[key="side_{st.session_state.side_tab}_{st.session_state.main_tab}"] {{
+        background-color: #0070c0 !important;
+        color: white !important;
+        border-left: 5px solid navy !important;
+    }}
+    */
 
-    /* Base style for main navigation buttons */
+    /* === Main Navigation Button Styling (Applying Sidebar Style Horizontally) === */
+
+    /* Base style for ALL main navigation buttons */
     div[data-testid="stHorizontalBlock"] > div[data-testid="column"] > div[data-testid="stButton"] > button[key*="main_"] {{
-        background-color: #f0f0f0 !important; /* Abu-abu background */
+        background-color: #f0f0f0 !important; /* (2) Background abu */
         color: #333 !important; /* Teks gelap */
         border: none !important; /* Hapus semua border default */
-        border-bottom: 5px solid transparent !important; /* Border bawah transparan (akan diwarnai saat hover/active) */
-        padding: 15px 8px !important; /* Padding vertikal 15px, horizontal 8px */
+        border-bottom: 5px solid #0070c0 !important; /* (2) Garis biru bawah (default) */
+        padding: 15px 8px !important; /* Padding vertikal 15px (sama), horizontal 8px */
         font-weight: bold !important;
         border-radius: 0px !important; /* Sudut tidak melengkung */
         width: 100% !important; /* Lebar penuh */
-        transition: background-color 0.3s, color 0.3s, border-color 0.3s !important; /* Transisi halus */
+        transition: background-color 0.2s, color 0.2s, border-color 0.2s !important; /* Transisi halus */
         margin: 0px !important;
-        min-height: 50px !important; /* Tinggi minimum */
+        min-height: 50px !important; /* Tinggi minimum sama */
         display: flex !important;
         align-items: center !important;
         justify-content: center !important; /* Teks di tengah */
         text-align: center !important;
-        outline: none !important; /* Hilangkan outline focus default */
-        box-shadow: none !important; /* Hilangkan shadow default */
-        line-height: 1.2 !important; /* Atur line-height jika teks wrap */
+        outline: none !important; /* (2) Hilangkan outline focus default (mencegah merah) */
+        box-shadow: none !important; /* (2) Hilangkan shadow default (mencegah merah) */
+        line-height: 1.3 !important; /* Sedikit penyesuaian line-height */
     }}
 
     /* Hover state for main navigation buttons */
     div[data-testid="stHorizontalBlock"] > div[data-testid="column"] > div[data-testid="stButton"] > button[key*="main_"]:hover {{
-        background-color: #e0e0e0 !important; /* Abu-abu lebih gelap */
+        background-color: #e0e0e0 !important; /* Abu-abu lebih gelap (sama seperti sidebar hover) */
         color: #333 !important;
-        border-bottom-color: #0070c0 !important; /* Garis bawah biru saat hover */
+        border-bottom-color: #005090 !important; /* Biru sedikit lebih gelap saat hover */
     }}
 
     /* Focus and Active (click) state for main navigation buttons */
+    /* Ini hanya saat tombol ditekan/difokuskan, BUKAN state terpilih */
     div[data-testid="stHorizontalBlock"] > div[data-testid="column"] > div[data-testid="stButton"] > button[key*="main_"]:focus,
     div[data-testid="stHorizontalBlock"] > div[data-testid="column"] > div[data-testid="stButton"] > button[key*="main_"]:active {{
-        background-color: #0070c0 !important; /* Background biru */
-        color: white !important; /* Teks putih */
-        border-bottom-color: navy !important; /* Garis bawah navy */
-        outline: none !important;
-        box-shadow: none !important;
+        background-color: #d0d0d0 !important; /* Abu-abu sedikit lebih gelap saat diklik (hindari biru langsung) */
+        color: #111 !important; 
+        border-bottom-color: navy !important; /* Garis bawah navy saat diklik */
+        outline: none !important; /* (2) Pastikan tidak ada outline merah */
+        box-shadow: none !important; /* (2) Pastikan tidak ada shadow merah */
     }}
 
     /* Style for the *currently selected* main navigation button */
-    /* This selector targets the button whose key matches the current session state */
+    /* Ini menimpa gaya dasar dan focus/active HANYA untuk tombol yang sedang dipilih */
     div[data-testid="stHorizontalBlock"] > div[data-testid="column"] > div[data-testid="stButton"] > button[key="main_{st.session_state.main_tab}"] {{
-        background-color: #0070c0 !important; /* Background biru */
-        color: white !important; /* Teks putih */
-        border: none !important; /* Pastikan tidak ada border lain */
-        border-bottom: 5px solid navy !important; /* Garis bawah navy tebal */
+        background-color: #0070c0 !important; /* (2) Background biru saat terpilih */
+        color: white !important; /* (2) Teks putih saat terpilih */
+        border: none !important; /* Hapus border lain */
+        border-bottom: 5px solid navy !important; /* (2) Garis bawah navy tebal saat terpilih */
     }}
     
     /* === Spacing for Main Navigation Columns === */
 
-    /* Ensure equal spacing between columns */
+    /* (1) Ensure equal spacing between columns */
     div[data-testid="stHorizontalBlock"] > div[data-testid="column"] {{
         flex: 1; /* Make columns flexible */
-        padding-left: 4px !important;  /* Jarak kiri antar tombol */
-        padding-right: 4px !important; /* Jarak kanan antar tombol */
+        padding-left: 2px !important;  /* Jarak kiri antar tombol (lebih kecil) */
+        padding-right: 2px !important; /* Jarak kanan antar tombol (lebih kecil) */
     }}
     
     /* Remove padding from the first column's left edge */
