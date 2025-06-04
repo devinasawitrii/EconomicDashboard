@@ -99,18 +99,65 @@ st.markdown("""
         font-size: 16px;
     }
     
-    /* Remove all column padding for consistent spacing */
-    div[data-testid="column"] {
-        padding: 0 !important;
-        margin: 0 !important;
+    /* Main navigation tabs styling - consistent with sidebar */
+    .main-nav-container {
+        display: flex;
+        gap: 8px;
+        margin: 20px 0;
+        justify-content: center;
+        align-items: center;
     }
     
-    /* Main navigation container */
-    .main-nav-container {
-        display: flex !important;
-        gap: 0px !important;
-        margin: 20px 0 !important;
+    /* Override Streamlit's default column styling for main navigation */
+    div[data-testid="column"] {
+        padding: 0 !important;
+    }
+    
+    /* Main navigation buttons - same style as sidebar */
+    .main-nav-button {
+        background-color: #f0f0f0 !important;
+        color: #333 !important;
+        border: none !important;
+        border-left: 5px solid #0070c0 !important;
+        padding: 12px 16px !important;
+        font-weight: bold !important;
+        margin: 0 !important;
+        border-radius: 0px !important;
+        transition: all 0.3s !important;
         width: 100% !important;
+        min-height: 50px !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        text-align: center !important;
+        font-size: 14px !important;
+        cursor: pointer !important;
+    }
+    
+    .main-nav-button:hover {
+        background-color: #e0e0e0 !important;
+        color: #333 !important;
+        transform: none !important;
+        box-shadow: none !important;
+    }
+    
+    .main-nav-button:focus {
+        background-color: #0070c0 !important;
+        color: white !important;
+        box-shadow: none !important;
+        outline: none !important;
+    }
+    
+    .main-nav-button:active {
+        background-color: #0070c0 !important;
+        color: white !important;
+    }
+    
+    /* Active state for main navigation */
+    .main-nav-active {
+        background-color: #0070c0 !important;
+        color: white !important;
+        border-left: 5px solid navy !important;
     }
     
     /* Sidebar buttons styling */
@@ -148,15 +195,28 @@ st.markdown("""
         color: white !important;
     }
     
-    /* Hide Streamlit's default focus outline */
-    button:focus {
-        outline: none !important;
-        box-shadow: none !important;
+    /* Active state for sidebar */
+    .sidebar-active {
+        background-color: #0070c0 !important;
+        color: white !important;
+        border-left: 5px solid navy !important;
     }
     
     /* Remove default Streamlit button focus states */
     .stButton > button:focus:not(:active) {
         border-color: transparent !important;
+        box-shadow: none !important;
+    }
+    
+    /* Ensure consistent spacing for main navigation columns */
+    .main-nav-column {
+        flex: 1;
+        margin: 0 4px;
+    }
+    
+    /* Hide Streamlit's default focus outline */
+    button:focus {
+        outline: none !important;
         box-shadow: none !important;
     }
 </style>
@@ -193,16 +253,19 @@ with col3:
     </div>
     """, unsafe_allow_html=True)
 
-# Main Navigation Menu
+# Main Navigation Menu with improved spacing and consistent design
 st.markdown("<div style='margin: 20px 0;'></div>", unsafe_allow_html=True)
 
 main_tabs = ['Neraca Nasional', 'Indeks Harga', 'Ekspor-Impor', 'APBN', 'Ketenagakerjaan', 'Kemiskinan', 'IPM']
 
-# Create main navigation with equal spacing
+# Create main navigation with consistent spacing
 main_nav_cols = st.columns(len(main_tabs))
 
 for i, tab in enumerate(main_tabs):
     with main_nav_cols[i]:
+        # Add custom CSS class for active state
+        button_class = "main-nav-active" if st.session_state.main_tab == tab else ""
+        
         if st.button(tab, key=f"main_{tab}", help=f"Pilih {tab}"):
             st.session_state.main_tab = tab
             # Reset side tab when main tab changes
@@ -222,63 +285,70 @@ for i, tab in enumerate(main_tabs):
                 st.session_state.side_tab = 'IPM Nasional'
             st.rerun()
 
-# Dynamic CSS for main navigation buttons to match sidebar exactly
+# Additional CSS to override Streamlit's button styling for main navigation
 st.markdown(f"""
 <style>
-    /* Main navigation buttons - exact same style as sidebar */
+    /* Target main navigation buttons specifically */
     div[data-testid="column"]:has(button[key*="main_"]) button {{
-        width: 100% !important;
-        background-color: #f0f0f0 !important;
+        background-color: #f0f0f0 !important; /* Abu-abu background */
         color: #333 !important;
         border: none !important;
-        border-top: 5px solid #0070c0 !important;
-        padding: 15px 8px !important;
+        border-bottom: 5px solid #0070c0 !important; /* Garis biru horizontal bawah */
+        padding: 15px 8px !important; /* Padding disamakan (vertikal) */
         font-weight: bold !important;
-        margin: 0px !important;
         border-radius: 0px !important;
+        width: 100% !important;
         transition: all 0.3s !important;
+        /* font-size: 13px !important; -> Dihapus agar konsisten */
+        margin: 0px !important;
         min-height: 50px !important;
         display: flex !important;
         align-items: center !important;
         justify-content: center !important;
         text-align: center !important;
-        font-size: 13px !important;
-        cursor: pointer !important;
+        outline: none !important; /* Hilangkan outline default */
+        box-shadow: none !important; /* Hilangkan shadow default */
     }}
     
-    /* Hover state for main navigation - same as sidebar */
+    /* Hover state for main navigation */
     div[data-testid="column"]:has(button[key*="main_"]) button:hover {{
-        background-color: #e0e0e0 !important;
+        background-color: #e0e0e0 !important; /* Abu-abu lebih gelap saat hover */
         color: #333 !important;
+        border-bottom-color: #005090 !important; /* Biru sedikit lebih gelap saat hover */
     }}
     
-    /* Focus state for main navigation - same as sidebar */
-    div[data-testid="column"]:has(button[key*="main_"]) button:focus {{
-        background-color: #0070c0 !important;
+    /* Active/Focus state for main navigation (saat diklik) */
+    div[data-testid="column"]:has(button[key*="main_"]) button:focus,
+    div[data-testid="column"]:has(button[key*="main_"]) button:active {{
+        background-color: #0070c0 !important; /* Background biru saat aktif/fokus */
         color: white !important;
+        border-bottom-color: navy !important; /* Garis navy saat aktif/fokus */
         box-shadow: none !important;
         outline: none !important;
     }}
     
-    /* Active state for main navigation - same as sidebar */
-    div[data-testid="column"]:has(button[key*="main_"]) button:active {{
-        background-color: #0070c0 !important;
-        color: white !important;
-    }}
-    
-    /* Active state for current main tab - horizontal blue line at top */
+    /* Active state for current main tab (setelah diklik) */
     div[data-testid="column"]:has(button[key="main_{st.session_state.main_tab}"]) button {{
-        background-color: #0070c0 !important;
+        background-color: #0070c0 !important; /* Background biru */
         color: white !important;
-        border-top: 5px solid navy !important;
+        border: none !important; /* Hapus border lain */
+        border-bottom: 5px solid navy !important; /* Garis navy horizontal bawah */
     }}
     
-    /* Active state for current side tab - vertical blue line at left */
-    button[key="side_{st.session_state.side_tab}_{st.session_state.main_tab}"] {{
-        background-color: #0070c0 !important;
-        color: white !important;
-        border-left: 5px solid navy !important;
+    /* Ensure equal spacing - target the columns directly */
+    div[data-testid="stHorizontalBlock"] > div[data-testid="column"] {{
+        flex: 1;
+        padding-left: 4px !important;  /* Jarak antar tombol */
+        padding-right: 4px !important; /* Jarak antar tombol */
     }}
+    /* Remove padding from the first and last column to align edges */
+    div[data-testid="stHorizontalBlock"] > div[data-testid="column"]:first-child {{
+        padding-left: 0 !important;
+    }}
+     div[data-testid="stHorizontalBlock"] > div[data-testid="column"]:last-child {{
+        padding-right: 0 !important;
+    }}
+
 </style>
 """, unsafe_allow_html=True)
 
@@ -348,9 +418,22 @@ with col1:
     
     # Display side navigation items
     for tab in current_side_tabs:
+        # Add custom CSS class for active state
         if st.button(tab, key=f"side_{tab}_{st.session_state.main_tab}"):
             st.session_state.side_tab = tab
             st.rerun()
+
+# Additional CSS for sidebar active states
+st.markdown(f"""
+<style>
+    /* Active state for current side tab */
+    button[key="side_{st.session_state.side_tab}_{st.session_state.main_tab}"] {{
+        background-color: #0070c0 !important;
+        color: white !important;
+        border-left: 5px solid navy !important;
+    }}
+</style>
+""", unsafe_allow_html=True)
 
 with col2:
     # Main content area - changes based on selected tabs
