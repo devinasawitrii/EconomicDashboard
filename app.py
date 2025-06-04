@@ -174,12 +174,12 @@ with col3:
     """, unsafe_allow_html=True)
 
 # Main Navigation Menu
-st.markdown("<div style='margin: 20px 0;'></div>", unsafe_allow_html=True)
+st.markdown("<div style='margin: 10px 0;'></div>", unsafe_allow_html=True)
 
 main_tabs = ['Neraca Nasional', 'Indeks Harga', 'Ekspor-Impor', 'APBN', 'Ketenagakerjaan', 'Kemiskinan', 'IPM']
 
-# Create main navigation with columns
-main_nav_cols = st.columns(len(main_tabs))
+# Create main navigation with equal spacing
+main_nav_cols = st.columns(len(main_tabs), gap="small")
 
 for i, tab in enumerate(main_tabs):
     with main_nav_cols[i]:
@@ -210,14 +210,15 @@ st.markdown("""
         background-color: navy !important;
         color: white !important;
         border: none !important;
-        padding: 12px 16px !important;
+        padding: 12px 8px !important;
         font-weight: bold !important;
         border-radius: 8px !important;
         width: 100% !important;
         transition: all 0.3s !important;
-        font-size: 14px !important;
-        margin: 2px !important;
+        font-size: 13px !important;
+        margin: 0px !important;
         box-shadow: 0 2px 4px rgba(0,0,0,0.1) !important;
+        text-align: center !important;
     }
     div[data-testid="column"] > div > div > div > div > button:hover {
         background-color: rgba(0, 0, 139, 0.9) !important;
@@ -298,7 +299,7 @@ side_tabs_config = {
     ]
 }
 
-st.markdown("<div style='margin: 20px 0;'></div>", unsafe_allow_html=True)
+st.markdown("<div style='margin: 10px 0;'></div>", unsafe_allow_html=True)
 
 # Create layout with sidebar and main content
 col1, col2 = st.columns([1, 3])
@@ -346,8 +347,8 @@ with col2:
                 ),
                 plot_bgcolor='white',
                 title_font=dict(size=16),
-                height=400,
-                margin=dict(l=40, r=40, t=50, b=40),
+                height=500,
+                margin=dict(l=40, r=40, t=60, b=40),
                 hovermode="x unified"
             )
             
@@ -381,7 +382,7 @@ with col2:
                          markers=True)
             
             fig.update_traces(line=dict(color='navy', width=2), marker=dict(size=6, color='navy'))
-            fig.update_layout(height=400, plot_bgcolor='white')
+            fig.update_layout(height=500, plot_bgcolor='white', margin=dict(l=40, r=40, t=60, b=40))
             st.plotly_chart(fig, use_container_width=True)
             
         except Exception as e:
@@ -389,7 +390,6 @@ with col2:
     
     else:
         # Content for other tab combinations
-        st.subheader(f"{st.session_state.side_tab}")
         
         # Generate appropriate sample data based on the selected tab
         if 'Pertumbuhan' in st.session_state.side_tab:
@@ -439,10 +439,11 @@ with col2:
         
         fig.update_traces(line=dict(color='navy', width=2), marker=dict(size=6, color='navy'))
         fig.update_layout(
-            height=400,
+            height=500,
             plot_bgcolor='white',
             xaxis=dict(showgrid=True, gridwidth=1, gridcolor='lightgray'),
-            yaxis=dict(showgrid=True, gridwidth=1, gridcolor='lightgray')
+            yaxis=dict(showgrid=True, gridwidth=1, gridcolor='lightgray'),
+            margin=dict(l=40, r=40, t=60, b=40)
         )
         
         st.plotly_chart(fig, use_container_width=True)
