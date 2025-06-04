@@ -148,38 +148,17 @@ with col2:
     # Main content - Economic Growth chart
     st.markdown('<div class="chart-container">', unsafe_allow_html=True)
     
-    # Create sample data for economic growth (y-o-y)
-    years = list(range(2012, 2025))
-    quarters = ['Q1', 'Q2', 'Q3', 'Q4']
-    
-    # Create all quarter-year combinations
-    periods = []
-    growth_values = []
-    
-    for year in years:
-        for quarter in quarters:
-            periods.append(f"{year} {quarter}")
-            
-            # Simulate the economic growth pattern shown in the image
-            # Normal growth around 5% until 2020, then a sharp drop, recovery, and stabilization
-            if year < 2020:
-                growth = np.random.normal(5, 0.3)  # Steady around 5%
-            elif year == 2020 and quarter == 'Q1':
-                growth = -5.0  # Sharp drop in 2020 Q1
-            elif year == 2020:
-                growth = -2.0 + np.random.normal(0, 0.5)  # Starting recovery
-            elif year == 2021:
-                growth = 4.0 + np.random.normal(0, 0.5)  # Recovery
-            else:
-                growth = 5.0 + np.random.normal(0, 0.2)  # Stabilized
-                
-            growth_values.append(growth)
-    
-    # Create DataFrame
-    df = pd.DataFrame({
-        'Period': periods,
-        'Growth': growth_values
-    })
+    # Load data from CSV file
+    try:
+        # Try to load the CSV file
+        df = pd.read_csv('Sheet 1_Full Data_data.csv')
+        df.columns = ['Period', 'Growth']
+    except FileNotFoundError:
+        st.error("File 'Sheet 1_Full Data_data.csv' tidak ditemukan. Pastikan file CSV berada di folder yang sama dengan script ini.")
+        st.stop()
+    except Exception as e:
+        st.error(f"Error loading CSV file: {str(e)}")
+        st.stop()
     
     # Create the plot using Plotly
     fig = px.line(df, x='Period', y='Growth', 
@@ -196,7 +175,7 @@ with col2:
             title_font=dict(size=14),
         ),
         yaxis=dict(
-            range=[-6, 6],
+            range=[-6, 8],
             tickvals=[-5, 0, 5],
             title_font=dict(size=14),
         ),
