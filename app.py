@@ -9,16 +9,10 @@ import base64
 
 # Set page configuration
 st.set_page_config(
-    page_title="Actionable Insights",
+    page_title="Actionable Insights Generator",
     page_icon="📊",
     layout="wide"
 )
-
-# Initialize session state for navigation
-if 'main_tab' not in st.session_state:
-    st.session_state.main_tab = 'Neraca Nasional'
-if 'side_tab' not in st.session_state:
-    st.session_state.side_tab = 'Pertumbuhan Ekonomi y-o-y'
 
 # Custom CSS for styling
 st.markdown("""
@@ -48,20 +42,15 @@ st.markdown("""
         display: flex;
         justify-content: space-around;
     }
-    .nav-button {
-        background: none;
-        border: none;
+    .main-nav a {
         color: white;
+        text-decoration: none;
         padding: 8px 16px;
         font-weight: bold;
-        cursor: pointer;
-        border-radius: 4px;
     }
-    .nav-button:hover {
+    .main-nav a:hover {
         background-color: rgba(255,255,255,0.2);
-    }
-    .nav-button.active {
-        background-color: rgba(255,255,255,0.3);
+        border-radius: 4px;
     }
     .sidebar-nav {
         border-radius: 10px;
@@ -74,13 +63,10 @@ st.markdown("""
         border-left: 5px solid #0070c0;
         font-weight: bold;
         color: #333;
-        cursor: pointer;
-        border: none;
-        width: 100%;
-        text-align: left;
     }
     .nav-item:hover {
         background-color: #e0e0e0;
+        cursor: pointer;
     }
     .nav-item.active {
         background-color: #0070c0;
@@ -92,12 +78,6 @@ st.markdown("""
         padding: 15px;
         background-color: white;
     }
-    .logo-container {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 100px;
-    }
 </style>
 """, unsafe_allow_html=True)
 
@@ -105,80 +85,46 @@ st.markdown("""
 col1, col2, col3 = st.columns([1, 3, 1])
 
 with col1:
-    # AIG Logo (placeholder image)
+    # AIG Logo placeholder (using a simple text placeholder)
     st.markdown("""
-    <div class="logo-container">
-        <svg width="80" height="80" xmlns="http://www.w3.org/2000/svg">
-            <defs>
-                <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%">
-                    <stop offset="0%" style="stop-color:#0070c0;stop-opacity:1" />
-                    <stop offset="100%" style="stop-color:#003d82;stop-opacity:1" />
-                </linearGradient>
-            </defs>
-            <circle cx="40" cy="40" r="35" fill="url(#grad1)" stroke="#fff" stroke-width="2"/>
-            <text x="20" y="32" fill="white" font-size="16px" font-weight="bold">A</text>
-            <text x="20" y="48" fill="white" font-size="16px" font-weight="bold">I</text>
-            <text x="32" y="48" fill="white" font-size="16px" font-weight="bold">G</text>
+    <div style="text-align: center;">
+        <svg width="100" height="100" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="50" cy="50" r="40" stroke="navy" stroke-width="4" fill="white" />
+            <text x="35" y="60" fill="navy" font-size="24px" font-weight="bold">aig</text>
         </svg>
     </div>
     """, unsafe_allow_html=True)
 
 with col2:
     # Title and Subtitle
-    st.markdown('<div class="logo-title">ACTIONABLE INSIGHTS</div>', unsafe_allow_html=True)
+    st.markdown('<div class="logo-title">ACTIONABLE INSIGHTS GENERATOR</div>', unsafe_allow_html=True)
     st.markdown('<div class="subtitle">Generate wisdom from fingertip</div>', unsafe_allow_html=True)
 
 with col3:
-    # BPS Logo (placeholder image)
+    # BPS Logo placeholder
     st.markdown("""
-    <div class="logo-container">
-        <svg width="120" height="80" xmlns="http://www.w3.org/2000/svg">
-            <rect x="0" y="0" width="120" height="25" fill="#0070c0"/>
-            <text x="60" y="12" fill="white" font-size="8px" text-anchor="middle" font-weight="bold">DIREKTORAT</text>
-            <text x="60" y="22" fill="white" font-size="8px" text-anchor="middle" font-weight="bold">NERACA PENGELUARAN</text>
-            
-            <rect x="0" y="25" width="120" height="55" fill="#00B0F0"/>
-            <rect x="10" y="35" width="25" height="25" fill="#FF6600" rx="3"/>
-            <rect x="40" y="35" width="25" height="25" fill="#FF9900" rx="3"/>
-            <rect x="70" y="35" width="25" height="25" fill="#FFCC00" rx="3"/>
-            <text x="60" y="72" fill="white" font-size="14px" text-anchor="middle" font-weight="bold">BADAN PUSAT STATISTIK</text>
-        </svg>
+    <div style="text-align: center;">
+        <div style="background-color: #0070c0; color: white; padding: 5px; font-size: 10px; text-align: center;">
+            DIREKTORAT<br>NERACA PENGELUARAN
+        </div>
+        <div style="background-color: #00B0F0; display: flex; justify-content: center; align-items: center; height: 50px;">
+            <span style="color: white; font-weight: bold;">BPS</span>
+        </div>
     </div>
     """, unsafe_allow_html=True)
 
-# Main Navigation Menu with buttons
-st.markdown('<div class="main-nav">', unsafe_allow_html=True)
-
-col_nav1, col_nav2, col_nav3, col_nav4, col_nav5, col_nav6, col_nav7 = st.columns(7)
-
-main_tabs = ['Neraca Nasional', 'Indeks Harga', 'Ekspor-Impor', 'APBN', 'Ketenagakerjaan', 'Kemiskinan', 'IPM']
-
-with col_nav1:
-    if st.button('Neraca Nasional', key='nav1', help='Navigate to Neraca Nasional'):
-        st.session_state.main_tab = 'Neraca Nasional'
-with col_nav2:
-    if st.button('Indeks Harga', key='nav2', help='Navigate to Indeks Harga'):
-        st.session_state.main_tab = 'Indeks Harga'
-with col_nav3:
-    if st.button('Ekspor-Impor', key='nav3', help='Navigate to Ekspor-Impor'):
-        st.session_state.main_tab = 'Ekspor-Impor'
-with col_nav4:
-    if st.button('APBN', key='nav4', help='Navigate to APBN'):
-        st.session_state.main_tab = 'APBN'
-with col_nav5:
-    if st.button('Ketenagakerjaan', key='nav5', help='Navigate to Ketenagakerjaan'):
-        st.session_state.main_tab = 'Ketenagakerjaan'
-with col_nav6:
-    if st.button('Kemiskinan', key='nav6', help='Navigate to Kemiskinan'):
-        st.session_state.main_tab = 'Kemiskinan'
-with col_nav7:
-    if st.button('IPM', key='nav7', help='Navigate to IPM'):
-        st.session_state.main_tab = 'IPM'
-
-st.markdown('</div>', unsafe_allow_html=True)
-
-# Display current tab
-st.markdown(f"<h3 style='color: navy; text-align: center; margin: 20px 0;'>📊 {st.session_state.main_tab}</h3>", unsafe_allow_html=True)
+# Main Navigation Menu
+st.markdown("""
+<div class="main-nav">
+    <a href="#">Neraca Nasional</a>
+    <a href="#">Indeks Harga</a>
+    <a href="#">Ekspor-Impor</a>
+    <a href="#">APBN</a>
+    <a href="#">Ketenagakerjaan</a>
+    <a href="#">Kemiskinan</a>
+    <a href="#">IPM</a>
+</div>
+""", unsafe_allow_html=True)
 
 # Create layout with sidebar and main content
 col1, col2 = st.columns([1, 3])
@@ -186,96 +132,71 @@ col1, col2 = st.columns([1, 3])
 with col1:
     st.markdown('<div class="sidebar-nav">', unsafe_allow_html=True)
     
-    # Sidebar navigation items with buttons
-    side_tabs = [
-        'Pertumbuhan Ekonomi y-o-y',
-        'Pertumbuhan Ekonomi q-to-q', 
-        'Pertumbuhan Ekonomi c-to-c',
-        'Indeks Implisit y-o-y',
-        'Indeks Implisit q-to-q',
-        'Indeks Implisit c-to-c',
-        'PDB ADHB',
-        'PDB ADHK'
-    ]
-    
-    for i, tab in enumerate(side_tabs):
-        if st.button(tab.replace(' ', '\n'), key=f'side_{i}', help=f'Navigate to {tab}'):
-            st.session_state.side_tab = tab
+    # Sidebar navigation items 
+    st.markdown('<div class="nav-item active">Pertumbuhan<br>Ekonomi y-o-y</div>', unsafe_allow_html=True)
+    st.markdown('<div class="nav-item">Pertumbuhan<br>Ekonomi q-to-q</div>', unsafe_allow_html=True)
+    st.markdown('<div class="nav-item">Pertumbuhan<br>Ekonomi c-to-c</div>', unsafe_allow_html=True)
+    st.markdown('<div class="nav-item">Indeks Implisit<br>y-o-y</div>', unsafe_allow_html=True)
+    st.markdown('<div class="nav-item">Indeks Implisit<br>q-to-q</div>', unsafe_allow_html=True)
+    st.markdown('<div class="nav-item">Indeks Implisit<br>c-to-c</div>', unsafe_allow_html=True)
+    st.markdown('<div class="nav-item">PDB ADHB</div>', unsafe_allow_html=True)
+    st.markdown('<div class="nav-item">PDB ADHK</div>', unsafe_allow_html=True)
     
     st.markdown('</div>', unsafe_allow_html=True)
 
 with col2:
-    # Main content area - shows different content based on selected tabs
+    # Main content - Economic Growth chart
     st.markdown('<div class="chart-container">', unsafe_allow_html=True)
     
-    # Display current selection
-    st.markdown(f"<h4 style='color: #0070c0; margin-bottom: 20px;'>📈 {st.session_state.side_tab}</h4>", unsafe_allow_html=True)
+    # Load data from CSV file
+    try:
+        # Try to load the CSV file
+        df = pd.read_csv('Sheet 1_Full Data_data.csv')
+        df.columns = ['Period', 'Growth']
+    except FileNotFoundError:
+        st.error("File 'Sheet 1_Full Data_data.csv' tidak ditemukan. Pastikan file CSV berada di folder yang sama dengan script ini.")
+        st.stop()
+    except Exception as e:
+        st.error(f"Error loading CSV file: {str(e)}")
+        st.stop()
     
-    # Show different content based on selected side tab
-    if st.session_state.side_tab == 'Pertumbuhan Ekonomi y-o-y':
-        # Load data from CSV file for y-o-y growth
-        try:
-            df = pd.read_csv('Sheet 1_Full Data_data.csv')
-            df.columns = ['Period', 'Growth']
-            
-            # Create the plot using Plotly
-            fig = px.line(df, x='Period', y='Growth', 
-                         title='Pertumbuhan Ekonomi y-o-y',
-                         labels={'Growth': 'Y-O-Y', 'Period': 'Quarter of Periode'},
-                         markers=True)
-            
-            # Update layout for better appearance
-            fig.update_layout(
-                xaxis=dict(
-                    tickmode='array',
-                    tickvals=[df['Period'][i] for i in range(0, len(df), 4)],
-                    ticktext=[f"{period.split()[0]} Q1" for period in df['Period'][::4]],
-                    title_font=dict(size=14),
-                ),
-                yaxis=dict(
-                    range=[-6, 8],
-                    tickvals=[-5, 0, 5],
-                    title_font=dict(size=14),
-                ),
-                plot_bgcolor='white',
-                title_font=dict(size=16),
-                height=400,
-                margin=dict(l=40, r=40, t=50, b=40),
-                hovermode="x unified"
-            )
-            
-            # Customize line
-            fig.update_traces(
-                line=dict(color='navy', width=2),
-                marker=dict(size=6, color='navy'),
-            )
-            
-            # Add grid lines
-            fig.update_xaxes(showgrid=True, gridwidth=1, gridcolor='lightgray')
-            fig.update_yaxes(showgrid=True, gridwidth=1, gridcolor='lightgray')
-            
-            # Display the chart
-            st.plotly_chart(fig, use_container_width=True)
-            
-        except FileNotFoundError:
-            st.error("File 'Sheet 1_Full Data_data.csv' tidak ditemukan. Pastikan file CSV berada di folder yang sama dengan script ini.")
-        except Exception as e:
-            st.error(f"Error loading CSV file: {str(e)}")
+    # Create the plot using Plotly
+    fig = px.line(df, x='Period', y='Growth', 
+                 title='Pertumbuhan Ekonomi y-o-y',
+                 labels={'Growth': 'Y-O-Y', 'Period': 'Quarter of Periode'},
+                 markers=True)
     
-    else:
-        # Placeholder content for other tabs
-        st.info(f"📊 Halaman {st.session_state.side_tab} sedang dalam pengembangan.")
-        st.write("Data dan visualisasi untuk kategori ini akan segera tersedia.")
-        
-        # Sample placeholder chart
-        sample_data = pd.DataFrame({
-            'Period': ['2022 Q1', '2022 Q2', '2022 Q3', '2022 Q4', '2023 Q1', '2023 Q2'],
-            'Value': [4.2, 4.5, 4.8, 5.1, 4.9, 5.2]
-        })
-        
-        fig_placeholder = px.bar(sample_data, x='Period', y='Value', 
-                                title=f'{st.session_state.side_tab} - Sample Data')
-        fig_placeholder.update_layout(height=300)
-        st.plotly_chart(fig_placeholder, use_container_width=True)
+    # Update layout for better appearance
+    fig.update_layout(
+        xaxis=dict(
+            tickmode='array',
+            tickvals=[df['Period'][i] for i in range(0, len(df), 4)],  # Show only Q1 for each year
+            ticktext=[f"{period.split()[0]} Q1" for period in df['Period'][::4]],
+            title_font=dict(size=14),
+        ),
+        yaxis=dict(
+            range=[-6, 8],
+            tickvals=[-5, 0, 5],
+            title_font=dict(size=14),
+        ),
+        plot_bgcolor='white',
+        title_font=dict(size=16),
+        height=400,
+        margin=dict(l=40, r=40, t=50, b=40),
+        hovermode="x unified"
+    )
+    
+    # Customize line
+    fig.update_traces(
+        line=dict(color='navy', width=2),
+        marker=dict(size=6, color='navy'),
+    )
+    
+    # Add grid lines
+    fig.update_xaxes(showgrid=True, gridwidth=1, gridcolor='lightgray')
+    fig.update_yaxes(showgrid=True, gridwidth=1, gridcolor='lightgray')
+    
+    # Display the chart
+    st.plotly_chart(fig, use_container_width=True)
     
     st.markdown('</div>', unsafe_allow_html=True)
