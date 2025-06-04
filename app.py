@@ -52,22 +52,18 @@ st.markdown("""
         justify-content: space-around;
         margin-bottom: 20px;
     }
-    .main-nav-item {
-        background: none;
-        border: none;
+    .main-nav a {
         color: white;
         text-decoration: none;
         padding: 8px 16px;
         font-weight: bold;
-        cursor: pointer;
         border-radius: 4px;
         transition: background-color 0.3s;
-        font-size: 14px;
     }
-    .main-nav-item:hover {
+    .main-nav a:hover {
         background-color: rgba(255,255,255,0.2);
     }
-    .main-nav-item.active {
+    .main-nav a.active {
         background-color: rgba(255,255,255,0.3);
     }
     .sidebar-nav {
@@ -83,9 +79,6 @@ st.markdown("""
         color: #333;
         cursor: pointer;
         transition: background-color 0.3s;
-        border: none;
-        width: 100%;
-        text-align: left;
         font-size: 14px;
         line-height: 1.2;
     }
@@ -148,10 +141,6 @@ st.markdown("""
         font-weight: bold;
         font-size: 16px;
     }
-    /* Hide Streamlit default elements */
-    .stButton > button {
-        display: none;
-    }
 </style>
 """, unsafe_allow_html=True)
 
@@ -186,44 +175,15 @@ with col3:
     </div>
     """, unsafe_allow_html=True)
 
-# Main Navigation Menu with functionality
-main_tabs = ['Neraca Nasional', 'Indeks Harga', 'Ekspor-Impor', 'APBN', 'Ketenagakerjaan', 'Kemiskinan', 'IPM']
-
-# Create clickable main navigation
-main_nav_html = '<div class="main-nav">'
-for tab in main_tabs:
-    active_class = 'active' if st.session_state.main_tab == tab else ''
-    main_nav_html += f'<span class="main-nav-item {active_class}" onclick="selectMainTab(\'{tab}\')">{tab}</span>'
-main_nav_html += '</div>'
-
-st.markdown(main_nav_html, unsafe_allow_html=True)
-
-# Handle main tab selection with invisible buttons
-main_cols = st.columns(len(main_tabs))
-for i, tab in enumerate(main_tabs):
-    with main_cols[i]:
-        if st.button(f"select_{tab}", key=f"main_tab_{i}"):
-            st.session_state.main_tab = tab
-            # Reset side tab when main tab changes
-            if tab == 'Neraca Nasional':
-                st.session_state.side_tab = 'Pertumbuhan Ekonomi y-o-y'
-            elif tab == 'Indeks Harga':
-                st.session_state.side_tab = 'IHK Umum'
-            elif tab == 'Ekspor-Impor':
-                st.session_state.side_tab = 'Nilai Ekspor'
-            else:
-                st.session_state.side_tab = f'{tab} Tab 1'
-            st.rerun()
-
 # Define side tabs for each main tab
 side_tabs_config = {
     'Neraca Nasional': [
-        'Pertumbuhan<br>Ekonomi y-o-y',
-        'Pertumbuhan<br>Ekonomi q-to-q',
-        'Pertumbuhan<br>Ekonomi c-to-c',
-        'Indeks Implisit<br>y-o-y',
-        'Indeks Implisit<br>q-to-q',
-        'Indeks Implisit<br>c-to-c',
+        'Pertumbuhan Ekonomi y-o-y',
+        'Pertumbuhan Ekonomi q-to-q',
+        'Pertumbuhan Ekonomi c-to-c',
+        'Indeks Implisit y-o-y',
+        'Indeks Implisit q-to-q',
+        'Indeks Implisit c-to-c',
         'PDB ADHB',
         'PDB ADHK'
     ],
@@ -256,10 +216,10 @@ side_tabs_config = {
         'Pekerja Informal'
     ],
     'Kemiskinan': [
-        'Persentase Penduduk<br>Miskin',
-        'Jumlah Penduduk<br>Miskin',
+        'Persentase Penduduk Miskin',
+        'Jumlah Penduduk Miskin',
         'Garis Kemiskinan',
-        'Indeks Kedalaman<br>Kemiskinan'
+        'Indeks Kedalaman Kemiskinan'
     ],
     'IPM': [
         'IPM Nasional',
@@ -269,6 +229,29 @@ side_tabs_config = {
         'Komponen Ekonomi'
     ]
 }
+
+# Main Navigation - using Streamlit tabs styled to look like the original
+main_tabs = ['Neraca Nasional', 'Indeks Harga', 'Ekspor-Impor', 'APBN', 'Ketenagakerjaan', 'Kemiskinan', 'IPM']
+
+# Create main navigation using columns with buttons
+st.markdown("""
+<div class="main-nav">
+    <span style="width: 100%; display: flex; justify-content: space-around;">
+""" + "".join([f'<a href="#" style="flex: 1; text-align: center;">{tab}</a>' for tab in main_tabs]) + """
+    </span>
+</div>
+""", unsafe_allow_html=True)
+
+# Main tab selection using columns
+main_cols = st.columns(len(main_tabs))
+for i, tab in enumerate(main_tabs):
+    with main_cols[i]:
+        if st.button(tab, key=f"main_tab_{i}", use_container_width=True):
+            st.session_state.main_tab = tab
+            # Reset side tab when main tab changes
+            current_side_tabs = side_tabs_config.get(tab, ['Default Tab'])
+            st.session_state.side_tab = current_side_tabs[0]
+            st.rerun()
 
 # Create layout with sidebar and main content
 col1, col2 = st.columns([1, 3])
@@ -280,15 +263,20 @@ with col1:
     current_side_tabs = side_tabs_config.get(st.session_state.main_tab, ['Default Tab'])
     
     # Display side navigation items
-    for i, tab_display in enumerate(current_side_tabs):
-        tab_key = tab_display.replace('<br>', ' ').replace('\n', ' ')
-        active_class = 'active' if st.session_state.side_tab == tab_key else ''
+    for i, tab in enumerate(current_side_tabs):
+        active_class = 'active' if st.session_state.side_tab == tab else ''
         
-        st.markdown(f'<div class="nav-item {active_class}" onclick="selectSideTab(\'{tab_key}\')">{tab_display}</div>', unsafe_allow_html=True)
+        # Format tab name for display (add line breaks for long names)
+        if len(tab) > 15:
+            display_tab = tab.replace(' ', '<br>', 1) if ' ' in tab else tab
+        else:
+            display_tab = tab
+            
+        st.markdown(f'<div class="nav-item {active_class}">{display_tab}</div>', unsafe_allow_html=True)
         
-        # Hidden button for functionality
-        if st.button(f"side_select_{i}", key=f"side_tab_{i}_{st.session_state.main_tab}"):
-            st.session_state.side_tab = tab_key
+        # Button for functionality
+        if st.button(f"Select {tab}", key=f"side_tab_{i}_{st.session_state.main_tab}"):
+            st.session_state.side_tab = tab
             st.rerun()
     
     st.markdown('</div>', unsafe_allow_html=True)
@@ -350,32 +338,51 @@ with col2:
             st.error(f"Error loading CSV file: {str(e)}")
     
     else:
-        # Placeholder for other combinations
-        st.subheader(f"{st.session_state.main_tab} - {st.session_state.side_tab}")
-        st.info(f"Konten untuk {st.session_state.side_tab} dalam kategori {st.session_state.main_tab} akan ditampilkan di sini.")
+        # Content for other combinations
+        st.subheader(f"{st.session_state.main_tab}")
+        st.write(f"**{st.session_state.side_tab}**")
+        
+        # Show different content based on main tab
+        if st.session_state.main_tab == 'Indeks Harga':
+            st.info(f"Data {st.session_state.side_tab} - Menampilkan tren inflasi dan perubahan harga konsumen.")
+        elif st.session_state.main_tab == 'Ekspor-Impor':
+            st.info(f"Data {st.session_state.side_tab} - Menampilkan kinerja perdagangan internasional Indonesia.")
+        elif st.session_state.main_tab == 'APBN':
+            st.info(f"Data {st.session_state.side_tab} - Menampilkan kondisi keuangan pemerintah.")
+        elif st.session_state.main_tab == 'Ketenagakerjaan':
+            st.info(f"Data {st.session_state.side_tab} - Menampilkan kondisi pasar tenaga kerja.")
+        elif st.session_state.main_tab == 'Kemiskinan':
+            st.info(f"Data {st.session_state.side_tab} - Menampilkan indikator kemiskinan dan kesejahteraan.")
+        elif st.session_state.main_tab == 'IPM':
+            st.info(f"Data {st.session_state.side_tab} - Menampilkan Indeks Pembangunan Manusia.")
+        else:
+            st.info(f"Konten untuk {st.session_state.side_tab} dalam kategori {st.session_state.main_tab} akan ditampilkan di sini.")
         
         # Sample chart for demonstration
         sample_data = pd.DataFrame({
-            'x': range(10),
-            'y': np.random.randn(10).cumsum()
+            'Periode': pd.date_range('2020-01-01', periods=20, freq='Q'),
+            'Nilai': np.random.randn(20).cumsum() + 100
         })
-        fig = px.line(sample_data, x='x', y='y', title=st.session_state.side_tab.replace('<br>', ' '))
-        fig.update_layout(height=400)
+        
+        fig = px.line(sample_data, x='Periode', y='Nilai', 
+                     title=st.session_state.side_tab,
+                     markers=True)
+        fig.update_traces(line=dict(color='navy', width=2), marker=dict(size=6, color='navy'))
+        fig.update_layout(height=400, plot_bgcolor='white')
+        fig.update_xaxes(showgrid=True, gridwidth=1, gridcolor='lightgray')
+        fig.update_yaxes(showgrid=True, gridwidth=1, gridcolor='lightgray')
+        
         st.plotly_chart(fig, use_container_width=True)
     
     st.markdown('</div>', unsafe_allow_html=True)
 
-# JavaScript for handling clicks (though Streamlit buttons handle the actual functionality)
-st.markdown("""
-<script>
-function selectMainTab(tab) {
-    // Visual feedback - Streamlit buttons handle actual functionality
-    console.log('Main tab selected:', tab);
-}
-
-function selectSideTab(tab) {
-    // Visual feedback - Streamlit buttons handle actual functionality  
-    console.log('Side tab selected:', tab);
-}
-</script>
-""", unsafe_allow_html=True)
+# Display current selections in sidebar for debugging
+with st.sidebar:
+    st.write("**Current Selection:**")
+    st.write(f"Main: {st.session_state.main_tab}")
+    st.write(f"Side: {st.session_state.side_tab}")
+    
+    st.write("**Available Side Tabs:**")
+    current_side_tabs = side_tabs_config.get(st.session_state.main_tab, [])
+    for tab in current_side_tabs:
+        st.write(f"• {tab}")
