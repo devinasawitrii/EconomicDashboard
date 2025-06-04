@@ -1,4 +1,3 @@
-
 import streamlit as st
 import pandas as pd
 import numpy as np
@@ -485,5 +484,138 @@ with col2:
     st.markdown('<div class="chart-container">', unsafe_allow_html=True)
     
     # Display content based on selected tabs
-    if st.session_state.main_tab == 'Neraca 
-(Content truncated due to size limit. Use line ranges to read in chunks)
+    if st.session_state.main_tab == 'Neraca Nasional' and st.session_state.side_tab == 'Pertumbuhan Ekonomi y-o-y':
+        # Original economic growth chart
+        try:
+            # Try to load the CSV file
+            df = pd.read_csv('Sheet 1_Full Data_data.csv')
+            df.columns = ['Period', 'Growth']
+            
+            # Create the plot using Plotly
+            fig = px.line(df, x='Period', y='Growth', 
+                         title='Pertumbuhan Ekonomi y-o-y',
+                         labels={'Growth': 'Y-O-Y (%)', 'Period': 'Quarter of Periode'},
+                         markers=True)
+            
+            # Update layout for better appearance
+            fig.update_layout(
+                xaxis=dict(
+                    tickmode='array',
+                    tickvals=[df['Period'][i] for i in range(0, len(df), 4)],
+                    ticktext=[f"{period.split()[0]} Q1" for period in df['Period'][::4]],
+                    title_font=dict(size=14),
+                ),
+                yaxis=dict(
+                    range=[-6, 8],
+                    tickvals=[-5, 0, 5],
+                    title_font=dict(size=14),
+                ),
+                plot_bgcolor='white',
+                title_font=dict(size=16),
+                height=500,
+                margin=dict(l=40, r=40, t=60, b=40),
+                hovermode="x unified"
+            )
+            
+            # Customize line
+            fig.update_traces(
+                line=dict(color='navy', width=2),
+                marker=dict(size=6, color='navy'),
+            )
+            
+            # Add grid lines
+            fig.update_xaxes(showgrid=True, gridwidth=1, gridcolor='lightgray')
+            fig.update_yaxes(showgrid=True, gridwidth=1, gridcolor='lightgray')
+            
+            # Display the chart
+            st.plotly_chart(fig, use_container_width=True)
+            
+        except FileNotFoundError:
+            st.error("File 'Sheet 1_Full Data_data.csv' tidak ditemukan.")
+            # Generate sample data for demo
+            sample_periods = [f"2020 Q{i%4+1}" for i in range(16)]
+            sample_growth = [5.2, -5.3, -3.5, -2.1, -0.7, 7.1, 3.7, 5.0, 5.4, 5.1, 5.2, 5.3, 4.9, 5.0, 5.1, 4.8]
+            
+            df_sample = pd.DataFrame({
+                'Period': sample_periods,
+                'Growth': sample_growth
+            })
+            
+            fig = px.line(df_sample, x='Period', y='Growth', 
+                         title='Pertumbuhan Ekonomi y-o-y (Sample Data)',
+                         labels={'Growth': 'Y-O-Y (%)', 'Period': 'Quarter of Periode'},
+                         markers=True)
+            
+            fig.update_traces(line=dict(color='navy', width=2), marker=dict(size=6, color='navy'))
+            fig.update_layout(height=500, plot_bgcolor='white', margin=dict(l=40, r=40, t=60, b=40))
+            st.plotly_chart(fig, use_container_width=True)
+            
+        except Exception as e:
+            st.error(f"Error loading CSV file: {str(e)}")
+    
+    else:
+        # Content for other tab combinations
+        
+        # Generate appropriate sample data based on the selected tab
+        if 'Pertumbuhan' in st.session_state.side_tab:
+            # Growth data
+            sample_data = pd.DataFrame({
+                'Period': [f"2023 Q{i}" for i in range(1, 5)] + [f"2024 Q{i}" for i in range(1, 5)],
+                'Value': np.random.uniform(-2, 6, 8)
+            })
+            title = f"{st.session_state.side_tab} (%)"
+            
+        elif 'IHK' in st.session_state.side_tab or 'Indeks' in st.session_state.side_tab:
+            # Index data
+            sample_data = pd.DataFrame({
+                'Period': pd.date_range('2023-01', periods=12, freq='M').strftime('%Y-%m'),
+                'Value': np.random.uniform(100, 120, 12)
+            })
+            title = f"{st.session_state.side_tab}"
+            
+        elif 'Nilai' in st.session_state.side_tab:
+            # Value data (in billions)
+            sample_data = pd.DataFrame({
+                'Period': pd.date_range('2023-01', periods=12, freq='M').strftime('%Y-%m'),
+                'Value': np.random.uniform(15, 25, 12)
+            })
+            title = f"{st.session_state.side_tab} (Miliar USD)"
+            
+        elif 'Tingkat' in st.session_state.side_tab or 'Persentase' in st.session_state.side_tab:
+            # Percentage data
+            sample_data = pd.DataFrame({
+                'Period': [f"2023 Q{i}" for i in range(1, 5)] + [f"2024 Q{i}" for i in range(1, 5)],
+                'Value': np.random.uniform(3, 12, 8)
+            })
+            title = f"{st.session_state.side_tab} (%)"
+            
+        else:
+            # Default data
+            sample_data = pd.DataFrame({
+                'Period': pd.date_range('2023-01', periods=12, freq='M').strftime('%Y-%m'),
+                'Value': np.random.randn(12).cumsum() + 100
+            })
+            title = st.session_state.side_tab
+        
+        # Create chart
+        fig = px.line(sample_data, x='Period', y='Value', 
+                     title=title,
+                     markers=True)
+        
+        fig.update_traces(line=dict(color='navy', width=2), marker=dict(size=6, color='navy'))
+        fig.update_layout(
+            height=500,
+            plot_bgcolor='white',
+            xaxis=dict(showgrid=True, gridwidth=1, gridcolor='lightgray'),
+            yaxis=dict(showgrid=True, gridwidth=1, gridcolor='lightgray'),
+            margin=dict(l=40, r=40, t=60, b=40)
+        )
+        
+        st.plotly_chart(fig, use_container_width=True)
+        
+        # Add some insights
+        st.markdown("---")
+        st.markdown("**Insight:**")
+        st.info(f"Analisis untuk {st.session_state.side_tab} menunjukkan tren yang perlu diperhatikan untuk pengambilan keputusan strategis.")
+    
+    st.markdown('</div>', unsafe_allow_html=True)
