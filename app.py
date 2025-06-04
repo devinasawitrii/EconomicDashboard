@@ -99,66 +99,7 @@ st.markdown("""
         font-size: 16px;
     }
     
-    /* Main navigation tabs styling - consistent with sidebar */
-    .main-nav-container {
-        display: flex;
-        gap: 8px;
-        margin: 20px 0;
-        justify-content: center;
-        align-items: center;
-    }
-    
-    /* Override Streamlit's default column styling for main navigation */
-    div[data-testid="column"] {
-        padding: 0 !important;
-    }
-    
-    /* Main navigation buttons - same style as sidebar */
-    .main-nav-button {
-        background-color: #f0f0f0 !important;
-        color: #333 !important;
-        border: none !important;
-        border-left: 5px solid #0070c0 !important;
-        padding: 12px 16px !important;
-        font-weight: bold !important;
-        margin: 0 !important;
-        border-radius: 0px !important;
-        transition: all 0.3s !important;
-        width: 100% !important;
-        min-height: 50px !important;
-        display: flex !important;
-        align-items: center !important;
-        justify-content: center !important;
-        text-align: center !important;
-        font-size: 14px !important;
-        cursor: pointer !important;
-    }
-    
-    .main-nav-button:hover {
-        background-color: #e0e0e0 !important;
-        color: #333 !important;
-        transform: none !important;
-        box-shadow: none !important;
-    }
-    
-    .main-nav-button:focus {
-        background-color: #0070c0 !important;
-        color: white !important;
-        box-shadow: none !important;
-        outline: none !important;
-    }
-    
-    .main-nav-button:active {
-        background-color: #0070c0 !important;
-        color: white !important;
-    }
-    
-    /* Active state for main navigation */
-    .main-nav-active {
-        background-color: #0070c0 !important;
-        color: white !important;
-        border-left: 5px solid navy !important;
-    }
+
     
     /* Sidebar buttons styling */
     .stButton > button {
@@ -202,23 +143,7 @@ st.markdown("""
         border-left: 5px solid navy !important;
     }
     
-    /* Remove default Streamlit button focus states */
-    .stButton > button:focus:not(:active) {
-        border-color: transparent !important;
-        box-shadow: none !important;
-    }
-    
-    /* Ensure consistent spacing for main navigation columns */
-    .main-nav-column {
-        flex: 1;
-        margin: 0 4px;
-    }
-    
-    /* Hide Streamlit's default focus outline */
-    button:focus {
-        outline: none !important;
-        box-shadow: none !important;
-    }
+
 </style>
 """, unsafe_allow_html=True)
 
@@ -253,19 +178,16 @@ with col3:
     </div>
     """, unsafe_allow_html=True)
 
-# Main Navigation Menu with improved spacing and consistent design
+# Main Navigation Menu
 st.markdown("<div style='margin: 20px 0;'></div>", unsafe_allow_html=True)
 
 main_tabs = ['Neraca Nasional', 'Indeks Harga', 'Ekspor-Impor', 'APBN', 'Ketenagakerjaan', 'Kemiskinan', 'IPM']
 
-# Create main navigation with consistent spacing
-main_nav_cols = st.columns(len(main_tabs))
+# Create main navigation with proper spacing - using gap parameter
+main_nav_cols = st.columns(len(main_tabs), gap="small")
 
 for i, tab in enumerate(main_tabs):
     with main_nav_cols[i]:
-        # Add custom CSS class for active state
-        button_class = "main-nav-active" if st.session_state.main_tab == tab else ""
-        
         if st.button(tab, key=f"main_{tab}", help=f"Pilih {tab}"):
             st.session_state.main_tab = tab
             # Reset side tab when main tab changes
@@ -285,50 +207,63 @@ for i, tab in enumerate(main_tabs):
                 st.session_state.side_tab = 'IPM Nasional'
             st.rerun()
 
-# Additional CSS to override Streamlit's button styling for main navigation
-st.markdown(f"""
+# CSS for main navigation - exactly same as sidebar design
+st.markdown("""
 <style>
-    /* Target main navigation buttons specifically */
-    div[data-testid="column"]:has(button[key*="main_"]) button {{
+    /* Main navigation buttons - EXACTLY same as sidebar */
+    div[data-testid="column"] button[key^="main_"] {
+        width: 100% !important;
         background-color: #f0f0f0 !important;
         color: #333 !important;
         border: none !important;
         border-left: 5px solid #0070c0 !important;
-        padding: 12px 8px !important;
+        padding: 15px !important;
         font-weight: bold !important;
+        margin-bottom: 2px !important;
         border-radius: 0px !important;
-        width: 100% !important;
         transition: all 0.3s !important;
-        font-size: 13px !important;
-        margin: 0px !important;
         min-height: 50px !important;
         display: flex !important;
         align-items: center !important;
         justify-content: center !important;
         text-align: center !important;
-    }}
+        font-size: 14px !important;
+    }
     
-    /* Hover state for main navigation */
-    div[data-testid="column"]:has(button[key*="main_"]) button:hover {{
+    div[data-testid="column"] button[key^="main_"]:hover {
         background-color: #e0e0e0 !important;
         color: #333 !important;
-    }}
+    }
     
-    /* Active/Focus state for main navigation */
-    div[data-testid="column"]:has(button[key*="main_"]) button:focus {{
+    div[data-testid="column"] button[key^="main_"]:focus {
         background-color: #0070c0 !important;
         color: white !important;
         box-shadow: none !important;
-    }}
+        outline: none !important;
+    }
     
     /* Active state for current main tab */
-    div[data-testid="column"]:has(button[key="main_{st.session_state.main_tab}"]) button {{
+    div[data-testid="column"] button[key="main_""" + st.session_state.main_tab + """"] {
         background-color: #0070c0 !important;
         color: white !important;
         border-left: 5px solid navy !important;
-    }}
+    }
+    
+    /* Ensure equal spacing between main nav columns */
+    div[data-testid="column"]:has(button[key^="main_"]) {
+        padding: 0 4px !important;
+    }
+    
+    /* First and last column adjustments */
+    div[data-testid="column"]:has(button[key^="main_"]):first-child {
+        padding-left: 0 !important;
+    }
+    
+    div[data-testid="column"]:has(button[key^="main_"]):last-child {
+        padding-right: 0 !important;
+    }
 </style>
-""", unsafe_allow_html=True)
+""")
 
 # Define side tabs for each main tab
 side_tabs_config = {
@@ -409,6 +344,12 @@ st.markdown(f"""
         background-color: #0070c0 !important;
         color: white !important;
         border-left: 5px solid navy !important;
+    }}
+    
+    /* Remove any default focus outlines */
+    button:focus {{
+        outline: none !important;
+        box-shadow: none !important;
     }}
 </style>
 """, unsafe_allow_html=True)
