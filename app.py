@@ -326,3 +326,5 @@ with col2:
 # Footer
 st.markdown("---")
 st.markdown("**Actionable Insights Generator** - BPS Direktorat Neraca Pengeluaran")
+
+
