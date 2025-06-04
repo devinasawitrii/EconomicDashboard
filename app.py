@@ -99,7 +99,19 @@ st.markdown("""
         font-size: 16px;
     }
     
-
+    /* Remove all column padding for consistent spacing */
+    div[data-testid="column"] {
+        padding: 0 !important;
+        margin: 0 !important;
+    }
+    
+    /* Main navigation container */
+    .main-nav-container {
+        display: flex !important;
+        gap: 0px !important;
+        margin: 20px 0 !important;
+        width: 100% !important;
+    }
     
     /* Sidebar buttons styling */
     .stButton > button {
@@ -136,14 +148,17 @@ st.markdown("""
         color: white !important;
     }
     
-    /* Active state for sidebar */
-    .sidebar-active {
-        background-color: #0070c0 !important;
-        color: white !important;
-        border-left: 5px solid navy !important;
+    /* Hide Streamlit's default focus outline */
+    button:focus {
+        outline: none !important;
+        box-shadow: none !important;
     }
     
-
+    /* Remove default Streamlit button focus states */
+    .stButton > button:focus:not(:active) {
+        border-color: transparent !important;
+        box-shadow: none !important;
+    }
 </style>
 """, unsafe_allow_html=True)
 
@@ -183,8 +198,8 @@ st.markdown("<div style='margin: 20px 0;'></div>", unsafe_allow_html=True)
 
 main_tabs = ['Neraca Nasional', 'Indeks Harga', 'Ekspor-Impor', 'APBN', 'Ketenagakerjaan', 'Kemiskinan', 'IPM']
 
-# Create main navigation with proper spacing - using gap parameter
-main_nav_cols = st.columns(len(main_tabs), gap="small")
+# Create main navigation with equal spacing
+main_nav_cols = st.columns(len(main_tabs))
 
 for i, tab in enumerate(main_tabs):
     with main_nav_cols[i]:
@@ -207,19 +222,19 @@ for i, tab in enumerate(main_tabs):
                 st.session_state.side_tab = 'IPM Nasional'
             st.rerun()
 
-# CSS for main navigation - exactly same as sidebar design
-st.markdown("""
+# Dynamic CSS for main navigation buttons to match sidebar exactly
+st.markdown(f"""
 <style>
-    /* Main navigation buttons - EXACTLY same as sidebar */
-    div[data-testid="column"] button[key^="main_"] {
+    /* Main navigation buttons - exact same style as sidebar */
+    div[data-testid="column"]:has(button[key*="main_"]) button {{
         width: 100% !important;
         background-color: #f0f0f0 !important;
         color: #333 !important;
         border: none !important;
-        border-left: 5px solid #0070c0 !important;
-        padding: 15px !important;
+        border-top: 5px solid #0070c0 !important;
+        padding: 15px 8px !important;
         font-weight: bold !important;
-        margin-bottom: 2px !important;
+        margin: 0px !important;
         border-radius: 0px !important;
         transition: all 0.3s !important;
         min-height: 50px !important;
@@ -227,43 +242,45 @@ st.markdown("""
         align-items: center !important;
         justify-content: center !important;
         text-align: center !important;
-        font-size: 14px !important;
-    }
+        font-size: 13px !important;
+        cursor: pointer !important;
+    }}
     
-    div[data-testid="column"] button[key^="main_"]:hover {
+    /* Hover state for main navigation - same as sidebar */
+    div[data-testid="column"]:has(button[key*="main_"]) button:hover {{
         background-color: #e0e0e0 !important;
         color: #333 !important;
-    }
+    }}
     
-    div[data-testid="column"] button[key^="main_"]:focus {
+    /* Focus state for main navigation - same as sidebar */
+    div[data-testid="column"]:has(button[key*="main_"]) button:focus {{
         background-color: #0070c0 !important;
         color: white !important;
         box-shadow: none !important;
         outline: none !important;
-    }
+    }}
     
-    /* Active state for current main tab */
-    div[data-testid="column"] button[key="main_""" + st.session_state.main_tab + """"] {
+    /* Active state for main navigation - same as sidebar */
+    div[data-testid="column"]:has(button[key*="main_"]) button:active {{
+        background-color: #0070c0 !important;
+        color: white !important;
+    }}
+    
+    /* Active state for current main tab - horizontal blue line at top */
+    div[data-testid="column"]:has(button[key="main_{st.session_state.main_tab}"]) button {{
+        background-color: #0070c0 !important;
+        color: white !important;
+        border-top: 5px solid navy !important;
+    }}
+    
+    /* Active state for current side tab - vertical blue line at left */
+    button[key="side_{st.session_state.side_tab}_{st.session_state.main_tab}"] {{
         background-color: #0070c0 !important;
         color: white !important;
         border-left: 5px solid navy !important;
-    }
-    
-    /* Ensure equal spacing between main nav columns */
-    div[data-testid="column"]:has(button[key^="main_"]) {
-        padding: 0 4px !important;
-    }
-    
-    /* First and last column adjustments */
-    div[data-testid="column"]:has(button[key^="main_"]):first-child {
-        padding-left: 0 !important;
-    }
-    
-    div[data-testid="column"]:has(button[key^="main_"]):last-child {
-        padding-right: 0 !important;
-    }
+    }}
 </style>
-""")
+""", unsafe_allow_html=True)
 
 # Define side tabs for each main tab
 side_tabs_config = {
@@ -331,28 +348,9 @@ with col1:
     
     # Display side navigation items
     for tab in current_side_tabs:
-        # Add custom CSS class for active state
         if st.button(tab, key=f"side_{tab}_{st.session_state.main_tab}"):
             st.session_state.side_tab = tab
             st.rerun()
-
-# Additional CSS for sidebar active states
-st.markdown(f"""
-<style>
-    /* Active state for current side tab */
-    button[key="side_{st.session_state.side_tab}_{st.session_state.main_tab}"] {{
-        background-color: #0070c0 !important;
-        color: white !important;
-        border-left: 5px solid navy !important;
-    }}
-    
-    /* Remove any default focus outlines */
-    button:focus {{
-        outline: none !important;
-        box-shadow: none !important;
-    }}
-</style>
-""", unsafe_allow_html=True)
 
 with col2:
     # Main content area - changes based on selected tabs
