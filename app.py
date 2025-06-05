@@ -105,7 +105,11 @@ st.markdown("""
         font-size: 16px;
     }
     
-    /* Sidebar buttons styling - Adjusted Spacing */
+    /* Sidebar buttons styling - Force Consistent Spacing */
+    div[data-testid="stButton"] {
+        margin-top: 0px !important;
+        margin-bottom: 5px !important; /* Consistent bottom margin */
+    }
     .stButton > button {
         width: 100% !important;
         background-color: #f0f0f0 !important;
@@ -114,8 +118,8 @@ st.markdown("""
         border-left: 5px solid #0070c0 !important;
         padding: 15px !important;
         font-weight: bold !important;
-        margin-top: 0px !important; /* Added */
-        margin-bottom: 5px !important; /* Kept */
+        /* margin-top: 0px !important; */ /* Removed */
+        /* margin-bottom: 5px !important; */ /* Removed, handled by container */
         border-radius: 0px !important;
         transition: all 0.3s !important;
         min-height: 50px !important;
@@ -366,7 +370,7 @@ with col2:
                 plot_bgcolor='white',
                 title_font=dict(size=16),
                 height=400, # Reduced height from 500
-                margin=dict(l=40, r=40, t=60, b=40),
+                margin=dict(l=40, r=40, t=40, b=40), # Reduced top margin from 60
                 hovermode="x unified"
             )
             
