@@ -19,14 +19,14 @@ st.set_page_config(
 if 'main_tab' not in st.session_state:
     st.session_state.main_tab = 'Neraca Nasional'
 if 'side_tab' not in st.session_state:
-    st.session_state.side_tab = 'Pertumbuhan Ekonomi y-o-y'
+    st.session_state.side_tab = 'Pertumbuhan ekonomi y-o-y'
 
-# Custom CSS for styling (Keep sidebar styles, remove old main nav styles)
+# Custom CSS for styling
 st.markdown("""
 <style>
-    /* Remove top padding - Adjusted */
+    /* Remove top padding */
     .block-container { 
-        /* padding-top: 1rem !important; */ /* Removed this line */
+        padding-top: 1rem !important;
     }
     .header-container {
         display: flex;
@@ -34,7 +34,7 @@ st.markdown("""
         align-items: center;
         padding: 0px;
         background-color: white;
-        margin-bottom: 1rem; /* Add some space below header */
+        margin-bottom: 0.5rem; /* Reduced margin */
     }
     .logo-title {
         color: navy;
@@ -49,12 +49,13 @@ st.markdown("""
         font-size: 18px;
         text-align: center;
         font-style: italic;
-        margin-top: 2px; /* Reduced margin-top */
+        margin-top: -5px; /* Move closer to title */
+        margin-bottom: 0px;
     }
     .chart-container {
         border: none;
         border-radius: 0px;
-        padding: 0px 20px 20px 20px; /* Removed top padding */
+        padding: 0px 20px 20px 20px;
         background-color: white;
         box-shadow: none;
     }
@@ -64,87 +65,59 @@ st.markdown("""
         align-items: center;
         text-align: center;
     }
-    .aig-logo {
-        width: 80px;
-        height: 80px;
-        border: 3px solid navy;
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        background-color: white;
-        font-size: 18px;
-        font-weight: bold;
-        color: navy;
-        margin-bottom: 5px;
-    }
-    .bps-logo {
-        width: 100px;
-        background-color: #0070c0;
-        border-radius: 5px;
-        overflow: hidden;
-    }
-    .bps-header {
-        background-color: #0070c0;
-        color: white;
-        padding: 5px;
-        font-size: 8px;
-        text-align: center;
-        line-height: 1.2;
-    }
-    .bps-main {
-        background-color: #00B0F0;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 40px;
-    }
-    .bps-text {
-        color: white;
-        font-weight: bold;
-        font-size: 16px;
-    }
     
-    /* Sidebar buttons styling - Force Consistent Spacing */
+    /* Sidebar buttons styling - FIXED POSITIONING */
     div[data-testid="stButton"] {
         margin-top: 0px !important;
-        margin-bottom: 5px !important; /* Consistent bottom margin */
+        margin-bottom: 3px !important; /* Reduced from 5px to 3px */
+        position: relative !important; /* Prevent movement */
     }
+    
+    /* First button specific spacing fix */
+    div[data-testid="stButton"]:first-of-type {
+        margin-bottom: 3px !important; /* Same as others now */
+    }
+    
     .stButton > button {
         width: 100% !important;
         background-color: #f0f0f0 !important;
         color: #333 !important;
         border: none !important;
-        border-left: 5px solid transparent !important; /* Add transparent border for spacing */
-        padding: 15px !important;
+        border-left: 5px solid transparent !important;
+        padding: 12px 15px !important; /* Reduced padding for tighter spacing */
         font-weight: bold !important;
-        /* margin-top: 0px !important; */ /* Removed */
-        /* margin-bottom: 5px !important; */ /* Removed, handled by container */
         border-radius: 0px !important;
-        transition: all 0.3s !important;
-        min-height: 50px !important;
+        transition: background-color 0.2s, color 0.2s, border-left-color 0.2s !important; /* Smooth transitions only */
+        min-height: 45px !important; /* Reduced from 50px */
         display: flex !important;
         align-items: center !important;
         justify-content: flex-start !important;
-        text-align: left !important; /* Align text left for sidebar */
-        box-sizing: border-box !important; /* Ensure padding/border included in width/height */
+        text-align: left !important;
+        box-sizing: border-box !important;
+        position: relative !important; /* Prevent position changes */
+        transform: none !important; /* Prevent any transforms */
     }
     
     .stButton > button:hover {
         background-color: #e0e0e0 !important;
         color: #333 !important;
+        transform: none !important; /* Prevent movement on hover */
     }
     
     .stButton > button:focus {
         background-color: #0070c0 !important;
         color: white !important;
+        border-left-color: navy !important;
         box-shadow: none !important;
         outline: none !important;
+        transform: none !important; /* Prevent movement on focus */
     }
     
     .stButton > button:active {
         background-color: #0070c0 !important;
         color: white !important;
+        border-left-color: navy !important;
+        transform: none !important; /* Prevent movement on click */
     }
         
     /* Remove default Streamlit button focus states */
@@ -157,6 +130,13 @@ st.markdown("""
     button:focus {
         outline: none !important;
         box-shadow: none !important;
+    }
+    
+    /* Active button styling */
+    .active-button {
+        background-color: #0070c0 !important;
+        color: white !important;
+        border-left-color: navy !important;
     }
 </style>
 """, unsafe_allow_html=True)
@@ -173,7 +153,7 @@ with col1:
         """, unsafe_allow_html=True)
 
 with col2:
-    # Title
+    # Title and subtitle with reduced spacing
     st.markdown('<div class="logo-title">ACTIONABLE INSIGHTS</div>', unsafe_allow_html=True)
     st.markdown('<div class="subtitle">Generate wisdom from fingertip</div>', unsafe_allow_html=True)
 
@@ -184,6 +164,7 @@ with col3:
             <img src="bps_logo_placeholder.png" alt="BPS Logo" style="width: 100px; height: auto; background-color: white; object-fit: contain;">
         </div>
         """, unsafe_allow_html=True)
+
 # Main Navigation Menu using streamlit-option-menu
 main_tabs_list = ['Neraca Nasional', 'Indeks Harga', 'Ekspor-Impor', 'APBN', 'Ketenagakerjaan', 'Kemiskinan', 'IPM']
 
@@ -231,119 +212,99 @@ selected_main_tab = option_menu(
 # Update session state and reset side tab if main tab changed
 if selected_main_tab != st.session_state.main_tab:
     st.session_state.main_tab = selected_main_tab
-    # Reset side tab when main tab changes
+    # Reset side tab when main tab changes with updated names
     if selected_main_tab == 'Neraca Nasional':
-        st.session_state.side_tab = 'Pertumbuhan Ekonomi y-o-y'
+        st.session_state.side_tab = 'Pertumbuhan ekonomi y-o-y'
     elif selected_main_tab == 'Indeks Harga':
-        st.session_state.side_tab = 'IHK Umum'
+        st.session_state.side_tab = 'Inflasi y-o-y'
     elif selected_main_tab == 'Ekspor-Impor':
-        st.session_state.side_tab = 'Nilai Ekspor'
+        st.session_state.side_tab = 'Nilai ekspor (migas-non migas)'
     elif selected_main_tab == 'APBN':
-        st.session_state.side_tab = 'Pendapatan Negara'
+        st.session_state.side_tab = 'Belanja Pegawai'
     elif selected_main_tab == 'Ketenagakerjaan':
-        st.session_state.side_tab = 'Tingkat Pengangguran'
+        st.session_state.side_tab = 'TPT'
     elif selected_main_tab == 'Kemiskinan':
-        st.session_state.side_tab = 'Persentase Penduduk Miskin'
+        st.session_state.side_tab = 'Persentase penduduk miskin'
     elif selected_main_tab == 'IPM':
-        st.session_state.side_tab = 'IPM Nasional'
+        st.session_state.side_tab = 'IPM'
     st.rerun()
 
-# --- REMOVED OLD MAIN NAVIGATION CODE USING st.columns and st.button --- 
-
-# Define side tabs for each main tab
+# Define side tabs for each main tab - UPDATED NAMES
 side_tabs_config = {
     'Neraca Nasional': [
-        'Pertumbuhan Ekonomi y-o-y',
-        'Pertumbuhan Ekonomi q-to-q',
-        'Pertumbuhan Ekonomi c-to-c',
-        'Indeks Implisit y-o-y',
-        'Indeks Implisit q-to-q',
-        'Indeks Implisit c-to-c',
+        'Pertumbuhan ekonomi y-o-y',
+        'Pertumbuhan ekonomi q to q',
+        'Pertumbuhan ekonomi c to c',
+        'Indeks implisit',
         'PDB ADHB',
         'PDB ADHK'
     ],
     'Indeks Harga': [
-        'IHK Umum',
-        'IHK Makanan',
-        'IHK Non-Makanan',
         'Inflasi y-o-y',
-        'Inflasi m-to-m',
-        'Inflasi c-to-c'
+        'Inflasi m to m',
+        'IHP',
+        'IHPB',
+        'Indeks Retail'
     ],
     'Ekspor-Impor': [
-        'Nilai Ekspor',
-        'Nilai Impor',
-        'Neraca Perdagangan',
-        'Pertumbuhan Ekspor',
-        'Pertumbuhan Impor'
+        'Nilai ekspor (migas-non migas)',
+        'Volume ekspor (migas-non migas)',
+        'Nilai impor (migas-non migas)',
+        'Volume impor (migas-non migas)'
     ],
     'APBN': [
-        'Pendapatan Negara',
-        'Belanja Negara',
-        'Surplus/Defisit',
-        'Rasio Defisit'
+        'Belanja Pegawai',
+        'Belanja Barang dan Jasa',
+        'Belanja Modal',
+        'Belanja Bantuan Sosial',
+        'Belanja Lainnya'
     ],
     'Ketenagakerjaan': [
-        'Tingkat Pengangguran',
-        'Angkatan Kerja',
-        'TPAK',
-        'Pekerja Formal',
-        'Pekerja Informal'
+        'TPT',
+        'Jumlah pengangguran',
+        'Persentase tenaga kerja (formal-informal)',
+        'Proporsi lapangan kerja'
     ],
     'Kemiskinan': [
-        'Persentase Penduduk Miskin',
-        'Jumlah Penduduk Miskin',
-        'Garis Kemiskinan',
-        'Indeks Kedalaman Kemiskinan'
+        'Persentase penduduk miskin',
+        'Jumlah penduduk miskin',
+        'Gini ratio',
+        'Pengeluaran per kapita',
+        'Konsumsi per kapita',
+        'PDB per kapita'
     ],
     'IPM': [
-        'IPM Nasional',
-        'IPM Provinsi',
-        'Komponen Kesehatan',
-        'Komponen Pendidikan',
-        'Komponen Ekonomi'
+        'IPM',
+        'Indeks Pendidikan',
+        'Indeks kesehatan',
+        'Daya Beli'
     ]
 }
 
-# Create layout with sidebar and main content (Adjusted width)
-col1, col2 = st.columns([1, 4]) # Changed ratio from [1, 3] to [1, 4]
+# Create layout with sidebar and main content
+col1, col2 = st.columns([1, 4])
 
 with col1:
     # Get current side tabs for selected main tab
     current_side_tabs = side_tabs_config.get(st.session_state.main_tab, ['Default Tab'])
     
-    # Display side navigation items using st.button (Keep existing sidebar logic)
+    # Display side navigation items using st.button
     for tab in current_side_tabs:
-        # Add custom CSS class for active state via markdown injection
         button_key = f"side_{tab}_{st.session_state.main_tab}"
         is_active = st.session_state.side_tab == tab
         
+        # Create button with consistent spacing
         if st.button(tab, key=button_key):
             st.session_state.side_tab = tab
             st.rerun()
-        
-        # Inject CSS for the active button AFTER the button is created
-        if is_active:
-            st.markdown(f"""
-            <style>
-                button[data-testid="stButton"] > button[key="{button_key}"] {{
-                    background-color: #0070c0 !important;
-                    color: white !important;
-                    border-left-color: navy !important; /* Change color of existing border */
-                }}
-            </style>
-            """, unsafe_allow_html=True)
-
-# --- REMOVED OLD SIDEBAR ACTIVE STATE CSS --- 
-# The active state is now handled by injecting CSS specifically for the active button
 
 with col2:
     # Main content area - changes based on selected tabs
     st.markdown('<div class="chart-container">', unsafe_allow_html=True)
-    chart_col, insight_col = st.columns([2, 1]) # Define columns globally
+    chart_col, insight_col = st.columns([2, 1])
     
     # Display content based on selected tabs
-    if st.session_state.main_tab == 'Neraca Nasional' and st.session_state.side_tab == 'Pertumbuhan Ekonomi y-o-y':
+    if st.session_state.main_tab == 'Neraca Nasional' and st.session_state.side_tab == 'Pertumbuhan ekonomi y-o-y':
         # Original economic growth chart
         try:
             # Try to load the CSV file
@@ -371,8 +332,8 @@ with col2:
                 ),
                 plot_bgcolor='white',
                 title_font=dict(size=16),
-                height=400, # Reduced height from 500
-                margin=dict(l=40, r=40, t=40, b=40), # Reduced top margin from 60
+                height=400,
+                margin=dict(l=40, r=40, t=40, b=40),
                 hovermode="x unified"
             )
             
@@ -386,11 +347,8 @@ with col2:
             fig.update_xaxes(showgrid=True, gridwidth=1, gridcolor='lightgray')
             fig.update_yaxes(showgrid=True, gridwidth=1, gridcolor='lightgray')
             
-            # Display the chart and insight side-by-side
-
             with chart_col:
                 st.plotly_chart(fig, use_container_width=True)
-
             
         except FileNotFoundError:
             st.error("File 'Sheet 1_Full Data_data.csv' tidak ditemukan.")
@@ -409,8 +367,10 @@ with col2:
                          markers=True)
             
             fig.update_traces(line=dict(color='navy', width=2), marker=dict(size=6, color='navy'))
-            fig.update_layout(height=400, plot_bgcolor='white', margin=dict(l=40, r=40, t=40, b=40)) # Reduced height and top margin
-            st.plotly_chart(fig, use_container_width=True)
+            fig.update_layout(height=400, plot_bgcolor='white', margin=dict(l=40, r=40, t=40, b=40))
+            
+            with chart_col:
+                st.plotly_chart(fig, use_container_width=True)
             
         except Exception as e:
             st.error(f"Error loading CSV file: {str(e)}")
@@ -427,14 +387,6 @@ with col2:
             })
             title = f"{st.session_state.side_tab} (%)"
             
-        elif 'IHK' in st.session_state.side_tab or 'Indeks' in st.session_state.side_tab:
-            # Index data
-            sample_data = pd.DataFrame({
-                'Period': pd.date_range('2023-01', periods=12, freq='M').strftime('%Y-%m'),
-                'Value': np.random.uniform(100, 120, 12)
-            })
-            title = f"{st.session_state.side_tab} (Indeks)"
-            
         elif 'Inflasi' in st.session_state.side_tab:
             # Inflation data
             sample_data = pd.DataFrame({
@@ -443,7 +395,7 @@ with col2:
             })
             title = f"{st.session_state.side_tab} (%)"
             
-        elif 'Ekspor' in st.session_state.side_tab or 'Impor' in st.session_state.side_tab or 'Neraca' in st.session_state.side_tab:
+        elif 'ekspor' in st.session_state.side_tab or 'impor' in st.session_state.side_tab:
             # Trade data
             sample_data = pd.DataFrame({
                 'Period': pd.date_range('2023-01', periods=12, freq='M').strftime('%Y-%m'),
@@ -451,7 +403,7 @@ with col2:
             })
             title = f"{st.session_state.side_tab} (Juta USD)"
             
-        elif 'APBN' in st.session_state.main_tab:
+        elif 'Belanja' in st.session_state.side_tab:
              # APBN data
             sample_data = pd.DataFrame({
                 'Period': [f"2023 Q{i}" for i in range(1, 5)] + [f"2024 Q{i}" for i in range(1, 5)],
@@ -459,16 +411,16 @@ with col2:
             })
             title = f"{st.session_state.side_tab} (Triliun Rupiah)"
             
-        elif 'Ketenagakerjaan' in st.session_state.main_tab:
+        elif st.session_state.main_tab == 'Ketenagakerjaan':
             # Employment data
             sample_data = pd.DataFrame({
                 'Period': ['Agu 2022', 'Feb 2023', 'Agu 2023', 'Feb 2024'],
-                'Value': np.random.uniform(3, 7, 4) if 'Tingkat' in st.session_state.side_tab else np.random.uniform(100, 200, 4)
+                'Value': np.random.uniform(3, 7, 4) if 'TPT' in st.session_state.side_tab else np.random.uniform(100, 200, 4)
             })
-            unit = "(%)" if 'Tingkat' in st.session_state.side_tab else "(Juta Orang)"
+            unit = "(%)" if 'TPT' in st.session_state.side_tab else "(Juta Orang)"
             title = f"{st.session_state.side_tab} {unit}"
             
-        elif 'Kemiskinan' in st.session_state.main_tab:
+        elif st.session_state.main_tab == 'Kemiskinan':
             # Poverty data
             sample_data = pd.DataFrame({
                 'Period': ['Mar 2022', 'Sep 2022', 'Mar 2023', 'Sep 2023'],
@@ -477,7 +429,7 @@ with col2:
             unit = "(%)" if 'Persentase' in st.session_state.side_tab else "(Juta Orang)"
             title = f"{st.session_state.side_tab} {unit}"
             
-        elif 'IPM' in st.session_state.main_tab:
+        elif st.session_state.main_tab == 'IPM':
             # IPM data
             sample_data = pd.DataFrame({
                 'Period': [str(y) for y in range(2020, 2024)],
@@ -488,15 +440,17 @@ with col2:
         else:
             # Default fallback
             sample_data = pd.DataFrame({'Period': ['A', 'B', 'C'], 'Value': [1, 3, 2]})
-            title = f"Data for {st.session_state.main_tab} - {st.session_state.side_tab}" # Corrected syntax
-        fig_sample = px.line(sample_data, x='Period', y='Value', title=title, markers=True) # Corrected markers=True
-        fig_sample.update_traces(line=dict(color='teal', width=2), marker=dict(size=6, color='teal')) # Separated call
-        fig_sample.update_layout(height=400, plot_bgcolor='white', margin=dict(l=40, r=40, t=40, b=40)) # Standardized height and margin
+            title = f"Data for {st.session_state.main_tab} - {st.session_state.side_tab}"
+            
+        fig_sample = px.line(sample_data, x='Period', y='Value', title=title, markers=True)
+        fig_sample.update_traces(line=dict(color='teal', width=2), marker=dict(size=6, color='teal'))
+        fig_sample.update_layout(height=400, plot_bgcolor='white', margin=dict(l=40, r=40, t=40, b=40))
+        
         with chart_col:
             st.plotly_chart(fig_sample, use_container_width=True)
             st.caption("Note: Sample data shown for demonstration.")
 
-    # Global Insight Section (outside if/else)
+    # Global Insight Section
     with insight_col:
         st.markdown("#### Actionable Insight:")
         st.markdown("*   Insight 1: General trend observed...")
