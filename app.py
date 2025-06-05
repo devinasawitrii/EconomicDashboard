@@ -49,7 +49,7 @@ st.markdown("""
         font-size: 18px;
         text-align: center;
         font-style: italic;
-        margin-top: 5px;
+        margin-top: 2px; /* Reduced margin-top */
     }
     .chart-container {
         border: none;
@@ -127,6 +127,7 @@ st.markdown("""
         align-items: center !important;
         justify-content: flex-start !important;
         text-align: left !important; /* Align text left for sidebar */
+        box-sizing: border-box !important; /* Ensure padding/border included in width/height */
     }
     
     .stButton > button:hover {
@@ -389,11 +390,7 @@ with col2:
 
             with chart_col:
                 st.plotly_chart(fig, use_container_width=True)
-            with insight_col:
-                st.markdown("#### Actionable Insight:")
-                st.markdown("*   Insight 1: Pertumbuhan ekonomi menunjukkan tren...")
-                st.markdown("*   Insight 2: Faktor pendorong utama adalah...")
-                st.markdown("*   Insight 3: Perlu diwaspadai potensi...")
+
             
         except FileNotFoundError:
             st.error("File 'Sheet 1_Full Data_data.csv' tidak ditemukan.")
@@ -499,4 +496,11 @@ with col2:
             st.plotly_chart(fig_sample, use_container_width=True)
             st.caption("Note: Sample data shown for demonstration.")
 
-    st.markdown('</div>', unsafe_allow_html=True)
+    # Global Insight Section (outside if/else)
+    with insight_col:
+        st.markdown("#### Actionable Insight:")
+        st.markdown("*   Insight 1: General trend observed...")
+        st.markdown("*   Insight 2: Key driving factors...")
+        st.markdown("*   Insight 3: Potential risks/opportunities...")
+
+    st.markdown("</div>", unsafe_allow_html=True)
