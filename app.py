@@ -54,7 +54,7 @@ st.markdown("""
     .chart-container {
         border: none;
         border-radius: 0px;
-        padding: 20px;
+        padding: 0px 20px 20px 20px; /* Removed top padding */
         background-color: white;
         box-shadow: none;
     }
@@ -105,7 +105,7 @@ st.markdown("""
         font-size: 16px;
     }
     
-    /* Sidebar buttons styling - KEEP THIS */
+    /* Sidebar buttons styling - Adjusted Spacing */
     .stButton > button {
         width: 100% !important;
         background-color: #f0f0f0 !important;
@@ -114,7 +114,8 @@ st.markdown("""
         border-left: 5px solid #0070c0 !important;
         padding: 15px !important;
         font-weight: bold !important;
-        margin-bottom: 5px !important; /* Reduced margin for closer spacing */
+        margin-top: 0px !important; /* Added */
+        margin-bottom: 5px !important; /* Kept */
         border-radius: 0px !important;
         transition: all 0.3s !important;
         min-height: 50px !important;
@@ -379,8 +380,15 @@ with col2:
             fig.update_xaxes(showgrid=True, gridwidth=1, gridcolor='lightgray')
             fig.update_yaxes(showgrid=True, gridwidth=1, gridcolor='lightgray')
             
-            # Display the chart
-            st.plotly_chart(fig, use_container_width=True)
+            # Display the chart and insight side-by-side
+            chart_col, insight_col = st.columns([2, 1])
+            with chart_col:
+                st.plotly_chart(fig, use_container_width=True)
+            with insight_col:
+                st.markdown("#### Actionable Insight:")
+                st.markdown("*   Insight 1: Pertumbuhan ekonomi menunjukkan tren...")
+                st.markdown("*   Insight 2: Faktor pendorong utama adalah...")
+                st.markdown("*   Insight 3: Perlu diwaspadai potensi...")
             
         except FileNotFoundError:
             st.error("File 'Sheet 1_Full Data_data.csv' tidak ditemukan.")
