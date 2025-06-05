@@ -115,7 +115,7 @@ st.markdown("""
         background-color: #f0f0f0 !important;
         color: #333 !important;
         border: none !important;
-        border-left: 5px solid #0070c0 !important;
+        border-left: 5px solid transparent !important; /* Add transparent border for spacing */
         padding: 15px !important;
         font-weight: bold !important;
         /* margin-top: 0px !important; */ /* Removed */
@@ -328,7 +328,7 @@ with col1:
                 button[data-testid="stButton"] > button[key="{button_key}"] {{
                     background-color: #0070c0 !important;
                     color: white !important;
-                    border-left: 5px solid navy !important;
+                    border-left-color: navy !important; /* Change color of existing border */
                 }}
             </style>
             """, unsafe_allow_html=True)
@@ -339,6 +339,7 @@ with col1:
 with col2:
     # Main content area - changes based on selected tabs
     st.markdown('<div class="chart-container">', unsafe_allow_html=True)
+    chart_col, insight_col = st.columns([2, 1]) # Define columns globally
     
     # Display content based on selected tabs
     if st.session_state.main_tab == 'Neraca Nasional' and st.session_state.side_tab == 'Pertumbuhan Ekonomi y-o-y':
@@ -385,7 +386,7 @@ with col2:
             fig.update_yaxes(showgrid=True, gridwidth=1, gridcolor='lightgray')
             
             # Display the chart and insight side-by-side
-            chart_col, insight_col = st.columns([2, 1])
+
             with chart_col:
                 st.plotly_chart(fig, use_container_width=True)
             with insight_col:
@@ -411,7 +412,7 @@ with col2:
                          markers=True)
             
             fig.update_traces(line=dict(color='navy', width=2), marker=dict(size=6, color='navy'))
-            fig.update_layout(height=500, plot_bgcolor='white', margin=dict(l=40, r=40, t=60, b=40))
+            fig.update_layout(height=400, plot_bgcolor='white', margin=dict(l=40, r=40, t=40, b=40)) # Reduced height and top margin
             st.plotly_chart(fig, use_container_width=True)
             
         except Exception as e:
@@ -494,9 +495,9 @@ with col2:
 
         # Display sample chart
         fig_sample = px.line(sample_data, x='Period', y='Value', title=title, markers=True)
-        fig_sample.update_traces(line=dict(color='teal', width=2), marker=dict(size=6, color='teal'))
-        fig_sample.update_layout(height=500, plot_bgcolor='white', margin=dict(l=40, r=40, t=60, b=40))
-        st.plotly_chart(fig_sample, use_container_width=True)
-        st.caption("Note: Sample data shown for demonstration.")
+        fig_sample.update_traces(line=dict(color='teal', width=2), marker=dict(size=6, color='teal')        fig_sample.update_layout(height=400, plot_bgcolor=\'white\', margin=dict(l=40, r=40, t=40, b=40)) # Standardized height and margin
+        with chart_col:
+            st.plotly_chart(fig_sample, use_container_width=True)
+            st.caption("Note: Sample data shown for demonstration.")
 
     st.markdown('</div>', unsafe_allow_html=True)
