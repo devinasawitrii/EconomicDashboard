@@ -1,7 +1,7 @@
 import streamlit as st
 import pandas as pd
 import numpy as np
-import matplotlib.pyplot as plt 
+import matplotlib.pyplot as plt
 import plotly.express as px
 import plotly.graph_objects as go
 from datetime import datetime
@@ -491,13 +491,10 @@ with col2:
         else:
             # Default fallback
             sample_data = pd.DataFrame({'Period': ['A', 'B', 'C'], 'Value': [1, 3, 2]})
-            title = f"Data for {st.session_state.main_tab} - {st.session_state.side_tab}"
-
-        # Display sample chart
-        fig_sample = px.line(sample_data, x='Period', y='Value', title=title, markers=True)
-        fig_sample.update_traces(line=dict(color='teal', width=2), marker=dict(size=6, color='teal')        fig_sample.update_layout(height=400, plot_bgcolor=\'white\', margin=dict(l=40, r=40, t=40, b=40)) # Standardized height and margin
+            title = f"Data for {st.session_state.main_tab} - {st.session_state.side_tab        # Display sample chart
+        fig_sample = px.line(sample_data, x='Period', y='Value', title=title, markers=True) # Corrected markers=True
+        fig_sample.update_traces(line=dict(color='teal', width=2), marker=dict(size=6, color='teal')) # Separated call
+        fig_sample.update_layout(height=400, plot_bgcolor='white', margin=dict(l=40, r=40, t=40, b=40)) # Standardized height and margin
         with chart_col:
             st.plotly_chart(fig_sample, use_container_width=True)
-            st.caption("Note: Sample data shown for demonstration.")
-
-    st.markdown('</div>', unsafe_allow_html=True)
+            st.caption("Note: Sample data shown for demonstration.")st.markdown('</div>', unsafe_allow_html=True)
