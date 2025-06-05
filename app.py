@@ -491,7 +491,7 @@ with col2:
         else:
             # Default fallback
             sample_data = pd.DataFrame({'Period': ['A', 'B', 'C'], 'Value': [1, 3, 2]})
-            title = f"Data for {st.session_state.main_tab} - {st.session_state.side_tab        # Display sample chart
+            title = f"Data for {st.session_state.main_tab} - {st.session_state.side_tab}" # Corrected syntax
         fig_sample = px.line(sample_data, x='Period', y='Value', title=title, markers=True) # Corrected markers=True
         fig_sample.update_traces(line=dict(color='teal', width=2), marker=dict(size=6, color='teal')) # Separated call
         fig_sample.update_layout(height=400, plot_bgcolor='white', margin=dict(l=40, r=40, t=40, b=40)) # Standardized height and margin
