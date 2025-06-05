@@ -24,17 +24,17 @@ if 'side_tab' not in st.session_state:
 # Custom CSS for styling
 st.markdown("""
 <style>
-    /* Remove top padding */
+    /* Adjust top padding to show title properly */
     .block-container { 
-        padding-top: 1rem !important;
+        padding-top: 2rem !important;
     }
     .header-container {
         display: flex;
         justify-content: space-between;
         align-items: center;
-        padding: 0px;
+        padding: 10px 0px;
         background-color: white;
-        margin-bottom: 0.5rem; /* Reduced margin */
+        margin-bottom: 1rem;
     }
     .logo-title {
         color: navy;
@@ -145,12 +145,12 @@ st.markdown("""
 col1, col2, col3 = st.columns([1, 3, 1])
 
 with col1:
-        # AIG Logo (Image Placeholder)
-        st.markdown("""
-        <div class="logo-container">
-            <img src="aig_logo_placeholder.png" alt="AIG Logo" style="width: 80px; height: 80px; border: 3px solid navy; border-radius: 50%; background-color: white; object-fit: contain;">
-        </div>
-        """, unsafe_allow_html=True)
+    # AIG Logo (Image Placeholder) - Fixed
+    st.markdown("""
+    <div class="logo-container">
+        <div class="aig-logo">AIG</div>
+    </div>
+    """, unsafe_allow_html=True)
 
 with col2:
     # Title and subtitle with reduced spacing
@@ -158,12 +158,17 @@ with col2:
     st.markdown('<div class="subtitle">Generate wisdom from fingertip</div>', unsafe_allow_html=True)
 
 with col3:
-        # BPS Logo (Image Placeholder)
-        st.markdown("""
-        <div class="logo-container">
-            <img src="bps_logo_placeholder.png" alt="BPS Logo" style="width: 100px; height: auto; background-color: white; object-fit: contain;">
+    # BPS Logo (Image Placeholder) - Fixed
+    st.markdown("""
+    <div class="logo-container">
+        <div class="bps-logo">
+            <div class="bps-header">BADAN PUSAT STATISTIK</div>
+            <div class="bps-main">
+                <div class="bps-text">BPS</div>
+            </div>
         </div>
-        """, unsafe_allow_html=True)
+    </div>
+    """, unsafe_allow_html=True)
 
 # Main Navigation Menu using streamlit-option-menu
 main_tabs_list = ['Neraca Nasional', 'Indeks Harga', 'Ekspor-Impor', 'APBN', 'Ketenagakerjaan', 'Kemiskinan', 'IPM']
