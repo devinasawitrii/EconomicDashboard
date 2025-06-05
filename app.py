@@ -497,4 +497,6 @@ with col2:
         fig_sample.update_layout(height=400, plot_bgcolor='white', margin=dict(l=40, r=40, t=40, b=40)) # Standardized height and margin
         with chart_col:
             st.plotly_chart(fig_sample, use_container_width=True)
-            st.caption("Note: Sample data shown for demonstration.")st.markdown('</div>', unsafe_allow_html=True)
+            st.caption("Note: Sample data shown for demonstration.")
+
+    st.markdown('</div>', unsafe_allow_html=True)
