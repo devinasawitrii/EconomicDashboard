@@ -11,7 +11,6 @@ from streamlit_option_menu import option_menu
 # Set page configuration
 st.set_page_config(
     page_title="Actionable Insights",
-    page_icon="📊",
     layout="wide"
 )
 
@@ -449,13 +448,13 @@ with col2:
         
         with chart_col:
             st.plotly_chart(fig_sample, use_container_width=True)
-            st.caption("Note: Sample data shown for demonstration.")
+            st.caption("Note: ...")
 
     # Global Insight Section
     with insight_col:
-        st.markdown("#### Actionable Insight:")
-        st.markdown("*   Insight 1: General trend observed...")
-        st.markdown("*   Insight 2: Key driving factors...")
-        st.markdown("*   Insight 3: Potential risks/opportunities...")
+        st.markdown("#### Insight:")
+        st.markdown("*   Insight 1: ...")
+        st.markdown("*   Insight 2: ...")
+        st.markdown("*   Insight 3: ...")
 
     st.markdown("</div>", unsafe_allow_html=True)
