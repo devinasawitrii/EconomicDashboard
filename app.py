@@ -27,7 +27,7 @@ st.markdown("""
 <style>
     /* Remove top padding */
     .block-container { 
-        padding-top: 1rem !important; 
+        padding-top: 0rem !important; 
     }
     .header-container {
         display: flex;
@@ -66,7 +66,7 @@ st.markdown("""
         text-align: center;
     }
     
-    /* Sidebar buttons styling - MODIFIED TO BE SMALLER */
+    /* Sidebar buttons styling - MODIFIED TO BE SMALLER AND CONSISTENT SPACING */
     .stButton > button {
         width: 90% !important; /* Reduced from 100% */
         background-color: #f0f0f0 !important;
@@ -75,7 +75,7 @@ st.markdown("""
         border-left: 5px solid #0070c0 !important;
         padding: 10px !important; /* Reduced from 15px */
         font-weight: bold !important;
-        margin-bottom: 2px !important;
+        margin-bottom: 5px !important; /* Consistent spacing between buttons */
         border-radius: 0px !important;
         transition: all 0.3s !important;
         min-height: 40px !important; /* Reduced from 50px */
@@ -136,44 +136,39 @@ st.markdown("""
         line-height: 1.5;
     }
     
-    /* Text logos instead of styled divs */
-    .text-logo {
-        font-weight: bold;
-        text-align: center;
-        padding: 5px;
+    /* Image logos styling */
+    .image-logo {
+        max-width: 100%;
+        height: auto;
+        display: block;
+        margin: 0 auto;
     }
     
-    .aig-text {
-        color: navy;
-        font-size: 24px;
-        border: 2px solid navy;
-        border-radius: 5px;
-        padding: 8px 12px;
+    /* Main content padding adjustment */
+    .main-content {
+        padding-top: 10px;
     }
     
-    .bps-text {
-        color: white;
-        background-color: #0070c0;
-        font-size: 16px;
-        padding: 8px 12px;
-        border-radius: 5px;
+    /* Streamlit default padding adjustments */
+    .css-18e3th9 {
+        padding-top: 0rem !important;
     }
     
-    .bps-dept {
-        font-size: 12px;
-        margin-top: 5px;
+    .css-1d391kg {
+        padding-top: 1rem !important;
     }
 </style>
 """, unsafe_allow_html=True)
 
-# Header with text logos instead of styled divs
+# Header with image logos instead of text
 col1, col2, col3 = st.columns([1, 3, 1])
 
 with col1:
-    # AIG Text Logo
+    # AIG Image Logo - Placeholder for user to replace
     st.markdown("""
-    <div class="text-logo">
-        <span class="aig-text">aig</span>
+    <div class="logo-container">
+        <!-- Replace with actual image path when available -->
+        <img src="https://placeholder.com/80x80" alt="AIG Logo" class="image-logo" />
     </div>
     """, unsafe_allow_html=True)
 
@@ -183,11 +178,11 @@ with col2:
     st.markdown('<div class="subtitle">Generate wisdom from fingertip</div>', unsafe_allow_html=True)
 
 with col3:
-    # BPS Text Logo
+    # BPS Image Logo - Placeholder for user to replace
     st.markdown("""
-    <div class="text-logo">
-        <span class="bps-text">BPS</span>
-        <div class="bps-dept">DIREKTORAT NERACA PENGELUARAN</div>
+    <div class="logo-container">
+        <!-- Replace with actual image path when available -->
+        <img src="https://placeholder.com/100x60" alt="Direktorat Neraca Pengeluaran BPS Logo" class="image-logo" />
     </div>
     """, unsafe_allow_html=True)
 
@@ -341,7 +336,7 @@ with col1:
 
 with col2:
     # Main content area - changes based on selected tabs
-    st.markdown('<div class="chart-container">', unsafe_allow_html=True)
+    st.markdown('<div class="chart-container main-content">', unsafe_allow_html=True)
     
     # Display content based on selected tabs
     if st.session_state.main_tab == 'Neraca Nasional' and st.session_state.side_tab == 'Pertumbuhan Ekonomi y-o-y':
