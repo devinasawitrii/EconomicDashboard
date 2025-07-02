@@ -165,97 +165,53 @@ with col3:
     </div>
     """, unsafe_allow_html=True)
 
-# # Main Navigation Menu using streamlit-option-menu
-# main_tabs_list = ['Neraca Nasional', 'Indeks Harga', 'Ekspor-Impor', 'APBN', 'Ketenagakerjaan', 'Kemiskinan', 'IPM']
+# Main Navigation Menu using streamlit-option-menu
+main_tabs_list = ['Neraca Nasional', 'Indeks Harga', 'Ekspor-Impor', 'APBN', 'Ketenagakerjaan', 'Kemiskinan', 'IPM']
 
-# # Find the index of the current main_tab for default_index
-# try:
-#     default_main_index = main_tabs_list.index(st.session_state.main_tab)
-# except ValueError:
-#     default_main_index = 0 # Default to first tab if not found
-
-# # Use option_menu for horizontal navigation
-# selected_main_tab = option_menu(
-#     menu_title=None,  # No title needed
-#     options=main_tabs_list,
-#     icons=None, # No icons needed
-#     menu_icon=None, # No menu icon needed
-#     default_index=default_main_index,
-#     orientation="horizontal",
-#     styles={
-#         "container": {"padding": "0px !important", "background-color": "white", "margin-bottom": "1rem", "flex-wrap": "nowrap"}, # Ensure it stays horizontal
-#         "nav-link": {
-#             "font-size": "14px", 
-#             "font-weight": "bold",
-#             "color": "#333",
-#             "background-color": "#f0f0f0", 
-#             "text-align": "center", 
-#             "padding": "15px 10px", # Adjusted padding
-#             "margin":"0px 2px !important", # Spacing between tabs
-#             "border-radius": "0px !important",
-#             "border-bottom": "5px solid #0070c0",
-#             "transition": "background-color 0.2s, color 0.2s, border-color 0.2s",
-#             "white-space": "nowrap" # Prevent wrapping
-#         },
-#         "nav-link-selected": {
-#             "background-color": "#0070c0", 
-#             "color": "white",
-#             "border-bottom": "5px solid navy"
-#         },
-#         "nav-link:hover": {
-#             "background-color": "#e0e0e0",
-#             "border-bottom-color": "#005090"
-#         }
-#     }
-# )
-
-
-# # Update session state and reset side tab if main tab changed
-# if selected_main_tab != st.session_state.main_tab:
-#     st.session_state.main_tab = selected_main_tab
-
-# Side tab horizontal menu (moved from sidebar to below main tab)
-side_tabs = side_tabs_config.get(selected_main_tab, [])
+# Find the index of the current main_tab for default_index
 try:
-    default_side_index = side_tabs.index(st.session_state.side_tab)
+    default_main_index = main_tabs_list.index(st.session_state.main_tab)
 except ValueError:
-    default_side_index = 0
+    default_main_index = 0 # Default to first tab if not found
 
-selected_side_tab = option_menu(
-    menu_title=None,
-    options=side_tabs,
-    icons=None,
-    menu_icon=None,
-    default_index=default_side_index,
+# Use option_menu for horizontal navigation
+selected_main_tab = option_menu(
+    menu_title=None,  # No title needed
+    options=main_tabs_list,
+    icons=None, # No icons needed
+    menu_icon=None, # No menu icon needed
+    default_index=default_main_index,
     orientation="horizontal",
     styles={
-        "container": {
-            "padding": "0px",
-            "background-color": "#ffffff",
-            "margin-bottom": "1rem",
-            "flex-wrap": "wrap"
-        },
+        "container": {"padding": "0px !important", "background-color": "white", "margin-bottom": "1rem", "flex-wrap": "nowrap"}, # Ensure it stays horizontal
         "nav-link": {
-            "font-size": "13px", 
-            "font-weight": "500",
-            "color": "#333", 
-            "background-color": "#f9f9f9",
-            "padding": "10px 12px",
-            "margin": "2px",
-            "border-radius": "0px",
-            "border-bottom": "3px solid #0070c0"
+            "font-size": "14px", 
+            "font-weight": "bold",
+            "color": "#333",
+            "background-color": "#f0f0f0", 
+            "text-align": "center", 
+            "padding": "15px 10px", # Adjusted padding
+            "margin":"0px 2px !important", # Spacing between tabs
+            "border-radius": "0px !important",
+            "border-bottom": "5px solid #0070c0",
+            "transition": "background-color 0.2s, color 0.2s, border-color 0.2s",
+            "white-space": "nowrap" # Prevent wrapping
         },
         "nav-link-selected": {
-            "background-color": "#0070c0",
+            "background-color": "#0070c0", 
             "color": "white",
-            "border-bottom": "3px solid navy"
+            "border-bottom": "5px solid navy"
+        },
+        "nav-link:hover": {
+            "background-color": "#e0e0e0",
+            "border-bottom-color": "#005090"
         }
     }
 )
 
-# Update session state
-if selected_side_tab != st.session_state.side_tab:
-    st.session_state.side_tab = selected_side_tab
+# Update session state and reset side tab if main tab changed
+if selected_main_tab != st.session_state.main_tab:
+    st.session_state.main_tab = selected_main_tab
     # Reset side tab when main tab changes with updated names
     if selected_main_tab == 'Neraca Nasional':
         st.session_state.side_tab = 'Pertumbuhan ekonomi y-o-y'
