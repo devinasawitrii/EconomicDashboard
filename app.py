@@ -315,15 +315,60 @@ elif st.session_state.main_tab == 'IPM':
     with chart_col:
         st.plotly_chart(fig_sample, use_container_width=True)
 
-# Compact Insight Section
+# Dynamic Insight Section based on selected tab
 with insight_col:
     st.markdown('<div class="insight-section">', unsafe_allow_html=True)
     st.markdown("#### Insight:")
-    st.markdown("• Insight 1: Pertumbuhan ekonomi menunjukkan tren positif")
-    st.markdown("• Insight 2: Volatilitas masih terlihat dalam data triwulanan")
-    st.markdown("• Insight 3: Recovery pascapandemi berjalan sesuai ekspektasi")
-    st.markdown("• Insight 4: Diperlukan monitoring berkelanjutan")
-    st.markdown("• Insight 5: Stabilitas makroekonomi terjaga")
+    
+    if st.session_state.main_tab == 'Neraca Nasional':
+        st.markdown("• Pertumbuhan ekonomi menunjukkan tren pemulihan yang konsisten")
+        st.markdown("• Volatilitas triwulanan masih terlihat namun dalam koridor normal")  
+        st.markdown("• Recovery pascapandemi berjalan sesuai proyeksi pemerintah")
+        st.markdown("• Sektor konsumsi rumah tangga menjadi penopang utama")
+        st.markdown("• Diperlukan stimulus untuk memperkuat momentum pertumbuhan")
+        
+    elif st.session_state.main_tab == 'Indeks Harga':
+        st.markdown("• Inflasi masih dalam target Bank Indonesia 2-4%")
+        st.markdown("• Tekanan inflasi inti relatif terkendali") 
+        st.markdown("• Volatile food prices menjadi perhatian utama")
+        st.markdown("• Kebijakan moneter masih akomodatif")
+        st.markdown("• Perlu monitoring harga komoditas global")
+        
+    elif st.session_state.main_tab == 'Ekspor-Impor':
+        st.markdown("• Nilai ekspor menunjukkan tren positif year-on-year")
+        st.markdown("• Komoditas unggulan masih mendominasi ekspor")
+        st.markdown("• Impor bahan baku industri terus meningkat") 
+        st.markdown("• Neraca perdagangan masih surplus namun menyempit")
+        st.markdown("• Diversifikasi pasar ekspor perlu diperkuat")
+        
+    elif st.session_state.main_tab == 'APBN':
+        st.markdown("• Belanja pegawai tumbuh seiring dengan reformasi birokrasi")
+        st.markdown("• Efisiensi anggaran masih dapat dioptimalkan")
+        st.markdown("• Alokasi untuk infrastruktur dan SDM prioritas")
+        st.markdown("• Fiscal sustainability tetap terjaga")
+        st.markdown("• Ruang fiskal masih tersedia untuk stimulus")
+        
+    elif st.session_state.main_tab == 'Ketenagakerjaan':
+        st.markdown("• Tingkat Pengangguran Terbuka menunjukkan tren menurun")
+        st.markdown("• Job creation di sektor formal masih terbatas")
+        st.markdown("• Skills mismatch menjadi tantangan struktural")
+        st.markdown("• Program pelatihan kerja perlu diperkuat")
+        st.markdown("• Digitalisasi ekonomi membuka peluang kerja baru")
+        
+    elif st.session_state.main_tab == 'Kemiskinan':
+        st.markdown("• Angka kemiskinan menunjukkan tren penurunan gradual")
+        st.markdown("• Kesenjangan urban-rural masih signifikan")
+        st.markdown("• Program bantuan sosial efektif mengurangi kemiskinan")
+        st.markdown("• Pemberdayaan ekonomi mikro perlu diperkuat")
+        st.markdown("• Investasi SDM kunci pengentasan kemiskinan jangka panjang")
+        
+    elif st.session_state.main_tab == 'IPM':
+        st.markdown("• Indeks Pembangunan Manusia terus mengalami peningkatan")
+        st.markdown("• Komponen pendidikan menunjukkan progress signifikan")
+        st.markdown("• Angka harapan hidup terus membaik")
+        st.markdown("• Kesenjangan IPM antar daerah masih perlu perhatian")
+        st.markdown("• Investasi kesehatan dan pendidikan harus berkelanjutan")
+    
     st.markdown('</div>', unsafe_allow_html=True)
 
 st.markdown("</div>", unsafe_allow_html=True)
