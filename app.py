@@ -18,26 +18,24 @@ st.set_page_config(
 if 'main_tab' not in st.session_state:
     st.session_state.main_tab = 'Neraca Nasional'
 
-# Custom CSS for styling - optimized for no scroll
+# Custom CSS for styling
 st.markdown("""
 <style>
-    /* Remove all default padding and margins */
+    /* Adjust top padding to show title properly */
     .block-container { 
-        padding-top: 0.5rem !important;
-        padding-bottom: 0rem !important;
-        max-width: 100% !important;
+        padding-top: 2rem !important;
     }
     .header-container {
         display: flex;
         justify-content: space-between;
         align-items: center;
-        padding: 5px 0px;
+        padding: 10px 0px;
         background-color: white;
-        margin-bottom: 0.5rem;
+        margin-bottom: 1rem;
     }
     .logo-title {
         color: navy;
-        font-size: 28px;
+        font-size: 32px;
         font-weight: bold;
         text-align: center;
         margin: 0;
@@ -45,16 +43,16 @@ st.markdown("""
     }
     .subtitle {
         color: #0070c0;
-        font-size: 16px;
+        font-size: 18px;
         text-align: center;
         font-style: italic;
-        margin-top: -3px;
+        margin-top: -5px; /* Move closer to title */
         margin-bottom: 0px;
     }
     .chart-container {
         border: none;
         border-radius: 0px;
-        padding: 0px 10px 5px 10px;
+        padding: 0px 20px 20px 20px;
         background-color: white;
         box-shadow: none;
     }
@@ -63,90 +61,71 @@ st.markdown("""
         flex-direction: column;
         align-items: center;
         text-align: center;
-        padding-top: 5px;
-    }
-    /* Hide streamlit elements that take up space */
-    #MainMenu {visibility: hidden;}
-    footer {visibility: hidden;}
-    header {visibility: hidden;}
-    .stDeployButton {display: none;}
-    
-    /* Reduce spacing in sidebar and main content */
-    .css-1d391kg {padding-top: 0rem;}
-    .css-18e3th9 {padding-top: 0rem;}
-    
-    /* Make insights section more compact */
-    .insight-section {
-        font-size: 14px;
-        line-height: 1.2;
-    }
-    
-    /* Reduce vertical spacing for all elements */
-    .stMarkdown {
-        margin-bottom: 0.2rem !important;
+        padding-top: 20px; /* Add top padding to push logos down */
     }
 </style>
 """, unsafe_allow_html=True)
 
-# Compact Header with logos
+# Header with logos
 col1, col2, col3 = st.columns([1, 3, 1])
 
 with col1:
-    # AIG Logo - Smaller size
+    # AIG Logo - Image file
     st.markdown("""
     <div class="logo-container">
-        <img src="aig_logo.png" alt="AIG Logo" style="width: 70px; height: 70px; object-fit: contain;">
+        <img src="aig_logo.png" alt="AIG Logo" style="width: 100px; height: 100px; object-fit: contain;">
     </div>
     """, unsafe_allow_html=True)
 
 with col2:
-    # Compact title and subtitle
+    # Title and subtitle with reduced spacing
     st.markdown('<div class="logo-title">ACTIONABLE INSIGHTS</div>', unsafe_allow_html=True)
     st.markdown('<div class="subtitle">Generate wisdom from fingertip</div>', unsafe_allow_html=True)
 
 with col3:
-    # BPS Logo - Smaller size
+    # BPS Logo - Image file
     st.markdown("""
     <div class="logo-container">
-        <img src="bps_logo.png" alt="BPS Logo" style="width: 85px; height: 70px; object-fit: contain;">
+        <img src="bps_logo.png" alt="BPS Logo" style="width: 120px; height: 100px; object-fit: contain;">
     </div>
     """, unsafe_allow_html=True)
 
-# Main Navigation Menu - more compact
+# Main Navigation Menu using streamlit-option-menu
 main_tabs_list = ['Neraca Nasional', 'Indeks Harga', 'Ekspor-Impor', 'APBN', 'Ketenagakerjaan', 'Kemiskinan', 'IPM']
 
+# Find the index of the current main_tab for default_index
 try:
     default_main_index = main_tabs_list.index(st.session_state.main_tab)
 except ValueError:
-    default_main_index = 0
+    default_main_index = 0 # Default to first tab if not found
 
-# Compact option menu
+# Use option_menu for horizontal navigation
 selected_main_tab = option_menu(
-    menu_title=None,
+    menu_title=None,  # No title needed
     options=main_tabs_list,
-    icons=None,
-    menu_icon=None,
+    icons=None, # No icons needed
+    menu_icon=None, # No menu icon needed
     default_index=default_main_index,
     orientation="horizontal",
     styles={
-        "container": {"padding": "0px !important", "background-color": "white", "margin-bottom": "0.5rem", "flex-wrap": "nowrap"},
+        "container": {"padding": "0px !important", "background-color": "white", "margin-bottom": "1rem", "flex-wrap": "nowrap"}, # Ensure it stays horizontal
         "nav-link": {
-            "font-size": "12px", 
+            "font-size": "14px", 
             "font-weight": "bold",
             "color": "#333",
             "background-color": "#f0f0f0", 
             "text-align": "center", 
-            "padding": "8px 8px",
-            "margin":"0px 1px !important",
+            "padding": "15px 10px", # Adjusted padding
+            "margin":"0px 2px !important", # Spacing between tabs
             "border-radius": "0px !important",
-            "border-bottom": "3px solid #0070c0",
+            "border-bottom": "5px solid #0070c0",
             "transition": "background-color 0.2s, color 0.2s, border-color 0.2s",
-            "white-space": "nowrap"
+            "white-space": "nowrap" # Prevent wrapping
         },
         "nav-link-selected": {
             "background-color": "#0070c0", 
             "color": "white",
-            "border-bottom": "3px solid navy"
+            "border-bottom": "5px solid navy"
         },
         "nav-link:hover": {
             "background-color": "#e0e0e0",
@@ -160,46 +139,51 @@ if selected_main_tab != st.session_state.main_tab:
     st.session_state.main_tab = selected_main_tab
     st.rerun()
 
-# Main content area - compact layout
+# Main content area - full width since no sidebar
 st.markdown('<div class="chart-container">', unsafe_allow_html=True)
-chart_col, insight_col = st.columns([2.5, 1])
+chart_col, insight_col = st.columns([2, 1])
 
 # Display content based on selected main tab
 if st.session_state.main_tab == 'Neraca Nasional':
-    # Original economic growth chart - reduced height
+    # Original economic growth chart
     try:
+        # Try to load the CSV file
         df = pd.read_csv('Sheet 1_Full Data_data.csv')
         df.columns = ['Period', 'Growth']
         
+        # Create the plot using Plotly
         fig = px.line(df, x='Period', y='Growth', 
                      title='Pertumbuhan Ekonomi y-o-y',
                      labels={'Growth': 'Y-O-Y (%)', 'Period': 'Quarter of Periode'},
                      markers=True)
         
+        # Update layout for better appearance
         fig.update_layout(
             xaxis=dict(
                 tickmode='array',
                 tickvals=[df['Period'][i] for i in range(0, len(df), 4)],
                 ticktext=[f"{period.split()[0]} Q1" for period in df['Period'][::4]],
-                title_font=dict(size=12),
+                title_font=dict(size=14),
             ),
             yaxis=dict(
                 range=[-6, 8],
                 tickvals=[-5, 0, 5],
-                title_font=dict(size=12),
+                title_font=dict(size=14),
             ),
             plot_bgcolor='white',
-            title_font=dict(size=14),
-            height=320,  # Reduced height significantly
-            margin=dict(l=30, r=30, t=40, b=30),  # Reduced margins
+            title_font=dict(size=16),
+            height=400,
+            margin=dict(l=40, r=40, t=40, b=40),
             hovermode="x unified"
         )
         
+        # Customize line
         fig.update_traces(
             line=dict(color='navy', width=2),
-            marker=dict(size=5, color='navy'),
+            marker=dict(size=6, color='navy'),
         )
         
+        # Add grid lines
         fig.update_xaxes(showgrid=True, gridwidth=1, gridcolor='lightgray')
         fig.update_yaxes(showgrid=True, gridwidth=1, gridcolor='lightgray')
         
@@ -222,8 +206,8 @@ if st.session_state.main_tab == 'Neraca Nasional':
                      labels={'Growth': 'Y-O-Y (%)', 'Period': 'Quarter of Periode'},
                      markers=True)
         
-        fig.update_traces(line=dict(color='navy', width=2), marker=dict(size=5, color='navy'))
-        fig.update_layout(height=320, plot_bgcolor='white', margin=dict(l=30, r=30, t=40, b=30))
+        fig.update_traces(line=dict(color='navy', width=2), marker=dict(size=6, color='navy'))
+        fig.update_layout(height=400, plot_bgcolor='white', margin=dict(l=40, r=40, t=40, b=40))
         
         with chart_col:
             st.plotly_chart(fig, use_container_width=True)
@@ -232,6 +216,7 @@ if st.session_state.main_tab == 'Neraca Nasional':
         st.error(f"Error loading CSV file: {str(e)}")
 
 elif st.session_state.main_tab == 'Indeks Harga':
+    # Sample inflation data
     sample_data = pd.DataFrame({
         'Period': pd.date_range('2023-01', periods=12, freq='M').strftime('%Y-%m'),
         'Value': np.random.uniform(-1, 5, 12)
@@ -239,13 +224,15 @@ elif st.session_state.main_tab == 'Indeks Harga':
     title = "Inflasi y-o-y (%)"
     
     fig_sample = px.line(sample_data, x='Period', y='Value', title=title, markers=True)
-    fig_sample.update_traces(line=dict(color='teal', width=2), marker=dict(size=5, color='teal'))
-    fig_sample.update_layout(height=320, plot_bgcolor='white', margin=dict(l=30, r=30, t=40, b=30))
+    fig_sample.update_traces(line=dict(color='teal', width=2), marker=dict(size=6, color='teal'))
+    fig_sample.update_layout(height=400, plot_bgcolor='white', margin=dict(l=40, r=40, t=40, b=40))
     
     with chart_col:
         st.plotly_chart(fig_sample, use_container_width=True)
+        st.caption("Note: Sample inflation data")
 
 elif st.session_state.main_tab == 'Ekspor-Impor':
+    # Sample trade data
     sample_data = pd.DataFrame({
         'Period': pd.date_range('2023-01', periods=12, freq='M').strftime('%Y-%m'),
         'Value': np.random.uniform(10000, 30000, 12)
@@ -253,13 +240,15 @@ elif st.session_state.main_tab == 'Ekspor-Impor':
     title = "Nilai ekspor (migas-non migas) (Juta USD)"
     
     fig_sample = px.line(sample_data, x='Period', y='Value', title=title, markers=True)
-    fig_sample.update_traces(line=dict(color='teal', width=2), marker=dict(size=5, color='teal'))
-    fig_sample.update_layout(height=320, plot_bgcolor='white', margin=dict(l=30, r=30, t=40, b=30))
+    fig_sample.update_traces(line=dict(color='teal', width=2), marker=dict(size=6, color='teal'))
+    fig_sample.update_layout(height=400, plot_bgcolor='white', margin=dict(l=40, r=40, t=40, b=40))
     
     with chart_col:
         st.plotly_chart(fig_sample, use_container_width=True)
+        st.caption("Note: Sample trade data")
 
 elif st.session_state.main_tab == 'APBN':
+    # Sample APBN data
     sample_data = pd.DataFrame({
         'Period': [f"2023 Q{i}" for i in range(1, 5)] + [f"2024 Q{i}" for i in range(1, 5)],
         'Value': np.random.uniform(500, 1500, 8)
@@ -267,13 +256,15 @@ elif st.session_state.main_tab == 'APBN':
     title = "Belanja Pegawai (Triliun Rupiah)"
     
     fig_sample = px.line(sample_data, x='Period', y='Value', title=title, markers=True)
-    fig_sample.update_traces(line=dict(color='teal', width=2), marker=dict(size=5, color='teal'))
-    fig_sample.update_layout(height=320, plot_bgcolor='white', margin=dict(l=30, r=30, t=40, b=30))
+    fig_sample.update_traces(line=dict(color='teal', width=2), marker=dict(size=6, color='teal'))
+    fig_sample.update_layout(height=400, plot_bgcolor='white', margin=dict(l=40, r=40, t=40, b=40))
     
     with chart_col:
         st.plotly_chart(fig_sample, use_container_width=True)
+        st.caption("Note: Sample APBN data")
 
 elif st.session_state.main_tab == 'Ketenagakerjaan':
+    # Sample employment data
     sample_data = pd.DataFrame({
         'Period': ['Agu 2022', 'Feb 2023', 'Agu 2023', 'Feb 2024'],
         'Value': np.random.uniform(3, 7, 4)
@@ -281,13 +272,15 @@ elif st.session_state.main_tab == 'Ketenagakerjaan':
     title = "TPT (%)"
     
     fig_sample = px.line(sample_data, x='Period', y='Value', title=title, markers=True)
-    fig_sample.update_traces(line=dict(color='teal', width=2), marker=dict(size=5, color='teal'))
-    fig_sample.update_layout(height=320, plot_bgcolor='white', margin=dict(l=30, r=30, t=40, b=30))
+    fig_sample.update_traces(line=dict(color='teal', width=2), marker=dict(size=6, color='teal'))
+    fig_sample.update_layout(height=400, plot_bgcolor='white', margin=dict(l=40, r=40, t=40, b=40))
     
     with chart_col:
         st.plotly_chart(fig_sample, use_container_width=True)
+        st.caption("Note: Sample employment data")
 
 elif st.session_state.main_tab == 'Kemiskinan':
+    # Sample poverty data
     sample_data = pd.DataFrame({
         'Period': ['Mar 2022', 'Sep 2022', 'Mar 2023', 'Sep 2023'],
         'Value': np.random.uniform(9, 11, 4)
@@ -295,13 +288,15 @@ elif st.session_state.main_tab == 'Kemiskinan':
     title = "Persentase penduduk miskin (%)"
     
     fig_sample = px.line(sample_data, x='Period', y='Value', title=title, markers=True)
-    fig_sample.update_traces(line=dict(color='teal', width=2), marker=dict(size=5, color='teal'))
-    fig_sample.update_layout(height=320, plot_bgcolor='white', margin=dict(l=30, r=30, t=40, b=30))
+    fig_sample.update_traces(line=dict(color='teal', width=2), marker=dict(size=6, color='teal'))
+    fig_sample.update_layout(height=400, plot_bgcolor='white', margin=dict(l=40, r=40, t=40, b=40))
     
     with chart_col:
         st.plotly_chart(fig_sample, use_container_width=True)
+        st.caption("Note: Sample poverty data")
 
 elif st.session_state.main_tab == 'IPM':
+    # Sample IPM data
     sample_data = pd.DataFrame({
         'Period': [str(y) for y in range(2020, 2024)],
         'Value': np.random.uniform(70, 75, 4)
@@ -309,21 +304,18 @@ elif st.session_state.main_tab == 'IPM':
     title = "IPM"
     
     fig_sample = px.line(sample_data, x='Period', y='Value', title=title, markers=True)
-    fig_sample.update_traces(line=dict(color='teal', width=2), marker=dict(size=5, color='teal'))
-    fig_sample.update_layout(height=320, plot_bgcolor='white', margin=dict(l=30, r=30, t=40, b=30))
+    fig_sample.update_traces(line=dict(color='teal', width=2), marker=dict(size=6, color='teal'))
+    fig_sample.update_layout(height=400, plot_bgcolor='white', margin=dict(l=40, r=40, t=40, b=40))
     
     with chart_col:
         st.plotly_chart(fig_sample, use_container_width=True)
+        st.caption("Note: Sample IPM data")
 
-# Compact Insight Section
+# Global Insight Section
 with insight_col:
-    st.markdown('<div class="insight-section">', unsafe_allow_html=True)
     st.markdown("#### Insight:")
-    st.markdown("• Insight 1: Pertumbuhan ekonomi menunjukkan tren positif")
-    st.markdown("• Insight 2: Volatilitas masih terlihat dalam data triwulanan")
-    st.markdown("• Insight 3: Recovery pascapandemi berjalan sesuai ekspektasi")
-    st.markdown("• Insight 4: Diperlukan monitoring berkelanjutan")
-    st.markdown("• Insight 5: Stabilitas makroekonomi terjaga")
-    st.markdown('</div>', unsafe_allow_html=True)
+    st.markdown("*   Insight 1: ...")
+    st.markdown("*   Insight 2: ...")
+    st.markdown("*   Insight 3: ...")
 
 st.markdown("</div>", unsafe_allow_html=True)
