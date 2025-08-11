@@ -325,7 +325,6 @@ with insight_col:
         st.markdown("• Volatilitas triwulanan masih terlihat namun dalam koridor normal")  
         st.markdown("• Recovery pascapandemi berjalan sesuai proyeksi pemerintah")
         st.markdown("• Sektor konsumsi rumah tangga menjadi penopang utama")
-        st.markdown("• Diperlukan stimulus untuk memperkuat momentum pertumbuhan")
         
     elif st.session_state.main_tab == 'Indeks Harga':
         st.markdown("• Inflasi masih dalam target Bank Indonesia 2-4%")
