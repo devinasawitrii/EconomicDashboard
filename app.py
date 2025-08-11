@@ -54,15 +54,15 @@ if 'main_tab' not in st.session_state:
 if 'side_tab' not in st.session_state:
     st.session_state.side_tab = 'Pertumbuhan ekonomi y-o-y'
 
-# Header
+# Header tanpa logo
 col1, col2, col3 = st.columns([1, 3, 1])
 with col1:
-    st.image("aig_logo.png", width=100)
+    st.markdown("")  # Kosong, tanpa logo
 with col2:
     st.markdown('<div style="text-align:center;font-size:32px;font-weight:bold;color:navy;">ACTIONABLE INSIGHTS</div>', unsafe_allow_html=True)
     st.markdown('<div style="text-align:center;font-size:18px;font-style:italic;color:#0070c0;margin-top:-5px;">Generate wisdom from fingertip</div>', unsafe_allow_html=True)
 with col3:
-    st.image("bps_logo.png", width=120)
+    st.markdown("")  # Kosong, tanpa logo
 
 # Main navigation
 main_tabs_list = ['Neraca Nasional', 'Indeks Harga', 'Ekspor-Impor', 'APBN', 'Ketenagakerjaan', 'Kemiskinan', 'IPM']
@@ -100,8 +100,14 @@ col1, col2 = st.columns([1, 4])
 with col1:
     for tab in side_tabs_config[st.session_state.main_tab]:
         active_class = "active" if st.session_state.side_tab == tab else ""
-        if st.markdown(f'<a class="menu-item {active_class}" href="?side={tab}">{tab}</a>', unsafe_allow_html=True):
+        # Ganti jadi klik pakai button biasa supaya st.session_state bisa update
+        if st.button(tab, key=f"side_{tab}"):
             st.session_state.side_tab = tab
+        # Style manual di markdown
+        if active_class == "active":
+            st.markdown(f'<div style="padding: 8px 15px; background-color:#0070c0; color:white; font-weight:bold;">{tab}</div>', unsafe_allow_html=True)
+        else:
+            st.markdown(f'<div style="padding: 8px 15px;">{tab}</div>', unsafe_allow_html=True)
 
 # Chart & content
 with col2:
