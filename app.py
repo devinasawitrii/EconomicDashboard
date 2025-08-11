@@ -17,8 +17,6 @@ st.set_page_config(
 # Initialize session state for navigation
 if 'main_tab' not in st.session_state:
     st.session_state.main_tab = 'Neraca Nasional'
-if 'side_tab' not in st.session_state:
-    st.session_state.side_tab = 'Pertumbuhan ekonomi y-o-y'
 
 # Custom CSS for styling
 st.markdown("""
@@ -64,79 +62,6 @@ st.markdown("""
         align-items: center;
         text-align: center;
         padding-top: 20px; /* Add top padding to push logos down */
-    }
-    
-    /* Sidebar buttons styling - FIXED POSITIONING */
-    div[data-testid="stButton"] {
-        margin-top: 0px !important;
-        margin-bottom: 3px !important; /* Reduced from 5px to 3px */
-        position: relative !important; /* Prevent movement */
-    }
-    
-    /* First button specific spacing fix */
-    div[data-testid="stButton"]:first-of-type {
-        margin-bottom: 3px !important; /* Same as others now */
-    }
-    
-    .stButton > button {
-        width: 100% !important;
-        background-color: #f0f0f0 !important;
-        color: #333 !important;
-        border: none !important;
-        border-left: 5px solid transparent !important;
-        padding: 12px 15px !important; /* Reduced padding for tighter spacing */
-        font-weight: bold !important;
-        border-radius: 0px !important;
-        transition: background-color 0.2s, color 0.2s, border-left-color 0.2s !important; /* Smooth transitions only */
-        min-height: 45px !important; /* Reduced from 50px */
-        display: flex !important;
-        align-items: center !important;
-        justify-content: flex-start !important;
-        text-align: left !important;
-        box-sizing: border-box !important;
-        position: relative !important; /* Prevent position changes */
-        transform: none !important; /* Prevent any transforms */
-    }
-    
-    .stButton > button:hover {
-        background-color: #e0e0e0 !important;
-        color: #333 !important;
-        transform: none !important; /* Prevent movement on hover */
-    }
-    
-    .stButton > button:focus {
-        background-color: #0070c0 !important;
-        color: white !important;
-        border-left-color: navy !important;
-        box-shadow: none !important;
-        outline: none !important;
-        transform: none !important; /* Prevent movement on focus */
-    }
-    
-    .stButton > button:active {
-        background-color: #0070c0 !important;
-        color: white !important;
-        border-left-color: navy !important;
-        transform: none !important; /* Prevent movement on click */
-    }
-        
-    /* Remove default Streamlit button focus states */
-    .stButton > button:focus:not(:active) {
-        border-color: transparent !important;
-        box-shadow: none !important;
-    }
-        
-    /* Hide Streamlit's default focus outline */
-    button:focus {
-        outline: none !important;
-        box-shadow: none !important;
-    }
-    
-    /* Active button styling */
-    .active-button {
-        background-color: #0070c0 !important;
-        color: white !important;
-        border-left-color: navy !important;
     }
 </style>
 """, unsafe_allow_html=True)
@@ -209,252 +134,188 @@ selected_main_tab = option_menu(
     }
 )
 
-# Update session state and reset side tab if main tab changed
+# Update session state if main tab changed
 if selected_main_tab != st.session_state.main_tab:
     st.session_state.main_tab = selected_main_tab
-    # Reset side tab when main tab changes with updated names
-    if selected_main_tab == 'Neraca Nasional':
-        st.session_state.side_tab = 'Pertumbuhan ekonomi y-o-y'
-    elif selected_main_tab == 'Indeks Harga':
-        st.session_state.side_tab = 'Inflasi y-o-y'
-    elif selected_main_tab == 'Ekspor-Impor':
-        st.session_state.side_tab = 'Nilai ekspor (migas-non migas)'
-    elif selected_main_tab == 'APBN':
-        st.session_state.side_tab = 'Belanja Pegawai'
-    elif selected_main_tab == 'Ketenagakerjaan':
-        st.session_state.side_tab = 'TPT'
-    elif selected_main_tab == 'Kemiskinan':
-        st.session_state.side_tab = 'Persentase penduduk miskin'
-    elif selected_main_tab == 'IPM':
-        st.session_state.side_tab = 'IPM'
     st.rerun()
 
-# Define side tabs for each main tab - UPDATED NAMES
-side_tabs_config = {
-    'Neraca Nasional': [
-        'Pertumbuhan ekonomi y-o-y',
-        'Pertumbuhan ekonomi q to q',
-        'Pertumbuhan ekonomi c to c',
-        'Indeks implisit',
-        'PDB ADHB',
-        'PDB ADHK'
-    ],
-    'Indeks Harga': [
-        'Inflasi y-o-y',
-        'Inflasi m to m',
-        'IHP',
-        'IHPB',
-        'Indeks Retail'
-    ],
-    'Ekspor-Impor': [
-        'Nilai ekspor (migas-non migas)',
-        'Volume ekspor (migas-non migas)',
-        'Nilai impor (migas-non migas)',
-        'Volume impor (migas-non migas)'
-    ],
-    'APBN': [
-        'Belanja Pegawai',
-        'Belanja Barang dan Jasa',
-        'Belanja Modal',
-        'Belanja Bantuan Sosial',
-        'Belanja Lainnya'
-    ],
-    'Ketenagakerjaan': [
-        'TPT',
-        'Jumlah pengangguran',
-        'Persentase tenaga kerja (formal-informal)',
-        'Proporsi lapangan kerja'
-    ],
-    'Kemiskinan': [
-        'Persentase penduduk miskin',
-        'Jumlah penduduk miskin',
-        'Gini ratio',
-        'Pengeluaran per kapita',
-        'Konsumsi per kapita',
-        'PDB per kapita'
-    ],
-    'IPM': [
-        'IPM',
-        'Indeks Pendidikan',
-        'Indeks kesehatan',
-        'Daya Beli'
-    ]
-}
+# Main content area - full width since no sidebar
+st.markdown('<div class="chart-container">', unsafe_allow_html=True)
+chart_col, insight_col = st.columns([2, 1])
 
-# Create layout with sidebar and main content
-col1, col2 = st.columns([1, 4])
-
-with col1:
-    # Get current side tabs for selected main tab
-    current_side_tabs = side_tabs_config.get(st.session_state.main_tab, ['Default Tab'])
-    
-    # Display side navigation items using st.button
-    for tab in current_side_tabs:
-        button_key = f"side_{tab}_{st.session_state.main_tab}"
-        is_active = st.session_state.side_tab == tab
+# Display content based on selected main tab
+if st.session_state.main_tab == 'Neraca Nasional':
+    # Original economic growth chart
+    try:
+        # Try to load the CSV file
+        df = pd.read_csv('Sheet 1_Full Data_data.csv')
+        df.columns = ['Period', 'Growth']
         
-        # Create button with consistent spacing
-        if st.button(tab, key=button_key):
-            st.session_state.side_tab = tab
-            st.rerun()
-
-with col2:
-    # Main content area - changes based on selected tabs
-    st.markdown('<div class="chart-container">', unsafe_allow_html=True)
-    chart_col, insight_col = st.columns([2, 1])
-    
-    # Display content based on selected tabs
-    if st.session_state.main_tab == 'Neraca Nasional' and st.session_state.side_tab == 'Pertumbuhan ekonomi y-o-y':
-        # Original economic growth chart
-        try:
-            # Try to load the CSV file
-            df = pd.read_csv('Sheet 1_Full Data_data.csv')
-            df.columns = ['Period', 'Growth']
-            
-            # Create the plot using Plotly
-            fig = px.line(df, x='Period', y='Growth', 
-                         title='Pertumbuhan Ekonomi y-o-y',
-                         labels={'Growth': 'Y-O-Y (%)', 'Period': 'Quarter of Periode'},
-                         markers=True)
-            
-            # Update layout for better appearance
-            fig.update_layout(
-                xaxis=dict(
-                    tickmode='array',
-                    tickvals=[df['Period'][i] for i in range(0, len(df), 4)],
-                    ticktext=[f"{period.split()[0]} Q1" for period in df['Period'][::4]],
-                    title_font=dict(size=14),
-                ),
-                yaxis=dict(
-                    range=[-6, 8],
-                    tickvals=[-5, 0, 5],
-                    title_font=dict(size=14),
-                ),
-                plot_bgcolor='white',
-                title_font=dict(size=16),
-                height=400,
-                margin=dict(l=40, r=40, t=40, b=40),
-                hovermode="x unified"
-            )
-            
-            # Customize line
-            fig.update_traces(
-                line=dict(color='navy', width=2),
-                marker=dict(size=6, color='navy'),
-            )
-            
-            # Add grid lines
-            fig.update_xaxes(showgrid=True, gridwidth=1, gridcolor='lightgray')
-            fig.update_yaxes(showgrid=True, gridwidth=1, gridcolor='lightgray')
-            
-            with chart_col:
-                st.plotly_chart(fig, use_container_width=True)
-            
-        except FileNotFoundError:
-            st.error("File 'Sheet 1_Full Data_data.csv' tidak ditemukan.")
-            # Generate sample data for demo
-            sample_periods = [f"2020 Q{i%4+1}" for i in range(16)]
-            sample_growth = [5.2, -5.3, -3.5, -2.1, -0.7, 7.1, 3.7, 5.0, 5.4, 5.1, 5.2, 5.3, 4.9, 5.0, 5.1, 4.8]
-            
-            df_sample = pd.DataFrame({
-                'Period': sample_periods,
-                'Growth': sample_growth
-            })
-            
-            fig = px.line(df_sample, x='Period', y='Growth', 
-                         title='Pertumbuhan Ekonomi y-o-y (Sample Data)',
-                         labels={'Growth': 'Y-O-Y (%)', 'Period': 'Quarter of Periode'},
-                         markers=True)
-            
-            fig.update_traces(line=dict(color='navy', width=2), marker=dict(size=6, color='navy'))
-            fig.update_layout(height=400, plot_bgcolor='white', margin=dict(l=40, r=40, t=40, b=40))
-            
-            with chart_col:
-                st.plotly_chart(fig, use_container_width=True)
-            
-        except Exception as e:
-            st.error(f"Error loading CSV file: {str(e)}")
-    
-    else:
-        # Content for other tab combinations
+        # Create the plot using Plotly
+        fig = px.line(df, x='Period', y='Growth', 
+                     title='Pertumbuhan Ekonomi y-o-y',
+                     labels={'Growth': 'Y-O-Y (%)', 'Period': 'Quarter of Periode'},
+                     markers=True)
         
-        # Generate appropriate sample data based on the selected tab
-        if 'Pertumbuhan' in st.session_state.side_tab:
-            # Growth data
-            sample_data = pd.DataFrame({
-                'Period': [f"2023 Q{i}" for i in range(1, 5)] + [f"2024 Q{i}" for i in range(1, 5)],
-                'Value': np.random.uniform(-2, 6, 8)
-            })
-            title = f"{st.session_state.side_tab} (%)"
-            
-        elif 'Inflasi' in st.session_state.side_tab:
-            # Inflation data
-            sample_data = pd.DataFrame({
-                'Period': pd.date_range('2023-01', periods=12, freq='M').strftime('%Y-%m'),
-                'Value': np.random.uniform(-1, 5, 12)
-            })
-            title = f"{st.session_state.side_tab} (%)"
-            
-        elif 'ekspor' in st.session_state.side_tab or 'impor' in st.session_state.side_tab:
-            # Trade data
-            sample_data = pd.DataFrame({
-                'Period': pd.date_range('2023-01', periods=12, freq='M').strftime('%Y-%m'),
-                'Value': np.random.uniform(10000, 30000, 12)
-            })
-            title = f"{st.session_state.side_tab} (Juta USD)"
-            
-        elif 'Belanja' in st.session_state.side_tab:
-             # APBN data
-            sample_data = pd.DataFrame({
-                'Period': [f"2023 Q{i}" for i in range(1, 5)] + [f"2024 Q{i}" for i in range(1, 5)],
-                'Value': np.random.uniform(500, 1500, 8)
-            })
-            title = f"{st.session_state.side_tab} (Triliun Rupiah)"
-            
-        elif st.session_state.main_tab == 'Ketenagakerjaan':
-            # Employment data
-            sample_data = pd.DataFrame({
-                'Period': ['Agu 2022', 'Feb 2023', 'Agu 2023', 'Feb 2024'],
-                'Value': np.random.uniform(3, 7, 4) if 'TPT' in st.session_state.side_tab else np.random.uniform(100, 200, 4)
-            })
-            unit = "(%)" if 'TPT' in st.session_state.side_tab else "(Juta Orang)"
-            title = f"{st.session_state.side_tab} {unit}"
-            
-        elif st.session_state.main_tab == 'Kemiskinan':
-            # Poverty data
-            sample_data = pd.DataFrame({
-                'Period': ['Mar 2022', 'Sep 2022', 'Mar 2023', 'Sep 2023'],
-                'Value': np.random.uniform(9, 11, 4) if 'Persentase' in st.session_state.side_tab else np.random.uniform(25, 30, 4)
-            })
-            unit = "(%)" if 'Persentase' in st.session_state.side_tab else "(Juta Orang)"
-            title = f"{st.session_state.side_tab} {unit}"
-            
-        elif st.session_state.main_tab == 'IPM':
-            # IPM data
-            sample_data = pd.DataFrame({
-                'Period': [str(y) for y in range(2020, 2024)],
-                'Value': np.random.uniform(70, 75, 4)
-            })
-            title = f"{st.session_state.side_tab}"
-            
-        else:
-            # Default fallback
-            sample_data = pd.DataFrame({'Period': ['A', 'B', 'C'], 'Value': [1, 3, 2]})
-            title = f"Data for {st.session_state.main_tab} - {st.session_state.side_tab}"
-            
-        fig_sample = px.line(sample_data, x='Period', y='Value', title=title, markers=True)
-        fig_sample.update_traces(line=dict(color='teal', width=2), marker=dict(size=6, color='teal'))
-        fig_sample.update_layout(height=400, plot_bgcolor='white', margin=dict(l=40, r=40, t=40, b=40))
+        # Update layout for better appearance
+        fig.update_layout(
+            xaxis=dict(
+                tickmode='array',
+                tickvals=[df['Period'][i] for i in range(0, len(df), 4)],
+                ticktext=[f"{period.split()[0]} Q1" for period in df['Period'][::4]],
+                title_font=dict(size=14),
+            ),
+            yaxis=dict(
+                range=[-6, 8],
+                tickvals=[-5, 0, 5],
+                title_font=dict(size=14),
+            ),
+            plot_bgcolor='white',
+            title_font=dict(size=16),
+            height=400,
+            margin=dict(l=40, r=40, t=40, b=40),
+            hovermode="x unified"
+        )
+        
+        # Customize line
+        fig.update_traces(
+            line=dict(color='navy', width=2),
+            marker=dict(size=6, color='navy'),
+        )
+        
+        # Add grid lines
+        fig.update_xaxes(showgrid=True, gridwidth=1, gridcolor='lightgray')
+        fig.update_yaxes(showgrid=True, gridwidth=1, gridcolor='lightgray')
         
         with chart_col:
-            st.plotly_chart(fig_sample, use_container_width=True)
-            st.caption("Note: ...")
+            st.plotly_chart(fig, use_container_width=True)
+        
+    except FileNotFoundError:
+        st.error("File 'Sheet 1_Full Data_data.csv' tidak ditemukan.")
+        # Generate sample data for demo
+        sample_periods = [f"2020 Q{i%4+1}" for i in range(16)]
+        sample_growth = [5.2, -5.3, -3.5, -2.1, -0.7, 7.1, 3.7, 5.0, 5.4, 5.1, 5.2, 5.3, 4.9, 5.0, 5.1, 4.8]
+        
+        df_sample = pd.DataFrame({
+            'Period': sample_periods,
+            'Growth': sample_growth
+        })
+        
+        fig = px.line(df_sample, x='Period', y='Growth', 
+                     title='Pertumbuhan Ekonomi y-o-y (Sample Data)',
+                     labels={'Growth': 'Y-O-Y (%)', 'Period': 'Quarter of Periode'},
+                     markers=True)
+        
+        fig.update_traces(line=dict(color='navy', width=2), marker=dict(size=6, color='navy'))
+        fig.update_layout(height=400, plot_bgcolor='white', margin=dict(l=40, r=40, t=40, b=40))
+        
+        with chart_col:
+            st.plotly_chart(fig, use_container_width=True)
+        
+    except Exception as e:
+        st.error(f"Error loading CSV file: {str(e)}")
 
-    # Global Insight Section
-    with insight_col:
-        st.markdown("#### Insight:")
-        st.markdown("*   Insight 1: ...")
-        st.markdown("*   Insight 2: ...")
-        st.markdown("*   Insight 3: ...")
+elif st.session_state.main_tab == 'Indeks Harga':
+    # Sample inflation data
+    sample_data = pd.DataFrame({
+        'Period': pd.date_range('2023-01', periods=12, freq='M').strftime('%Y-%m'),
+        'Value': np.random.uniform(-1, 5, 12)
+    })
+    title = "Inflasi y-o-y (%)"
+    
+    fig_sample = px.line(sample_data, x='Period', y='Value', title=title, markers=True)
+    fig_sample.update_traces(line=dict(color='teal', width=2), marker=dict(size=6, color='teal'))
+    fig_sample.update_layout(height=400, plot_bgcolor='white', margin=dict(l=40, r=40, t=40, b=40))
+    
+    with chart_col:
+        st.plotly_chart(fig_sample, use_container_width=True)
+        st.caption("Note: Sample inflation data")
 
-    st.markdown("</div>", unsafe_allow_html=True)
+elif st.session_state.main_tab == 'Ekspor-Impor':
+    # Sample trade data
+    sample_data = pd.DataFrame({
+        'Period': pd.date_range('2023-01', periods=12, freq='M').strftime('%Y-%m'),
+        'Value': np.random.uniform(10000, 30000, 12)
+    })
+    title = "Nilai ekspor (migas-non migas) (Juta USD)"
+    
+    fig_sample = px.line(sample_data, x='Period', y='Value', title=title, markers=True)
+    fig_sample.update_traces(line=dict(color='teal', width=2), marker=dict(size=6, color='teal'))
+    fig_sample.update_layout(height=400, plot_bgcolor='white', margin=dict(l=40, r=40, t=40, b=40))
+    
+    with chart_col:
+        st.plotly_chart(fig_sample, use_container_width=True)
+        st.caption("Note: Sample trade data")
+
+elif st.session_state.main_tab == 'APBN':
+    # Sample APBN data
+    sample_data = pd.DataFrame({
+        'Period': [f"2023 Q{i}" for i in range(1, 5)] + [f"2024 Q{i}" for i in range(1, 5)],
+        'Value': np.random.uniform(500, 1500, 8)
+    })
+    title = "Belanja Pegawai (Triliun Rupiah)"
+    
+    fig_sample = px.line(sample_data, x='Period', y='Value', title=title, markers=True)
+    fig_sample.update_traces(line=dict(color='teal', width=2), marker=dict(size=6, color='teal'))
+    fig_sample.update_layout(height=400, plot_bgcolor='white', margin=dict(l=40, r=40, t=40, b=40))
+    
+    with chart_col:
+        st.plotly_chart(fig_sample, use_container_width=True)
+        st.caption("Note: Sample APBN data")
+
+elif st.session_state.main_tab == 'Ketenagakerjaan':
+    # Sample employment data
+    sample_data = pd.DataFrame({
+        'Period': ['Agu 2022', 'Feb 2023', 'Agu 2023', 'Feb 2024'],
+        'Value': np.random.uniform(3, 7, 4)
+    })
+    title = "TPT (%)"
+    
+    fig_sample = px.line(sample_data, x='Period', y='Value', title=title, markers=True)
+    fig_sample.update_traces(line=dict(color='teal', width=2), marker=dict(size=6, color='teal'))
+    fig_sample.update_layout(height=400, plot_bgcolor='white', margin=dict(l=40, r=40, t=40, b=40))
+    
+    with chart_col:
+        st.plotly_chart(fig_sample, use_container_width=True)
+        st.caption("Note: Sample employment data")
+
+elif st.session_state.main_tab == 'Kemiskinan':
+    # Sample poverty data
+    sample_data = pd.DataFrame({
+        'Period': ['Mar 2022', 'Sep 2022', 'Mar 2023', 'Sep 2023'],
+        'Value': np.random.uniform(9, 11, 4)
+    })
+    title = "Persentase penduduk miskin (%)"
+    
+    fig_sample = px.line(sample_data, x='Period', y='Value', title=title, markers=True)
+    fig_sample.update_traces(line=dict(color='teal', width=2), marker=dict(size=6, color='teal'))
+    fig_sample.update_layout(height=400, plot_bgcolor='white', margin=dict(l=40, r=40, t=40, b=40))
+    
+    with chart_col:
+        st.plotly_chart(fig_sample, use_container_width=True)
+        st.caption("Note: Sample poverty data")
+
+elif st.session_state.main_tab == 'IPM':
+    # Sample IPM data
+    sample_data = pd.DataFrame({
+        'Period': [str(y) for y in range(2020, 2024)],
+        'Value': np.random.uniform(70, 75, 4)
+    })
+    title = "IPM"
+    
+    fig_sample = px.line(sample_data, x='Period', y='Value', title=title, markers=True)
+    fig_sample.update_traces(line=dict(color='teal', width=2), marker=dict(size=6, color='teal'))
+    fig_sample.update_layout(height=400, plot_bgcolor='white', margin=dict(l=40, r=40, t=40, b=40))
+    
+    with chart_col:
+        st.plotly_chart(fig_sample, use_container_width=True)
+        st.caption("Note: Sample IPM data")
+
+# Global Insight Section
+with insight_col:
+    st.markdown("#### Insight:")
+    st.markdown("*   Insight 1: ...")
+    st.markdown("*   Insight 2: ...")
+    st.markdown("*   Insight 3: ...")
+
+st.markdown("</div>", unsafe_allow_html=True)
