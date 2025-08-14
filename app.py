@@ -33,7 +33,7 @@ st.markdown("""
         align-items: center;
         padding: 5px 0px;
         background-color: white;
-        margin-bottom: 0.2rem;
+        margin-bottom: 0.5rem;
     }
     .logo-title {
         color: navy;
@@ -57,7 +57,6 @@ st.markdown("""
         padding: 0px 10px 5px 10px;
         background-color: white;
         box-shadow: none;
-        margin-top: 0px !important;
     }
     .logo-container {
         display: flex;
@@ -84,7 +83,7 @@ st.markdown("""
     
     /* Reduce vertical spacing for all elements */
     .stMarkdown {
-        margin-bottom: 0.1rem !important;
+        margin-bottom: 0.2rem !important;
     }
     
     /* Custom styling for viz selector */
@@ -94,17 +93,6 @@ st.markdown("""
         border-radius: 5px;
         margin-bottom: 10px;
         border-left: 4px solid #0070c0;
-    }
-    
-    /* Reduce gap between menu and content */
-    .stTabs [data-baseweb="tab-list"] {
-        gap: 0px;
-        margin-bottom: 0px;
-    }
-    
-    /* Compact spacing for option menu */
-    .nav-link {
-        margin-bottom: 0px !important;
     }
 </style>
 """, unsafe_allow_html=True)
@@ -165,24 +153,24 @@ selected_main_tab = option_menu(
     default_index=default_main_index,
     orientation="horizontal",
     styles={
-        "container": {"padding": "0px !important", "background-color": "white", "margin-bottom": "0.2rem", "flex-wrap": "nowrap"},
+        "container": {"padding": "0px !important", "background-color": "white", "margin-bottom": "0.5rem", "flex-wrap": "nowrap"},
         "nav-link": {
             "font-size": "14px", 
             "font-weight": "bold",
             "color": "#333",
             "background-color": "#f0f0f0", 
             "text-align": "center", 
-            "padding": "12px 8px",
+            "padding": "15px 10px",
             "margin":"0px 2px !important",
             "border-radius": "0px !important",
-            "border-bottom": "4px solid #0070c0",
+            "border-bottom": "5px solid #0070c0",
             "transition": "background-color 0.2s, color 0.2s, border-color 0.2s",
             "white-space": "nowrap"
         },
         "nav-link-selected": {
             "background-color": "#0070c0", 
             "color": "white",
-            "border-bottom": "4px solid navy"
+            "border-bottom": "5px solid navy"
         },
         "nav-link:hover": {
             "background-color": "#e0e0e0",
@@ -509,7 +497,6 @@ elif st.session_state.main_tab == 'Kemiskinan':
         st.markdown("• Pemberdayaan ekonomi mikro perlu diperkuat")
         st.markdown("• Investasi SDM kunci pengentasan kemiskinan jangka panjang")
         st.markdown('</div>', unsafe_allow_html=True)
-        
 elif st.session_state.main_tab == 'IPM':
     # IPM Gender Data
     ipm_data = {
@@ -618,7 +605,7 @@ elif st.session_state.main_tab == 'IPM':
         
     with insight_col:
         st.markdown('<div class="insight-section">', unsafe_allow_html=True)
-        st.markdown("#### Insights:")
+        st.markdown("#### 📈 Key Insights:")
         
         # Calculate insights dengan detail angka untuk setiap tahun
         male_growth = df_ipm['IPM_Laki_laki'].iloc[-1] - df_ipm['IPM_Laki_laki'].iloc[0]
@@ -627,4 +614,19 @@ elif st.session_state.main_tab == 'IPM':
         gap_change = df_ipm['Gender_Gap'].iloc[-1] - df_ipm['Gender_Gap'].iloc[0]
         
         st.markdown(f"• **Progress Positif**: IPM naik konsisten 2020-2023")
-
+        st.markdown(f"• **Laki-laki**: +{male_growth:.2f} poin (76.78→77.96)")
+        st.markdown(f"• **Perempuan**: +{female_growth:.2f} poin (70.14→71.95)")
+        
+        # Detail Gender Gap per tahun
+        st.markdown("• **Gender Gap Detail:**")
+        for _, row in df_ipm.iterrows():
+            st.markdown(f"  - {int(row['Tahun'])}: {row['Gender_Gap']:.2f} poin")
+        
+        if gap_change < 0:
+            st.markdown(f"• **✅ Tren Gap**: Menyempit {abs(gap_change):.2f} poin (2020-2023)")
+        else:
+            st.markdown(f"• **⚠️ Tren Gap**: Melebar {gap_change:.2f} poin (2020-2023)")
+            
+        st.markdown("• **Prioritas**: Percepatan IPM perempuan melalui pendidikan & kesehatan")
+        st.markdown('</div>', unsafe_allow_html=True)
+        
