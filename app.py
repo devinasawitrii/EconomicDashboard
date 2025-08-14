@@ -33,7 +33,7 @@ st.markdown("""
         align-items: center;
         padding: 5px 0px;
         background-color: white;
-        margin-bottom: 0.5rem;
+        margin-bottom: 0.2rem;
     }
     .logo-title {
         color: navy;
@@ -57,6 +57,7 @@ st.markdown("""
         padding: 0px 10px 5px 10px;
         background-color: white;
         box-shadow: none;
+        margin-top: 0px !important;
     }
     .logo-container {
         display: flex;
@@ -83,7 +84,7 @@ st.markdown("""
     
     /* Reduce vertical spacing for all elements */
     .stMarkdown {
-        margin-bottom: 0.2rem !important;
+        margin-bottom: 0.1rem !important;
     }
     
     /* Custom styling for viz selector */
@@ -93,6 +94,17 @@ st.markdown("""
         border-radius: 5px;
         margin-bottom: 10px;
         border-left: 4px solid #0070c0;
+    }
+    
+    /* Reduce gap between menu and content */
+    .stTabs [data-baseweb="tab-list"] {
+        gap: 0px;
+        margin-bottom: 0px;
+    }
+    
+    /* Compact spacing for option menu */
+    .nav-link {
+        margin-bottom: 0px !important;
     }
 </style>
 """, unsafe_allow_html=True)
@@ -153,24 +165,24 @@ selected_main_tab = option_menu(
     default_index=default_main_index,
     orientation="horizontal",
     styles={
-        "container": {"padding": "0px !important", "background-color": "white", "margin-bottom": "0.5rem", "flex-wrap": "nowrap"},
+        "container": {"padding": "0px !important", "background-color": "white", "margin-bottom": "0.2rem", "flex-wrap": "nowrap"},
         "nav-link": {
             "font-size": "14px", 
             "font-weight": "bold",
             "color": "#333",
             "background-color": "#f0f0f0", 
             "text-align": "center", 
-            "padding": "15px 10px",
+            "padding": "12px 8px",
             "margin":"0px 2px !important",
             "border-radius": "0px !important",
-            "border-bottom": "5px solid #0070c0",
+            "border-bottom": "4px solid #0070c0",
             "transition": "background-color 0.2s, color 0.2s, border-color 0.2s",
             "white-space": "nowrap"
         },
         "nav-link-selected": {
             "background-color": "#0070c0", 
             "color": "white",
-            "border-bottom": "5px solid navy"
+            "border-bottom": "4px solid navy"
         },
         "nav-link:hover": {
             "background-color": "#e0e0e0",
@@ -497,6 +509,7 @@ elif st.session_state.main_tab == 'Kemiskinan':
         st.markdown("• Pemberdayaan ekonomi mikro perlu diperkuat")
         st.markdown("• Investasi SDM kunci pengentasan kemiskinan jangka panjang")
         st.markdown('</div>', unsafe_allow_html=True)
+        
 elif st.session_state.main_tab == 'IPM':
     # IPM Gender Data
     ipm_data = {
