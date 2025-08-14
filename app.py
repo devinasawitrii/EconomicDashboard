@@ -539,27 +539,28 @@ elif st.session_state.main_tab == 'IPM':
             yaxis='y'
         ))
         
-        # Gender Gap - filled area between lines with custom hover
+        # Gender Gap - filled area between lines with hover info
         fig_ipm.add_trace(go.Scatter(
-            x=df_ipm['Tahun'],
-            y=df_ipm['IPM_Laki_laki'],
-            fill=None,
-            mode='lines',
-            line_color='rgba(255,255,255,0)',
-            showlegend=False,
-            hoverinfo='skip'
+            x=df_ipm['Tahun'].tolist() + df_ipm['Tahun'].tolist()[::-1],
+            y=df_ipm['IPM_Laki_laki'].tolist() + df_ipm['IPM_Perempuan'].tolist()[::-1],
+            fill='toself',
+            fillcolor='rgba(255,0,0,0.2)',
+            line=dict(color='rgba(255,255,255,0)'),
+            name='Gender Gap',
+            hoverinfo='skip',
+            showlegend=True
         ))
         
+        # Add invisible points for gender gap hover info
         fig_ipm.add_trace(go.Scatter(
             x=df_ipm['Tahun'],
-            y=df_ipm['IPM_Perempuan'],
-            fill='tonexty',
-            fillcolor='rgba(255,0,0,0.2)',
-            mode='lines',
-            line_color='rgba(255,255,255,0)',
-            name='Gender Gap',
-            hovertemplate='<b>%{x}</b><br>Gender Gap: %{text} poin<extra></extra>',
-            text=[f"{gap:.2f}" for gap in df_ipm['Gender_Gap']]
+            y=df_ipm['IPM_Total'],  # Position at average IPM
+            mode='markers',
+            marker=dict(size=8, color='red', opacity=0),  # Invisible markers
+            name='Gap Info',
+            hovertemplate='<b>%{x}</b><br>Gender Gap: %{customdata:.2f} poin<extra></extra>',
+            customdata=df_ipm['Gender_Gap'],
+            showlegend=False
         ))
         
         # Add trend line for total IPM
