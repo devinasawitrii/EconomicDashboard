@@ -372,6 +372,7 @@ if st.session_state.main_tab == 'Neraca Nasional':
         st.markdown("• **2021 Bounce**: Hijau terang Q2 (stimulus)")
         st.markdown("• **Normalized**: 2022+ hijau stabil (~5%)")
         st.markdown('</div>', unsafe_allow_html=True)
+
 elif st.session_state.main_tab == 'Indeks Harga':
     chart_col, insight_col = st.columns([2.5, 1])
     sample_data = pd.DataFrame({
@@ -498,28 +499,23 @@ elif st.session_state.main_tab == 'Kemiskinan':
         st.markdown('</div>', unsafe_allow_html=True)
 
 elif st.session_state.main_tab == 'IPM':
-    chart_col, insight_col = st.columns([2.5, 1])
-    sample_data = pd.DataFrame({
-        'Period': [str(y) for y in range(2020, 2024)],
-        'Value': np.random.uniform(70, 75, 4)
-    })
-    title = "IPM"
+    # Data IPM berdasarkan gender
+    ipm_data = {
+        'Tahun': [2020, 2021, 2022, 2023],
+        'IPM_Laki': [76.78, 77.03, 77.47, 77.96],
+        'IPM_Perempuan': [70.14, 70.56, 71.31, 71.95],
+        'IPM_Total': [73.46, 73.80, 74.39, 74.96]  # Rata-rata sederhana untuk visualisasi
+    }
     
-    fig_sample = px.line(sample_data, x='Period', y='Value', title=title, markers=True)
-    fig_sample.update_traces(line=dict(color='teal', width=2), marker=dict(size=5, color='teal'))
-    fig_sample.update_layout(height=320, plot_bgcolor='white', margin=dict(l=30, r=30, t=40, b=30))
+    df_ipm = pd.DataFrame(ipm_data)
+    df_ipm['Gap_Gender'] = df_ipm['IPM_Laki'] - df_ipm['IPM_Perempuan']
     
-    with chart_col:
-        st.plotly_chart(fig_sample, use_container_width=True)
+    # Chart 1: Trend IPM by Gender - Line Chart
+    chart1_col, insight1_col = st.columns([2.5, 1])
+    
+    with chart1_col:
+        fig1 = go.Figure()
         
-    with insight_col:
-        st.markdown('<div class="insight-section">', unsafe_allow_html=True)
-        st.markdown("#### Insight:")
-        st.markdown("• Indeks Pembangunan Manusia terus mengalami peningkatan")
-        st.markdown("• Komponen pendidikan menunjukkan progress signifikan")
-        st.markdown("• Angka harapan hidup terus membaik")
-        st.markdown("• Kesenjangan IPM antar daerah masih perlu perhatian")
-        st.markdown("• Investasi kesehatan dan pendidikan harus berkelanjutan")
-        st.markdown('</div>', unsafe_allow_html=True)
-
-st.markdown("</div>", unsafe_allow_html=True)
+        # Line untuk IPM Laki-laki
+        fig1.add_trace(go.Scatter(
+            x=df_
