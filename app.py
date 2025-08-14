@@ -539,14 +539,16 @@ elif st.session_state.main_tab == 'IPM':
             yaxis='y'
         ))
         
-        # Gender Gap bars (secondary axis)
-        fig_ipm.add_trace(go.Bar(
-            x=df_ipm['Tahun'],
-            y=df_ipm['Gender_Gap'],
+        # Gender Gap - filled area between lines
+        fig_ipm.add_trace(go.Scatter(
+            x=df_ipm['Tahun'].tolist() + df_ipm['Tahun'].tolist()[::-1],
+            y=df_ipm['IPM_Laki_laki'].tolist() + df_ipm['IPM_Perempuan'].tolist()[::-1],
+            fill='toself',
+            fillcolor='rgba(255,0,0,0.2)',
+            line=dict(color='rgba(255,255,255,0)'),
             name='Gender Gap',
-            marker_color='rgba(255,0,0,0.3)',
-            yaxis='y2',
-            hovertemplate='<b>%{x}</b><br>Gender Gap: %{y:.2f} poin<extra></extra>'
+            hoverinfo='skip',
+            showlegend=True
         ))
         
         # Add trend line for total IPM
@@ -562,7 +564,7 @@ elif st.session_state.main_tab == 'IPM':
         
         fig_ipm.update_layout(
             title='Indeks Pembangunan Manusia Indonesia: Analisis Gender (2020-2023)',
-            height=300,
+            height=380,
             plot_bgcolor='white',
             hovermode='x unified',
             yaxis=dict(
@@ -571,13 +573,6 @@ elif st.session_state.main_tab == 'IPM':
                 showgrid=True,
                 gridcolor='lightgray',
                 range=[68, 80]
-            ),
-            yaxis2=dict(
-                title='Gender Gap (Poin)',
-                side='right',
-                overlaying='y',
-                showgrid=False,
-                range=[0, 8]
             ),
             legend=dict(
                 orientation="h",
