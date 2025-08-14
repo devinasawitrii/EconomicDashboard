@@ -31,27 +31,25 @@ st.markdown("""
         display: flex;
         justify-content: space-between;
         align-items: center;
-        padding: 3px 0px;
+        padding: 5px 0px;
         background-color: white;
-        margin-bottom: 0.2rem;
+        margin-bottom: 0.5rem;
     }
     .logo-title {
         color: navy;
-        font-size: 26px;
+        font-size: 28px;
         font-weight: bold;
         text-align: center;
         margin: 0;
         padding: 0;
-        line-height: 1;
     }
     .subtitle {
         color: #0070c0;
-        font-size: 14px;
+        font-size: 16px;
         text-align: center;
         font-style: italic;
-        margin-top: -2px;
+        margin-top: -3px;
         margin-bottom: 0px;
-        line-height: 1;
     }
     .chart-container {
         border: none;
@@ -59,14 +57,13 @@ st.markdown("""
         padding: 0px 10px 5px 10px;
         background-color: white;
         box-shadow: none;
-        margin-top: 0px;
     }
     .logo-container {
         display: flex;
         flex-direction: column;
         align-items: center;
         text-align: center;
-        padding-top: 2px;
+        padding-top: 5px;
     }
     /* Hide streamlit elements that take up space */
     #MainMenu {visibility: hidden;}
@@ -80,29 +77,22 @@ st.markdown("""
     
     /* Make insights section more compact */
     .insight-section {
-        font-size: 13px;
-        line-height: 1.1;
-        margin-top: 0px;
+        font-size: 14px;
+        line-height: 1.2;
     }
     
     /* Reduce vertical spacing for all elements */
     .stMarkdown {
-        margin-bottom: 0.1rem !important;
+        margin-bottom: 0.2rem !important;
     }
     
     /* Custom styling for viz selector */
     .viz-selector {
         background-color: #f0f8ff;
-        padding: 6px;
+        padding: 8px;
         border-radius: 5px;
-        margin-bottom: 8px;
+        margin-bottom: 10px;
         border-left: 4px solid #0070c0;
-    }
-    
-    /* Compact navigation menu */
-    .nav-menu-container {
-        margin-top: 0px !important;
-        margin-bottom: 0.2rem !important;
     }
 </style>
 """, unsafe_allow_html=True)
@@ -129,7 +119,7 @@ with col1:
     # AIG Logo - Smaller size
     st.markdown("""
     <div class="logo-container">
-        <img src="aig_logo.png" alt="AIG Logo" style="width: 60px; height: 60px; object-fit: contain;">
+        <img src="aig_logo.png" alt="AIG Logo" style="width: 70px; height: 70px; object-fit: contain;">
     </div>
     """, unsafe_allow_html=True)
 
@@ -142,7 +132,7 @@ with col3:
     # BPS Logo - Smaller size
     st.markdown("""
     <div class="logo-container">
-        <img src="bps_logo.png" alt="BPS Logo" style="width: 75px; height: 60px; object-fit: contain;">
+        <img src="bps_logo.png" alt="BPS Logo" style="width: 85px; height: 70px; object-fit: contain;">
     </div>
     """, unsafe_allow_html=True)
 
@@ -154,8 +144,7 @@ try:
 except ValueError:
     default_main_index = 0
 
-# More compact option menu with reduced margins
-st.markdown('<div class="nav-menu-container">', unsafe_allow_html=True)
+# Compact option menu
 selected_main_tab = option_menu(
     menu_title=None,
     options=main_tabs_list,
@@ -164,24 +153,24 @@ selected_main_tab = option_menu(
     default_index=default_main_index,
     orientation="horizontal",
     styles={
-        "container": {"padding": "0px !important", "background-color": "white", "margin-bottom": "0px", "flex-wrap": "nowrap"},
+        "container": {"padding": "0px !important", "background-color": "white", "margin-bottom": "0.5rem", "flex-wrap": "nowrap"},
         "nav-link": {
-            "font-size": "13px", 
+            "font-size": "14px", 
             "font-weight": "bold",
             "color": "#333",
             "background-color": "#f0f0f0", 
             "text-align": "center", 
-            "padding": "12px 8px",
-            "margin":"0px 1px !important",
+            "padding": "15px 10px",
+            "margin":"0px 2px !important",
             "border-radius": "0px !important",
-            "border-bottom": "4px solid #0070c0",
+            "border-bottom": "5px solid #0070c0",
             "transition": "background-color 0.2s, color 0.2s, border-color 0.2s",
             "white-space": "nowrap"
         },
         "nav-link-selected": {
             "background-color": "#0070c0", 
             "color": "white",
-            "border-bottom": "4px solid navy"
+            "border-bottom": "5px solid navy"
         },
         "nav-link:hover": {
             "background-color": "#e0e0e0",
@@ -189,7 +178,6 @@ selected_main_tab = option_menu(
         }
     }
 )
-st.markdown('</div>', unsafe_allow_html=True)
 
 # Update session state if main tab changed
 if selected_main_tab != st.session_state.main_tab:
@@ -269,7 +257,7 @@ if st.session_state.main_tab == 'Neraca Nasional':
         fig1.update_layout(
             title='Analisis Komprehensif: Pertumbuhan & Skala Ekonomi Indonesia',
             xaxis_title='Periode',
-            height=250,
+            height=280,
             plot_bgcolor='white',
             hovermode='x unified',
             yaxis=dict(
@@ -294,9 +282,9 @@ if st.session_state.main_tab == 'Neraca Nasional':
                 y=1.02,
                 xanchor="right",
                 x=1,
-                font=dict(size=9)
+                font=dict(size=10)
             ),
-            margin=dict(l=40, r=40, t=50, b=30)
+            margin=dict(l=50, r=50, t=60, b=40)
         )
         
         # Update x-axis
@@ -366,9 +354,9 @@ if st.session_state.main_tab == 'Neraca Nasional':
             title='Pola Musiman Pertumbuhan Ekonomi (2011-2024)',
             xaxis_title='Triwulan',
             yaxis_title='Tahun',
-            height=250,
+            height=280,
             plot_bgcolor='white',
-            margin=dict(l=40, r=70, t=50, b=30)
+            margin=dict(l=50, r=80, t=60, b=40)
         )
         
         fig2.update_yaxes(autorange='reversed')  # Latest year on top
@@ -395,7 +383,7 @@ elif st.session_state.main_tab == 'Indeks Harga':
     
     fig_sample = px.line(sample_data, x='Period', y='Value', title=title, markers=True)
     fig_sample.update_traces(line=dict(color='teal', width=2), marker=dict(size=5, color='teal'))
-    fig_sample.update_layout(height=280, plot_bgcolor='white', margin=dict(l=30, r=30, t=40, b=30))
+    fig_sample.update_layout(height=320, plot_bgcolor='white', margin=dict(l=30, r=30, t=40, b=30))
     
     with chart_col:
         st.plotly_chart(fig_sample, use_container_width=True)
@@ -420,7 +408,7 @@ elif st.session_state.main_tab == 'Ekspor-Impor':
     
     fig_sample = px.line(sample_data, x='Period', y='Value', title=title, markers=True)
     fig_sample.update_traces(line=dict(color='teal', width=2), marker=dict(size=5, color='teal'))
-    fig_sample.update_layout(height=280, plot_bgcolor='white', margin=dict(l=30, r=30, t=40, b=30))
+    fig_sample.update_layout(height=320, plot_bgcolor='white', margin=dict(l=30, r=30, t=40, b=30))
     
     with chart_col:
         st.plotly_chart(fig_sample, use_container_width=True)
@@ -445,7 +433,7 @@ elif st.session_state.main_tab == 'APBN':
     
     fig_sample = px.line(sample_data, x='Period', y='Value', title=title, markers=True)
     fig_sample.update_traces(line=dict(color='teal', width=2), marker=dict(size=5, color='teal'))
-    fig_sample.update_layout(height=280, plot_bgcolor='white', margin=dict(l=30, r=30, t=40, b=30))
+    fig_sample.update_layout(height=320, plot_bgcolor='white', margin=dict(l=30, r=30, t=40, b=30))
     
     with chart_col:
         st.plotly_chart(fig_sample, use_container_width=True)
@@ -470,7 +458,7 @@ elif st.session_state.main_tab == 'Ketenagakerjaan':
     
     fig_sample = px.line(sample_data, x='Period', y='Value', title=title, markers=True)
     fig_sample.update_traces(line=dict(color='teal', width=2), marker=dict(size=5, color='teal'))
-    fig_sample.update_layout(height=280, plot_bgcolor='white', margin=dict(l=30, r=30, t=40, b=30))
+    fig_sample.update_layout(height=320, plot_bgcolor='white', margin=dict(l=30, r=30, t=40, b=30))
     
     with chart_col:
         st.plotly_chart(fig_sample, use_container_width=True)
@@ -495,7 +483,7 @@ elif st.session_state.main_tab == 'Kemiskinan':
     
     fig_sample = px.line(sample_data, x='Period', y='Value', title=title, markers=True)
     fig_sample.update_traces(line=dict(color='teal', width=2), marker=dict(size=5, color='teal'))
-    fig_sample.update_layout(height=280, plot_bgcolor='white', margin=dict(l=30, r=30, t=40, b=30))
+    fig_sample.update_layout(height=320, plot_bgcolor='white', margin=dict(l=30, r=30, t=40, b=30))
     
     with chart_col:
         st.plotly_chart(fig_sample, use_container_width=True)
@@ -584,7 +572,7 @@ elif st.session_state.main_tab == 'IPM':
         
         fig_ipm.update_layout(
             title='Indeks Pembangunan Manusia Indonesia: Analisis Gender (2020-2023)',
-            height=350,
+            height=400,
             plot_bgcolor='white',
             hovermode='x unified',
             yaxis=dict(
@@ -600,9 +588,9 @@ elif st.session_state.main_tab == 'IPM':
                 y=1.02,
                 xanchor="right",
                 x=1,
-                font=dict(size=9)
+                font=dict(size=10)
             ),
-            margin=dict(l=40, r=40, t=50, b=30)
+            margin=dict(l=50, r=50, t=60, b=40)
         )
         
         # Update x-axis
@@ -641,5 +629,4 @@ elif st.session_state.main_tab == 'IPM':
             
         st.markdown("• **Prioritas**: Percepatan IPM perempuan melalui pendidikan & kesehatan")
         st.markdown('</div>', unsafe_allow_html=True)
-
-st.markdown('</div>', unsafe_allow_html=True)
+        
