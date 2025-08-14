@@ -539,16 +539,27 @@ elif st.session_state.main_tab == 'IPM':
             yaxis='y'
         ))
         
-        # Gender Gap - filled area between lines
+        # Gender Gap - filled area between lines with custom hover
         fig_ipm.add_trace(go.Scatter(
-            x=df_ipm['Tahun'].tolist() + df_ipm['Tahun'].tolist()[::-1],
-            y=df_ipm['IPM_Laki_laki'].tolist() + df_ipm['IPM_Perempuan'].tolist()[::-1],
-            fill='toself',
+            x=df_ipm['Tahun'],
+            y=df_ipm['IPM_Laki_laki'],
+            fill=None,
+            mode='lines',
+            line_color='rgba(255,255,255,0)',
+            showlegend=False,
+            hoverinfo='skip'
+        ))
+        
+        fig_ipm.add_trace(go.Scatter(
+            x=df_ipm['Tahun'],
+            y=df_ipm['IPM_Perempuan'],
+            fill='tonexty',
             fillcolor='rgba(255,0,0,0.2)',
-            line=dict(color='rgba(255,255,255,0)'),
+            mode='lines',
+            line_color='rgba(255,255,255,0)',
             name='Gender Gap',
-            hoverinfo='skip',
-            showlegend=True
+            hovertemplate='<b>%{x}</b><br>Gender Gap: %{text} poin<extra></extra>',
+            text=[f"{gap:.2f}" for gap in df_ipm['Gender_Gap']]
         ))
         
         # Add trend line for total IPM
