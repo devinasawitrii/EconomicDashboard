@@ -372,7 +372,7 @@ if st.session_state.main_tab == 'Neraca Nasional':
         st.markdown("• **2021 Bounce**: Hijau terang Q2 (stimulus)")
         st.markdown("• **Normalized**: 2022+ hijau stabil (~5%)")
         st.markdown('</div>', unsafe_allow_html=True)
-
+        
 elif st.session_state.main_tab == 'Indeks Harga':
     chart_col, insight_col = st.columns([2.5, 1])
     sample_data = pd.DataFrame({
@@ -499,253 +499,205 @@ elif st.session_state.main_tab == 'Kemiskinan':
         st.markdown('</div>', unsafe_allow_html=True)
 
 elif st.session_state.main_tab == 'IPM':
-    # Data IPM berdasarkan gender
+    # IPM Gender Data
     ipm_data = {
         'Tahun': [2020, 2021, 2022, 2023],
-        'IPM_Laki': [76.78, 77.03, 77.47, 77.96],
-        'IPM_Perempuan': [70.14, 70.56, 71.31, 71.95],
-        'IPM_Total': [73.46, 73.80, 74.39, 74.96]  # Rata-rata sederhana untuk visualisasi
+        'IPM_Laki_laki': [76.78, 77.03, 77.47, 77.96],
+        'IPM_Perempuan': [70.14, 70.56, 71.31, 71.95]
     }
-    
     df_ipm = pd.DataFrame(ipm_data)
-    df_ipm['Gap_Gender'] = df_ipm['IPM_Laki'] - df_ipm['IPM_Perempuan']
     
-    # Chart 1: Trend IPM by Gender - Line Chart
-    chart1_col, insight1_col = st.columns([2.5, 1])
+    # Calculate gender gap
+    df_ipm['Gender_Gap'] = df_ipm['IPM_Laki_laki'] - df_ipm['IPM_Perempuan']
+    df_ipm['IPM_Total'] = (df_ipm['IPM_Laki_laki'] + df_ipm['IPM_Perempuan']) / 2
     
-    with chart1_col:
-        fig1 = go.Figure()
+    chart_col, insight_col = st.columns([2.5, 1])
+    
+    with chart_col:
+        # Create dual-axis chart
+        fig_ipm = go.Figure()
         
-        # Line untuk IPM Laki-laki
-        fig1.add_trace(go.Scatter(
+        # IPM Laki-laki line
+        fig_ipm.add_trace(go.Scatter(
             x=df_ipm['Tahun'],
-            y=df_ipm['IPM_Laki'],
-            mode='lines+markers',
+            y=df_ipm['IPM_Laki_laki'],
             name='IPM Laki-laki',
             line=dict(color='#1f77b4', width=3),
-            marker=dict(size=8, symbol='circle'),
-            hovertemplate='<b>%{x}</b><br>IPM Laki-laki: %{y:.2f}<extra></extra>'
+            marker=dict(size=8, color='#1f77b4'),
+            hovertemplate='<b>%{x}</b><br>IPM Laki-laki: %{y:.2f}<extra></extra>',
+            yaxis='y'
         ))
         
-        # Line untuk IPM Perempuan
-        fig1.add_trace(go.Scatter(
+        # IPM Perempuan line
+        fig_ipm.add_trace(go.Scatter(
             x=df_ipm['Tahun'],
             y=df_ipm['IPM_Perempuan'],
-            mode='lines+markers',
             name='IPM Perempuan',
             line=dict(color='#ff7f0e', width=3),
-            marker=dict(size=8, symbol='diamond'),
-            hovertemplate='<b>%{x}</b><br>IPM Perempuan: %{y:.2f}<extra></extra>'
+            marker=dict(size=8, color='#ff7f0e'),
+            hovertemplate='<b>%{x}</b><br>IPM Perempuan: %{y:.2f}<extra></extra>',
+            yaxis='y'
         ))
         
-        # Line untuk IPM Total (rata-rata)
-        fig1.add_trace(go.Scatter(
+        # Gender Gap bars (secondary axis)
+        fig_ipm.add_trace(go.Bar(
             x=df_ipm['Tahun'],
-            y=df_ipm['IPM_Total'],
-            mode='lines+markers',
-            name='IPM Total',
-            line=dict(color='#2ca02c', width=2, dash='dot'),
-            marker=dict(size=6, symbol='square'),
-            hovertemplate='<b>%{x}</b><br>IPM Total: %{y:.2f}<extra></extra>'
-        ))
-        
-        # Shaded area antara garis laki-laki dan perempuan
-        fig1.add_trace(go.Scatter(
-            x=df_ipm['Tahun'].tolist() + df_ipm['Tahun'][::-1].tolist(),
-            y=df_ipm['IPM_Laki'].tolist() + df_imp['IPM_Perempuan'][::-1].tolist(),
-            fill='tonexty',
-            fillcolor='rgba(255,0,0,0.1)',
-            line=dict(color='rgba(255,255,255,0)'),
-            showlegend=False,
+            y=df_ipm['Gender_Gap'],
             name='Gender Gap',
-            hoverinfo='skip'
-        ))
-        
-        fig1.update_layout(
-            title='Tren Indeks Pembangunan Manusia (IPM) Indonesia 2020-2023',
-            xaxis_title='Tahun',
-            yaxis_title='Nilai IPM',
-            height=280,
-            plot_bgcolor='white',
-            hovermode='x unified',
-            legend=dict(
-                orientation="h",
-                yanchor="bottom",
-                y=1.02,
-                xanchor="right",
-                x=1
-            ),
-            margin=dict(l=50, r=50, t=60, b=40)
-        )
-        
-        fig1.update_xaxes(
-            tickmode='linear',
-            tick0=2020,
-            dtick=1,
-            showgrid=True,
-            gridcolor='lightgray'
-        )
-        
-        fig1.update_yaxes(
-            showgrid=True,
-            gridcolor='lightgray',
-            range=[68, 80]
-        )
-        
-        st.plotly_chart(fig1, use_container_width=True)
-    
-    with insight1_col:
-        st.markdown('<div class="insight-section">', unsafe_allow_html=True)
-        st.markdown("#### 📈 Tren IPM:")
-        st.markdown(f"• **Laki-laki**: {df_ipm['IPM_Laki'].iloc[0]:.2f}→{df_ipm['IPM_Laki'].iloc[-1]:.2f} (+{df_ipm['IPM_Laki'].iloc[-1]-df_ipm['IPM_Laki'].iloc[0]:.2f})")
-        st.markdown(f"• **Perempuan**: {df_ipm['IPM_Perempuan'].iloc[0]:.2f}→{df_ipm['IPM_Perempuan'].iloc[-1]:.2f} (+{df_ipm['IPM_Perempuan'].iloc[-1]-df_ipm['IPM_Perempuan'].iloc[0]:.2f})")
-        st.markdown(f"• **Gap 2023**: {df_ipm['Gap_Gender'].iloc[-1]:.2f} poin")
-        st.markdown("• **Progress**: Keduanya meningkat konsisten")
-        st.markdown("• **Trend**: Gap sedikit menyempit dari 6.64→6.01")
-        st.markdown('</div>', unsafe_allow_html=True)
-    
-    # Chart 2: Gender Gap Analysis - Bar + Line Combo
-    chart2_col, insight2_col = st.columns([2.5, 1])
-    
-    with chart2_col:
-        fig2 = go.Figure()
-        
-        # Bar chart untuk gap gender
-        fig2.add_trace(go.Bar(
-            x=df_ipm['Tahun'],
-            y=df_ipm['Gap_Gender'],
-            name='Gender Gap (poin)',
-            marker_color=['#ff4444', '#ff6666', '#ff8888', '#ffaaaa'],
-            yaxis='y',
+            marker_color='rgba(255,0,0,0.3)',
+            yaxis='y2',
             hovertemplate='<b>%{x}</b><br>Gender Gap: %{y:.2f} poin<extra></extra>'
         ))
         
-        # Line chart untuk pertumbuhan IPM perempuan (y-o-y)
-        growth_perempuan = [None] + [((df_ipm['IPM_Perempuan'].iloc[i] - df_ipm['IPM_Perempuan'].iloc[i-1]) / df_ipm['IPM_Perempuan'].iloc[i-1] * 100) for i in range(1, len(df_ipm))]
-        
-        fig2.add_trace(go.Scatter(
-            x=df_ipm['Tahun'][1:],
-            y=growth_perempuan[1:],
-            mode='lines+markers',
-            name='Growth IPM Perempuan (%)',
-            line=dict(color='#2ca02c', width=3),
-            marker=dict(size=8),
-            yaxis='y2',
-            hovertemplate='<b>%{x}</b><br>Growth: %{y:.2f}%<extra></extra>'
+        # Add trend line for total IPM
+        fig_ipm.add_trace(go.Scatter(
+            x=df_ipm['Tahun'],
+            y=df_ipm['IPM_Total'],
+            name='IPM Rata-rata',
+            line=dict(color='green', width=2, dash='dot'),
+            marker=dict(size=6, color='green'),
+            hovertemplate='<b>%{x}</b><br>IPM Rata-rata: %{y:.2f}<extra></extra>',
+            yaxis='y'
         ))
         
-        fig2.update_layout(
-            title='Analisis Kesenjangan Gender dalam IPM',
-            xaxis_title='Tahun',
-            height=280,
+        fig_ipm.update_layout(
+            title='Indeks Pembangunan Manusia Indonesia: Analisis Gender (2020-2023)',
+            height=300,
             plot_bgcolor='white',
+            hovermode='x unified',
             yaxis=dict(
-                title='Gender Gap (poin IPM)',
+                title='IPM Score',
                 side='left',
                 showgrid=True,
                 gridcolor='lightgray',
-                range=[0, 8]
+                range=[68, 80]
             ),
             yaxis2=dict(
-                title='Growth Rate (%)',
+                title='Gender Gap (Poin)',
                 side='right',
                 overlaying='y',
                 showgrid=False,
-                range=[0, 3]
+                range=[0, 8]
             ),
             legend=dict(
                 orientation="h",
                 yanchor="bottom",
                 y=1.02,
                 xanchor="right",
-                x=1
+                x=1,
+                font=dict(size=10)
             ),
             margin=dict(l=50, r=50, t=60, b=40)
         )
         
-        fig2.update_xaxes(
-            tickmode='linear',
-            tick0=2020,
+        # Update x-axis
+        fig_ipm.update_xaxes(
+            title='Tahun',
+            showgrid=True,
+            gridcolor='lightgray',
             dtick=1
         )
         
-        st.plotly_chart(fig2, use_container_width=True)
-    
-    with insight2_col:
+        st.plotly_chart(fig_ipm, use_container_width=True)
+        
+        # Additional small charts
+        col1, col2 = st.columns(2)
+        
+        with col1:
+            # Progress chart
+            fig_progress = go.Figure()
+            
+            years = df_ipm['Tahun'].tolist()
+            male_progress = [(df_ipm['IPM_Laki_laki'].iloc[i] - df_ipm['IPM_Laki_laki'].iloc[0]) for i in range(len(years))]
+            female_progress = [(df_ipm['IPM_Perempuan'].iloc[i] - df_ipm['IPM_Perempuan'].iloc[0]) for i in range(len(years))]
+            
+            fig_progress.add_trace(go.Bar(
+                x=years,
+                y=male_progress,
+                name='Progress Laki-laki',
+                marker_color='#1f77b4',
+                opacity=0.7
+            ))
+            
+            fig_progress.add_trace(go.Bar(
+                x=years,
+                y=female_progress,
+                name='Progress Perempuan',
+                marker_color='#ff7f0e',
+                opacity=0.7
+            ))
+            
+            fig_progress.update_layout(
+                title='Progress IPM dari Baseline 2020',
+                height=200,
+                plot_bgcolor='white',
+                margin=dict(l=30, r=30, t=40, b=30),
+                showlegend=False,
+                yaxis_title='Peningkatan (Poin)'
+            )
+            
+            st.plotly_chart(fig_progress, use_container_width=True)
+        
+        with col2:
+            # Gender Gap trend
+            fig_gap = go.Figure()
+            
+            fig_gap.add_trace(go.Scatter(
+                x=df_ipm['Tahun'],
+                y=df_ipm['Gender_Gap'],
+                mode='lines+markers',
+                line=dict(color='red', width=3),
+                marker=dict(size=8, color='red'),
+                fill='tozeroy',
+                fillcolor='rgba(255,0,0,0.1)'
+            ))
+            
+            # Add trend line
+            z = np.polyfit(df_ipm['Tahun'], df_ipm['Gender_Gap'], 1)
+            p = np.poly1d(z)
+            fig_gap.add_trace(go.Scatter(
+                x=df_ipm['Tahun'],
+                y=p(df_ipm['Tahun']),
+                mode='lines',
+                line=dict(color='darkred', width=2, dash='dash'),
+                name='Tren',
+                showlegend=False
+            ))
+            
+            fig_gap.update_layout(
+                title='Tren Kesenjangan Gender IPM',
+                height=200,
+                plot_bgcolor='white',
+                margin=dict(l=30, r=30, t=40, b=30),
+                showlegend=False,
+                yaxis_title='Gap (Poin)',
+                xaxis_title='Tahun'
+            )
+            
+            st.plotly_chart(fig_gap, use_container_width=True)
+        
+    with insight_col:
         st.markdown('<div class="insight-section">', unsafe_allow_html=True)
-        st.markdown("#### ⚖️ Gender Gap Analysis:")
-        st.markdown("• **Gap tertinggi**: 2020 (6.64 poin)")
-        st.markdown("• **Gap terendah**: 2023 (6.01 poin)")
-        st.markdown("• **Perbaikan**: -0.63 poin dalam 3 tahun")
-        st.markdown("• **Growth Perempuan**: Lebih cepat vs laki-laki")
-        st.markdown("• **Challenge**: Gap masih >6 poin, perlu intervensi khusus")
-        st.markdown('</div>', unsafe_allow_html=True)
-    
-    # Chart 3: Component Breakdown (Simulasi - karena data komponen tidak tersedia)
-    chart3_col, insight3_col = st.columns([2.5, 1])
-    
-    with chart3_col:
-        # Data simulasi untuk komponen IPM
-        komponen_2023 = {
-            'Komponen': ['Pendidikan', 'Kesehatan', 'Ekonomi'],
-            'Laki-laki': [85.2, 72.1, 76.5],
-            'Perempuan': [82.8, 73.9, 58.2]
-        }
+        st.markdown("#### 📈 Key Insights:")
         
-        fig3 = go.Figure()
+        # Calculate insights
+        male_growth = df_ipm['IPM_Laki_laki'].iloc[-1] - df_ipm['IPM_Laki_laki'].iloc[0]
+        female_growth = df_ipm['IPM_Perempuan'].iloc[-1] - df_ipm['IPM_Perempuan'].iloc[0]
+        gap_2023 = df_ipm['Gender_Gap'].iloc[-1]
+        gap_change = df_ipm['Gender_Gap'].iloc[-1] - df_ipm['Gender_Gap'].iloc[0]
         
-        x = np.arange(len(komponen_2023['Komponen']))
-        width = 0.35
+        st.markdown(f"• **Progress Positif**: IPM naik konsisten 2020-2023")
+        st.markdown(f"• **Laki-laki**: +{male_growth:.2f} poin (76.78→77.96)")
+        st.markdown(f"• **Perempuan**: +{female_growth:.2f} poin (70.14→71.95)")
+        st.markdown(f"• **Gap Gender**: {gap_2023:.2f} poin (2023)")
         
-        fig3.add_trace(go.Bar(
-            name='Laki-laki',
-            x=komponen_2023['Komponen'],
-            y=komponen_2023['Laki-laki'],
-            marker_color='#1f77b4',
-            hovertemplate='<b>%{x}</b><br>Laki-laki: %{y:.1f}<extra></extra>'
-        ))
-        
-        fig3.add_trace(go.Bar(
-            name='Perempuan',
-            x=komponen_2023['Komponen'],
-            y=komponen_2023['Perempuan'],
-            marker_color='#ff7f0e',
-            hovertemplate='<b>%{x}</b><br>Perempuan: %{y:.1f}<extra></extra>'
-        ))
-        
-        fig3.update_layout(
-            title='Analisis Komponen IPM 2023 (Estimasi)',
-            xaxis_title='Komponen IPM',
-            yaxis_title='Nilai Indeks',
-            height=280,
-            plot_bgcolor='white',
-            barmode='group',
-            legend=dict(
-                orientation="h",
-                yanchor="bottom",
-                y=1.02,
-                xanchor="right",
-                x=1
-            ),
-            margin=dict(l=50, r=50, t=60, b=40)
-        )
-        
-        fig3.update_yaxes(
-            showgrid=True,
-            gridcolor='lightgray',
-            range=[0, 100]
-        )
-        
-        st.plotly_chart(fig3, use_container_width=True)
-    
-    with insight3_col:
-        st.markdown('<div class="insight-section">', unsafe_allow_html=True)
-        st.markdown("#### 🎯 Komponen Analysis:")
-        st.markdown("• **Ekonomi**: Gap terbesar (18.3 poin)")
-        st.markdown("• **Pendidikan**: Gap moderat (2.4 poin)")
-        st.markdown("• **Kesehatan**: Gap terkecil (-1.8 poin)")
-        st.markdown("• **Prioritas**: Pemberdayaan ekonomi perempuan")
-        st.markdown("• **Strategi**: UMKM, akses keuangan, keterampilan digital")
+        if gap_change < 0:
+            st.markdown(f"• **✅ Gap Menyempit**: -{abs(gap_change):.2f} poin")
+        else:
+            st.markdown(f"• **⚠️ Gap Melebar**: +{gap_change:.2f} poin")
+            
+        st.markdown("• **Prioritas**: Percepatan IPM perempuan melalui pendidikan & kesehatan")
+        st.markdown("• **Target**: Penyempitan gap gender berkelanjutan")
         st.markdown('</div>', unsafe_allow_html=True)
 
 st.markdown("</div>", unsafe_allow_html=True)
