@@ -585,7 +585,8 @@ elif st.session_state.main_tab == 'IPM':
             legend=dict(
                 orientation="h",
                 yanchor="bottom",
-                y=0.5,
+                y=1
+            ,
                 xanchor="right",
                 x=1,
                 font=dict(size=10)
