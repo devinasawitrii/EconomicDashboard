@@ -136,48 +136,48 @@ with col3:
     </div>
     """, unsafe_allow_html=True)
 
-# Main navigation menu - more compact
-    main_tabs_list = ['Neraca Nasional', 'Indeks Harga', 'Ekspor-Impor', 'APBN', 'Ketenagakerjaan', 'Kemiskinan', 'IPM']
+# Main Navigation Menu - more compact
+main_tabs_list = ['Neraca Nasional', 'Indeks Harga', 'Ekspor-Impor', 'APBN', 'Ketenagakerjaan', 'Kemiskinan', 'IPM']
 
-    try:
-        default_main_index = main_tabs_list.index(st.session_state.main_tab)
-    except ValueError:
-        default_main_index = 0
+try:
+    default_main_index = main_tabs_list.index(st.session_state.main_tab)
+except ValueError:
+    default_main_index = 0
 
-    # Compact option menu
-    selected_main_tab = option_menu(
-        menu_title=None,
-        options=main_tabs_list,
-        icons=None,
-        menu_icon=None,
-        default_index=default_main_index,
-        orientation="horizontal",
-        styles={
-            "container": {"padding": "0px !important", "background-color": "white", "margin-bottom": "0.2rem", "flex-wrap": "nowrap"},
-            "nav-link": {
-                "font-size": "14px", 
-                "font-weight": "bold",
-                "color": "#333",
-                "background-color": "#f0f0f0", 
-                "text-align": "center", 
-                "padding": "12px 8px",
-                "margin":"0px 1px !important",
-                "border-radius": "0px !important",
-                "border-bottom": "3px solid #0070c0",
-                "transition": "background-color 0.2s, color 0.2s, border-color 0.2s",
-                "white-space": "nowrap"
-            },
-            "nav-link-selected": {
-                "background-color": "#0070c0", 
-                "color": "white",
-                "border-bottom": "3px solid navy"
-            },
-            "nav-link:hover": {
-                "background-color": "#e0e0e0",
-                "border-bottom-color": "#005090"
-            }
+# Compact option menu
+selected_main_tab = option_menu(
+    menu_title=None,
+    options=main_tabs_list,
+    icons=None,
+    menu_icon=None,
+    default_index=default_main_index,
+    orientation="horizontal",
+    styles={
+        "container": {"padding": "0px !important", "background-color": "white", "margin-bottom": "0.5rem", "flex-wrap": "nowrap"},
+        "nav-link": {
+            "font-size": "14px", 
+            "font-weight": "bold",
+            "color": "#333",
+            "background-color": "#f0f0f0", 
+            "text-align": "center", 
+            "padding": "15px 10px",
+            "margin":"0px 2px !important",
+            "border-radius": "0px !important",
+            "border-bottom": "5px solid #0070c0",
+            "transition": "background-color 0.2s, color 0.2s, border-color 0.2s",
+            "white-space": "nowrap"
+        },
+        "nav-link-selected": {
+            "background-color": "#0070c0", 
+            "color": "white",
+            "border-bottom": "5px solid navy"
+        },
+        "nav-link:hover": {
+            "background-color": "#e0e0e0",
+            "border-bottom-color": "#005090"
         }
-    )
+    }
+)
 
 # Update session state if main tab changed
 if selected_main_tab != st.session_state.main_tab:
