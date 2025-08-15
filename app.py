@@ -94,6 +94,26 @@ st.markdown("""
         margin-bottom: 10px;
         border-left: 4px solid #0070c0;
     }
+    
+    /* REDUCE SPACING BETWEEN TABS AND CONTENT */
+    .stTabs [data-baseweb="tab-list"] {
+        margin-bottom: 0rem !important;
+    }
+    
+    /* Reduce margin after option menu */
+    .nav-link {
+        margin-bottom: 0px !important;
+    }
+    
+    /* Reduce spacing after navigation */
+    div[data-testid="stHorizontalBlock"] + div {
+        margin-top: -0.5rem !important;
+    }
+    
+    /* Target the main content area to reduce top margin */
+    .main .block-container > div:first-child {
+        margin-top: -0.5rem !important;
+    }
 </style>
 """, unsafe_allow_html=True)
 
@@ -153,7 +173,7 @@ selected_main_tab = option_menu(
     default_index=default_main_index,
     orientation="horizontal",
     styles={
-        "container": {"padding": "0px !important", "background-color": "white", "margin-bottom": "0.5rem", "flex-wrap": "nowrap"},
+        "container": {"padding": "0px !important", "background-color": "white", "margin-bottom": "0rem", "flex-wrap": "nowrap"},
         "nav-link": {
             "font-size": "14px", 
             "font-weight": "bold",
@@ -184,8 +204,8 @@ if selected_main_tab != st.session_state.main_tab:
     st.session_state.main_tab = selected_main_tab
     st.rerun()
 
-# Main content area - compact layout
-st.markdown('<div class="chart-container">', unsafe_allow_html=True)
+# Main content area - compact layout with reduced top margin
+st.markdown('<div class="chart-container" style="margin-top: 0rem;">', unsafe_allow_html=True)
 
 # Display content based on selected main tab
 if st.session_state.main_tab == 'Neraca Nasional':
@@ -629,4 +649,5 @@ elif st.session_state.main_tab == 'IPM':
             
         st.markdown("• **Prioritas**: Percepatan IPM perempuan melalui pendidikan & kesehatan")
         st.markdown('</div>', unsafe_allow_html=True)
-        
+
+st.markdown('</div>', unsafe_allow_html=True)
