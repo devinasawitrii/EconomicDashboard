@@ -1,3 +1,4 @@
+
 import streamlit as st
 import pandas as pd
 import numpy as np
@@ -94,26 +95,6 @@ st.markdown("""
         margin-bottom: 10px;
         border-left: 4px solid #0070c0;
     }
-    
-    /* Mengurangi jarak antara option menu dan konten */
-    .stSelectbox > div:first-child {
-        margin-bottom: -5px !important;
-    }
-    
-    /* Mengurangi margin bottom pada option menu container */
-    div[data-testid="stHorizontalBlock"] {
-        margin-bottom: -15px !important;
-    }
-    
-    /* Menaikkan konten yang ada setelah option menu */
-    .chart-container > div:first-child {
-        margin-top: -20px !important;
-    }
-    
-    /* Menaikkan semua elemen di dalam main content area */
-    .main .block-container > div:nth-child(n+4) {
-        margin-top: -15px !important;
-    }
 </style>
 """, unsafe_allow_html=True)
 
@@ -164,7 +145,7 @@ try:
 except ValueError:
     default_main_index = 0
 
-# Compact option menu dengan margin yang dikurangi
+# Compact option menu
 selected_main_tab = option_menu(
     menu_title=None,
     options=main_tabs_list,
@@ -173,7 +154,7 @@ selected_main_tab = option_menu(
     default_index=default_main_index,
     orientation="horizontal",
     styles={
-        "container": {"padding": "0px !important", "background-color": "white", "margin-bottom": "0rem !important", "flex-wrap": "nowrap"},
+        "container": {"padding": "0px !important", "background-color": "white", "margin-bottom": "0.5rem", "flex-wrap": "nowrap"},
         "nav-link": {
             "font-size": "14px", 
             "font-weight": "bold",
@@ -204,8 +185,8 @@ if selected_main_tab != st.session_state.main_tab:
     st.session_state.main_tab = selected_main_tab
     st.rerun()
 
-# Main content area - compact layout dengan konten yang dinaikkan
-st.markdown('<div class="chart-container" style="margin-top: -20px !important;">', unsafe_allow_html=True)
+# Main content area - compact layout
+st.markdown('<div class="chart-container">', unsafe_allow_html=True)
 
 # Display content based on selected main tab
 if st.session_state.main_tab == 'Neraca Nasional':
@@ -436,20 +417,20 @@ elif st.session_state.main_tab == 'Ekspor-Impor':
     with insight_col:
         st.markdown('<div class="insight-section">', unsafe_allow_html=True)
         st.markdown("#### Insight:")
-        st.markdown("• Ekspor non-migas menunjukkan tren positif")
-        st.markdown("• Diversifikasi produk ekspor terus berlanjut")
-        st.markdown("• Permintaan global masih relatif stabil")
-        st.markdown("• Peluang ekspor ke pasar emerging markets")
-        st.markdown("• Perlu peningkatan daya saing produk")
+        st.markdown("• Nilai ekspor menunjukkan tren positif year-on-year")
+        st.markdown("• Komoditas unggulan masih mendominasi ekspor")
+        st.markdown("• Impor bahan baku industri terus meningkat") 
+        st.markdown("• Neraca perdagangan masih surplus namun menyempit")
+        st.markdown("• Diversifikasi pasar ekspor perlu diperkuat")
         st.markdown('</div>', unsafe_allow_html=True)
 
 elif st.session_state.main_tab == 'APBN':
     chart_col, insight_col = st.columns([2.5, 1])
     sample_data = pd.DataFrame({
-        'Period': pd.date_range('2023-01', periods=12, freq='M').strftime('%Y-%m'),
-        'Value': np.random.uniform(100000, 200000, 12)
+        'Period': [f"2023 Q{i}" for i in range(1, 5)] + [f"2024 Q{i}" for i in range(1, 5)],
+        'Value': np.random.uniform(500, 1500, 8)
     })
-    title = "Realisasi Penerimaan Negara (Miliar Rp)"
+    title = "Belanja Pegawai (Triliun Rupiah)"
     
     fig_sample = px.line(sample_data, x='Period', y='Value', title=title, markers=True)
     fig_sample.update_traces(line=dict(color='teal', width=2), marker=dict(size=5, color='teal'))
@@ -461,20 +442,20 @@ elif st.session_state.main_tab == 'APBN':
     with insight_col:
         st.markdown('<div class="insight-section">', unsafe_allow_html=True)
         st.markdown("#### Insight:")
-        st.markdown("• Penerimaan pajak menunjukkan peningkatan")
-        st.markdown("• Rasio pajak terhadap PDB masih dapat ditingkatkan")
-        st.markdown("• Reformasi perpajakan perlu dipercepat")
-        st.markdown("• Digitalisasi sistem pajak memberikan dampak positif")
-        st.markdown("• Kepatuhan wajib pajak terus membaik")
+        st.markdown("• Belanja pegawai tumbuh seiring dengan reformasi birokrasi")
+        st.markdown("• Efisiensi anggaran masih dapat dioptimalkan")
+        st.markdown("• Alokasi untuk infrastruktur dan SDM prioritas")
+        st.markdown("• Fiscal sustainability tetap terjaga")
+        st.markdown("• Ruang fiskal masih tersedia untuk stimulus")
         st.markdown('</div>', unsafe_allow_html=True)
 
 elif st.session_state.main_tab == 'Ketenagakerjaan':
     chart_col, insight_col = st.columns([2.5, 1])
     sample_data = pd.DataFrame({
-        'Period': pd.date_range('2023-01', periods=12, freq='M').strftime('%Y-%m'),
-        'Value': np.random.uniform(4, 7, 12)
+        'Period': ['Agu 2022', 'Feb 2023', 'Agu 2023', 'Feb 2024'],
+        'Value': np.random.uniform(3, 7, 4)
     })
-    title = "Tingkat Pengangguran Terbuka (%)"
+    title = "TPT (%)"
     
     fig_sample = px.line(sample_data, x='Period', y='Value', title=title, markers=True)
     fig_sample.update_traces(line=dict(color='teal', width=2), marker=dict(size=5, color='teal'))
@@ -486,20 +467,20 @@ elif st.session_state.main_tab == 'Ketenagakerjaan':
     with insight_col:
         st.markdown('<div class="insight-section">', unsafe_allow_html=True)
         st.markdown("#### Insight:")
-        st.markdown("• Tingkat pengangguran menunjukkan tren menurun")
-        st.markdown("• Sektor informal masih mendominasi")
-        st.markdown("• Kualitas pekerjaan perlu ditingkatkan")
-        st.markdown("• Program pelatihan kerja perlu diperluas")
-        st.markdown("• Matching antara skill dan kebutuhan industri")
+        st.markdown("• Tingkat Pengangguran Terbuka menunjukkan tren menurun")
+        st.markdown("• Job creation di sektor formal masih terbatas")
+        st.markdown("• Skills mismatch menjadi tantangan struktural")
+        st.markdown("• Program pelatihan kerja perlu diperkuat")
+        st.markdown("• Digitalisasi ekonomi membuka peluang kerja baru")
         st.markdown('</div>', unsafe_allow_html=True)
 
 elif st.session_state.main_tab == 'Kemiskinan':
     chart_col, insight_col = st.columns([2.5, 1])
     sample_data = pd.DataFrame({
-        'Period': pd.date_range('2023-01', periods=12, freq='M').strftime('%Y-%m'),
-        'Value': np.random.uniform(8, 12, 12)
+        'Period': ['Mar 2022', 'Sep 2022', 'Mar 2023', 'Sep 2023'],
+        'Value': np.random.uniform(9, 11, 4)
     })
-    title = "Persentase Penduduk Miskin (%)"
+    title = "Persentase penduduk miskin (%)"
     
     fig_sample = px.line(sample_data, x='Period', y='Value', title=title, markers=True)
     fig_sample.update_traces(line=dict(color='teal', width=2), marker=dict(size=5, color='teal'))
@@ -511,37 +492,142 @@ elif st.session_state.main_tab == 'Kemiskinan':
     with insight_col:
         st.markdown('<div class="insight-section">', unsafe_allow_html=True)
         st.markdown("#### Insight:")
-        st.markdown("• Angka kemiskinan menunjukkan tren menurun")
-        st.markdown("• Program bantuan sosial efektif")
-        st.markdown("• Kesenjangan antar daerah masih tinggi")
-        st.markdown("• Perlu fokus pada kemiskinan ekstrem")
-        st.markdown("• Pemberdayaan ekonomi masyarakat penting")
+        st.markdown("• Angka kemiskinan menunjukkan tren penurunan gradual")
+        st.markdown("• Kesenjangan urban-rural masih signifikan")
+        st.markdown("• Program bantuan sosial efektif mengurangi kemiskinan")
+        st.markdown("• Pemberdayaan ekonomi mikro perlu diperkuat")
+        st.markdown("• Investasi SDM kunci pengentasan kemiskinan jangka panjang")
         st.markdown('</div>', unsafe_allow_html=True)
-
 elif st.session_state.main_tab == 'IPM':
-    chart_col, insight_col = st.columns([2.5, 1])
-    sample_data = pd.DataFrame({
-        'Period': pd.date_range('2023-01', periods=12, freq='M').strftime('%Y-%m'),
-        'Value': np.random.uniform(70, 75, 12)
-    })
-    title = "Indeks Pembangunan Manusia"
+    # IPM Gender Data
+    ipm_data = {
+        'Tahun': [2020, 2021, 2022, 2023],
+        'IPM_Laki_laki': [76.78, 77.03, 77.47, 77.96],
+        'IPM_Perempuan': [70.14, 70.56, 71.31, 71.95]
+    }
+    df_ipm = pd.DataFrame(ipm_data)
     
-    fig_sample = px.line(sample_data, x='Period', y='Value', title=title, markers=True)
-    fig_sample.update_traces(line=dict(color='teal', width=2), marker=dict(size=5, color='teal'))
-    fig_sample.update_layout(height=320, plot_bgcolor='white', margin=dict(l=30, r=30, t=40, b=30))
+    # Calculate gender gap
+    df_ipm['Gender_Gap'] = df_ipm['IPM_Laki_laki'] - df_ipm['IPM_Perempuan']
+    df_ipm['IPM_Total'] = (df_ipm['IPM_Laki_laki'] + df_ipm['IPM_Perempuan']) / 2
+    
+    chart_col, insight_col = st.columns([2.5, 1])
     
     with chart_col:
-        st.plotly_chart(fig_sample, use_container_width=True)
+        # Create single chart
+        fig_ipm = go.Figure()
+        
+        # Gender Gap - filled area between lines
+        fig_ipm.add_trace(go.Scatter(
+            x=df_ipm['Tahun'].tolist() + df_ipm['Tahun'].tolist()[::-1],
+            y=df_ipm['IPM_Laki_laki'].tolist() + df_ipm['IPM_Perempuan'].tolist()[::-1],
+            fill='toself',
+            fillcolor='rgba(255,0,0,0.2)',
+            line=dict(color='rgba(255,255,255,0)'),
+            name='Gender Gap',
+            hoverinfo='skip',
+            showlegend=True
+        ))
+        
+        # IPM Laki-laki line
+        fig_ipm.add_trace(go.Scatter(
+            x=df_ipm['Tahun'],
+            y=df_ipm['IPM_Laki_laki'],
+            name='IPM Laki-laki',
+            line=dict(color='#1f77b4', width=3),
+            marker=dict(size=8, color='#1f77b4'),
+            hovertemplate='<b>%{x}</b><br>IPM Laki-laki: %{y:.2f}<extra></extra>'
+        ))
+        
+        # IPM Perempuan line
+        fig_ipm.add_trace(go.Scatter(
+            x=df_ipm['Tahun'],
+            y=df_ipm['IPM_Perempuan'],
+            name='IPM Perempuan',
+            line=dict(color='#ff7f0e', width=3),
+            marker=dict(size=8, color='#ff7f0e'),
+            hovertemplate='<b>%{x}</b><br>IPM Perempuan: %{y:.2f}<extra></extra>'
+        ))
+        
+        # Add invisible points for gender gap hover info at middle position
+        fig_ipm.add_trace(go.Scatter(
+            x=df_ipm['Tahun'],
+            y=df_ipm['IPM_Total'],
+            mode='markers',
+            marker=dict(size=10, color='red', opacity=0),
+            name='Gap Info',
+            hovertemplate='<b>%{x}</b><br>Gender Gap: %{customdata:.2f} poin<extra></extra>',
+            customdata=df_ipm['Gender_Gap'],
+            showlegend=False
+        ))
+        
+        # Add trend line for total IPM
+        fig_ipm.add_trace(go.Scatter(
+            x=df_ipm['Tahun'],
+            y=df_ipm['IPM_Total'],
+            name='IPM Rata-rata',
+            line=dict(color='green', width=2, dash='dot'),
+            marker=dict(size=6, color='green'),
+            hovertemplate='<b>%{x}</b><br>IPM Rata-rata: %{y:.2f}<extra></extra>'
+        ))
+        
+        fig_ipm.update_layout(
+            title='Indeks Pembangunan Manusia Indonesia: Analisis Gender (2020-2023)',
+            height=400,
+            plot_bgcolor='white',
+            hovermode='x unified',
+            yaxis=dict(
+                title='IPM Score',
+                side='left',
+                showgrid=True,
+                gridcolor='lightgray',
+                range=[68, 80]
+            ),
+            legend=dict(
+                orientation="h",
+                yanchor="bottom",
+                y=1.02,
+                xanchor="right",
+                x=1,
+                font=dict(size=10)
+            ),
+            margin=dict(l=50, r=50, t=60, b=40)
+        )
+        
+        # Update x-axis
+        fig_ipm.update_xaxes(
+            title='Tahun',
+            showgrid=True,
+            gridcolor='lightgray',
+            dtick=1
+        )
+        
+        st.plotly_chart(fig_ipm, use_container_width=True)
         
     with insight_col:
         st.markdown('<div class="insight-section">', unsafe_allow_html=True)
-        st.markdown("#### Insight:")
-        st.markdown("• IPM Indonesia terus mengalami peningkatan")
-        st.markdown("• Komponen pendidikan menunjukkan kemajuan")
-        st.markdown("• Kesehatan masyarakat semakin membaik")
-        st.markdown("• Daya beli masyarakat relatif stabil")
-        st.markdown("• Perlu percepatan di daerah tertinggal")
+        st.markdown("#### 📈 Key Insights:")
+        
+        # Calculate insights dengan detail angka untuk setiap tahun
+        male_growth = df_ipm['IPM_Laki_laki'].iloc[-1] - df_ipm['IPM_Laki_laki'].iloc[0]
+        female_growth = df_ipm['IPM_Perempuan'].iloc[-1] - df_ipm['IPM_Perempuan'].iloc[0]
+        gap_2023 = df_ipm['Gender_Gap'].iloc[-1]
+        gap_change = df_ipm['Gender_Gap'].iloc[-1] - df_ipm['Gender_Gap'].iloc[0]
+        
+        st.markdown(f"• **Progress Positif**: IPM naik konsisten 2020-2023")
+        st.markdown(f"• **Laki-laki**: +{male_growth:.2f} poin (76.78→77.96)")
+        st.markdown(f"• **Perempuan**: +{female_growth:.2f} poin (70.14→71.95)")
+        
+        # Detail Gender Gap per tahun
+        st.markdown("• **Gender Gap Detail:**")
+        for _, row in df_ipm.iterrows():
+            st.markdown(f"  - {int(row['Tahun'])}: {row['Gender_Gap']:.2f} poin")
+        
+        if gap_change < 0:
+            st.markdown(f"• **✅ Tren Gap**: Menyempit {abs(gap_change):.2f} poin (2020-2023)")
+        else:
+            st.markdown(f"• **⚠️ Tren Gap**: Melebar {gap_change:.2f} poin (2020-2023)")
+            
+        st.markdown("• **Prioritas**: Percepatan IPM perempuan melalui pendidikan & kesehatan")
         st.markdown('</div>', unsafe_allow_html=True)
-
-st.markdown('</div>', unsafe_allow_html=True)
-
+        
