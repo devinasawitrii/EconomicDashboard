@@ -18,22 +18,13 @@ st.set_page_config(
 if 'main_tab' not in st.session_state:
     st.session_state.main_tab = 'Neraca Nasional'
 
-# BRUTAL CSS + JAVASCRIPT INJECTION TO FORCE REMOVE SPACING
+# TARGETED CSS - ONLY REMOVE TAB-TO-CONTENT SPACING
 st.markdown("""
 <style>
-    /* Remove all default padding and margins */
     .block-container { 
         padding-top: 0.5rem !important;
         padding-bottom: 0rem !important;
         max-width: 100% !important;
-    }
-    .header-container {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 5px 0px;
-        background-color: white;
-        margin-bottom: 0.5rem;
     }
     .logo-title {
         color: navy;
@@ -49,7 +40,7 @@ st.markdown("""
         text-align: center;
         font-style: italic;
         margin-top: -3px;
-        margin-bottom: 0px;
+        margin-bottom: 0.5rem;
     }
     .chart-container {
         border: none;
@@ -65,97 +56,52 @@ st.markdown("""
         text-align: center;
         padding-top: 5px;
     }
-    /* Hide streamlit elements that take up space */
+    .insight-section {
+        font-size: 14px;
+        line-height: 1.2;
+        padding: 10px;
+    }
+    
+    /* Hide streamlit elements */
     #MainMenu {visibility: hidden;}
     footer {visibility: hidden;}
     header {visibility: hidden;}
     .stDeployButton {display: none;}
     
-    /* Make insights section more compact */
-    .insight-section {
-        font-size: 14px;
-        line-height: 1.2;
+    /* SPECIFIC TARGET: Remove gap between navigation and content */
+    .nav-wrapper + div {
+        margin-top: -2rem !important;
     }
     
-    /* NUCLEAR OPTION - FORCE REMOVE ALL SPACING */
-    * {
-        margin: 0 !important;
-        padding: 0 !important;
-    }
-    
-    /* Restore only essential spacing */
-    .logo-title, .subtitle {
-        padding: 5px !important;
-    }
-    
-    .insight-section {
-        padding: 10px !important;
-    }
-    
-    /* Navigation specific removal */
-    .streamlit-option-menu,
-    div[data-testid="stHorizontalBlock"],
-    .nav-wrapper,
-    .main-content,
-    .chart-container,
-    .element-container,
-    [data-testid="column"] > div {
-        margin: 0 !important;
-        padding: 0 !important;
+    .main-content > .chart-container {
+        margin-top: 0rem !important;
+        padding-top: 0rem !important;
     }
 </style>
 
 <script>
-// JAVASCRIPT BRUTE FORCE - Run after page loads
 setTimeout(function() {
-    // Find all elements and force remove margins/padding
-    const allElements = document.querySelectorAll('*');
-    allElements.forEach(el => {
-        const computedStyle = window.getComputedStyle(el);
+    // Find the navigation wrapper and force remove bottom spacing
+    const navWrapper = document.querySelector('.nav-wrapper');
+    if (navWrapper) {
+        navWrapper.style.marginBottom = '0px';
+        navWrapper.style.paddingBottom = '0px';
         
-        // Target likely navigation containers
-        if (el.classList.contains('streamlit-option-menu') || 
-            el.getAttribute('data-testid') === 'stHorizontalBlock' ||
-            el.classList.contains('nav-wrapper') ||
-            el.classList.contains('element-container')) {
-            
-            el.style.marginTop = '0px';
-            el.style.marginBottom = '0px';
-            el.style.paddingTop = '0px';
-            el.style.paddingBottom = '0px';
+        // Target the next element after navigation
+        const nextEl = navWrapper.nextElementSibling;
+        if (nextEl) {
+            nextEl.style.marginTop = '0px';
+            nextEl.style.paddingTop = '0px';
         }
-    });
+    }
     
-    // Specific targeting for navigation menu
-    const navElements = document.querySelectorAll('.streamlit-option-menu, [data-testid="stHorizontalBlock"]');
-    navElements.forEach(nav => {
-        nav.style.marginBottom = '0px';
-        nav.style.paddingBottom = '0px';
-        
-        // Also target next sibling (content after nav)
-        if (nav.nextElementSibling) {
-            nav.nextElementSibling.style.marginTop = '0px';
-            nav.nextElementSibling.style.paddingTop = '0px';
-        }
-    });
-}, 500);
-
-// Run again after 1 second to catch dynamic elements
-setTimeout(function() {
-    const charts = document.querySelectorAll('.js-plotly-plot, .plotly, .chart-container');
-    charts.forEach(chart => {
-        chart.style.marginTop = '0px';
-        chart.style.paddingTop = '0px';
-        
-        // Target parent containers
-        let parent = chart.parentElement;
-        while (parent && parent !== document.body) {
-            parent.style.marginTop = '0px';
-            parent.style.paddingTop = '0px';
-            parent = parent.parentElement;
-        }
-    });
-}, 1000);
+    // Also target the main content directly
+    const mainContent = document.querySelector('.main-content');
+    if (mainContent) {
+        mainContent.style.marginTop = '0px';
+        mainContent.style.paddingTop = '0px';
+    }
+}, 100);
 </script>
 """, unsafe_allow_html=True)
 
