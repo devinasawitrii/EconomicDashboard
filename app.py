@@ -57,6 +57,7 @@ st.markdown("""
         padding: 0px 10px 5px 10px;
         background-color: white;
         box-shadow: none;
+        margin-top: 0rem !important;
     }
     .logo-container {
         display: flex;
@@ -93,6 +94,12 @@ st.markdown("""
         border-radius: 5px;
         margin-bottom: 10px;
         border-left: 4px solid #0070c0;
+    }
+    
+    /* Reduce spacing between navigation menu and content */
+    .main-content {
+        margin-top: -0.5rem !important;
+        padding-top: 0rem !important;
     }
 </style>
 """, unsafe_allow_html=True)
@@ -153,7 +160,7 @@ selected_main_tab = option_menu(
     default_index=default_main_index,
     orientation="horizontal",
     styles={
-        "container": {"padding": "0px !important", "background-color": "white", "margin-bottom": "0.5rem", "flex-wrap": "nowrap"},
+        "container": {"padding": "0px !important", "background-color": "white", "margin-bottom": "0rem", "flex-wrap": "nowrap"},
         "nav-link": {
             "font-size": "14px", 
             "font-weight": "bold",
@@ -184,8 +191,8 @@ if selected_main_tab != st.session_state.main_tab:
     st.session_state.main_tab = selected_main_tab
     st.rerun()
 
-# Main content area - compact layout
-st.markdown('<div class="chart-container">', unsafe_allow_html=True)
+# Main content area - compact layout with reduced top margin
+st.markdown('<div class="chart-container main-content">', unsafe_allow_html=True)
 
 # Display content based on selected main tab
 if st.session_state.main_tab == 'Neraca Nasional':
@@ -629,4 +636,5 @@ elif st.session_state.main_tab == 'IPM':
             
         st.markdown("• **Prioritas**: Percepatan IPM perempuan melalui pendidikan & kesehatan")
         st.markdown('</div>', unsafe_allow_html=True)
-        
+
+st.markdown('</div>', unsafe_allow_html=True)
