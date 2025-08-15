@@ -18,7 +18,7 @@ st.set_page_config(
 if 'main_tab' not in st.session_state:
     st.session_state.main_tab = 'Neraca Nasional'
 
-# Custom CSS for styling - STRONG SPACING REDUCTION
+# BRUTAL CSS + JAVASCRIPT INJECTION TO FORCE REMOVE SPACING
 st.markdown("""
 <style>
     /* Remove all default padding and margins */
@@ -71,90 +71,92 @@ st.markdown("""
     header {visibility: hidden;}
     .stDeployButton {display: none;}
     
-    /* Reduce spacing in sidebar and main content */
-    .css-1d391kg {padding-top: 0rem;}
-    .css-18e3th9 {padding-top: 0rem;}
-    
     /* Make insights section more compact */
     .insight-section {
         font-size: 14px;
         line-height: 1.2;
     }
     
-    /* Reduce vertical spacing for all elements */
-    .stMarkdown {
-        margin-bottom: 0.2rem !important;
+    /* NUCLEAR OPTION - FORCE REMOVE ALL SPACING */
+    * {
+        margin: 0 !important;
+        padding: 0 !important;
     }
     
-    /* Custom styling for viz selector */
-    .viz-selector {
-        background-color: #f0f8ff;
-        padding: 8px;
-        border-radius: 5px;
-        margin-bottom: 10px;
-        border-left: 4px solid #0070c0;
+    /* Restore only essential spacing */
+    .logo-title, .subtitle {
+        padding: 5px !important;
     }
     
-    /* STRONGEST CSS SELECTORS TO REMOVE TAB SPACING */
-    
-    /* Target the option menu container directly */
-    .streamlit-option-menu {
-        margin-bottom: -2rem !important;
-        padding-bottom: 0rem !important;
+    .insight-section {
+        padding: 10px !important;
     }
     
-    /* Target any div that contains the navigation */
-    div[data-testid="stHorizontalBlock"] {
-        margin-bottom: -2rem !important;
-        padding-bottom: 0rem !important;
-    }
-    
-    /* Target navigation wrapper */
-    .nav-wrapper {
-        margin-bottom: -2rem !important;
-        padding-bottom: 0rem !important;
-    }
-    
-    /* FORCE remove spacing from all elements after navigation */
-    .streamlit-option-menu ~ * {
-        margin-top: -2rem !important;
-        padding-top: 0rem !important;
-    }
-    
-    /* Target the specific container that holds navigation */
-    [data-testid="column"] > div:has(.streamlit-option-menu) {
-        margin-bottom: -2rem !important;
-    }
-    
-    /* Force reduce spacing on the main content area */
-    .main-content {
-        margin-top: -3rem !important;
-        padding-top: 0rem !important;
-    }
-    
-    /* Ensure chart containers have no top margin */
-    .chart-container {
-        margin-top: -2rem !important;
-        padding-top: 0rem !important;
-    }
-    
-    /* Additional universal spacing reduction */
-    .element-container {
-        margin-top: 0rem !important;
-        margin-bottom: 0rem !important;
-    }
-    
-    /* Target specific plotly containers */
-    .js-plotly-plot {
-        margin-top: 0rem !important;
-    }
-    
-    /* Ensure columns have minimal spacing */
+    /* Navigation specific removal */
+    .streamlit-option-menu,
+    div[data-testid="stHorizontalBlock"],
+    .nav-wrapper,
+    .main-content,
+    .chart-container,
+    .element-container,
     [data-testid="column"] > div {
-        padding-top: 0rem !important;
-        margin-top: 0rem !important;
+        margin: 0 !important;
+        padding: 0 !important;
     }
 </style>
+
+<script>
+// JAVASCRIPT BRUTE FORCE - Run after page loads
+setTimeout(function() {
+    // Find all elements and force remove margins/padding
+    const allElements = document.querySelectorAll('*');
+    allElements.forEach(el => {
+        const computedStyle = window.getComputedStyle(el);
+        
+        // Target likely navigation containers
+        if (el.classList.contains('streamlit-option-menu') || 
+            el.getAttribute('data-testid') === 'stHorizontalBlock' ||
+            el.classList.contains('nav-wrapper') ||
+            el.classList.contains('element-container')) {
+            
+            el.style.marginTop = '0px';
+            el.style.marginBottom = '0px';
+            el.style.paddingTop = '0px';
+            el.style.paddingBottom = '0px';
+        }
+    });
+    
+    // Specific targeting for navigation menu
+    const navElements = document.querySelectorAll('.streamlit-option-menu, [data-testid="stHorizontalBlock"]');
+    navElements.forEach(nav => {
+        nav.style.marginBottom = '0px';
+        nav.style.paddingBottom = '0px';
+        
+        // Also target next sibling (content after nav)
+        if (nav.nextElementSibling) {
+            nav.nextElementSibling.style.marginTop = '0px';
+            nav.nextElementSibling.style.paddingTop = '0px';
+        }
+    });
+}, 500);
+
+// Run again after 1 second to catch dynamic elements
+setTimeout(function() {
+    const charts = document.querySelectorAll('.js-plotly-plot, .plotly, .chart-container');
+    charts.forEach(chart => {
+        chart.style.marginTop = '0px';
+        chart.style.paddingTop = '0px';
+        
+        // Target parent containers
+        let parent = chart.parentElement;
+        while (parent && parent !== document.body) {
+            parent.style.marginTop = '0px';
+            parent.style.paddingTop = '0px';
+            parent = parent.parentElement;
+        }
+    });
+}, 1000);
+</script>
 """, unsafe_allow_html=True)
 
 # Data PDB Indonesia
