@@ -57,6 +57,7 @@ st.markdown("""
         padding: 0px 10px 5px 10px;
         background-color: white;
         box-shadow: none;
+        margin-top: -10px !important;
     }
     .logo-container {
         display: flex;
@@ -629,4 +630,5 @@ elif st.session_state.main_tab == 'IPM':
             
         st.markdown("• **Prioritas**: Percepatan IPM perempuan melalui pendidikan & kesehatan")
         st.markdown('</div>', unsafe_allow_html=True)
-        
+
+st.markdown('</div>', unsafe_allow_html=True)
