@@ -18,7 +18,7 @@ st.set_page_config(
 if 'main_tab' not in st.session_state:
     st.session_state.main_tab = 'Neraca Nasional'
 
-# Custom CSS for styling - optimized for no scroll
+# Custom CSS for styling - STRONG SPACING REDUCTION
 st.markdown("""
 <style>
     /* Remove all default padding and margins */
@@ -95,32 +95,64 @@ st.markdown("""
         border-left: 4px solid #0070c0;
     }
     
-    /* REDUCE SPACING BETWEEN TABS AND CONTENT - STRONGER SELECTORS */
-    [data-testid="stHorizontalBlock"]:has(.nav-link) {
-        margin-bottom: -1rem !important;
-    }
+    /* STRONGEST CSS SELECTORS TO REMOVE TAB SPACING */
     
-    /* Force reduce spacing after option menu container */
+    /* Target the option menu container directly */
     .streamlit-option-menu {
-        margin-bottom: -0.5rem !important;
+        margin-bottom: -2rem !important;
         padding-bottom: 0rem !important;
     }
     
-    /* Target element immediately after navigation */
-    .streamlit-option-menu + * {
-        margin-top: -0.5rem !important;
+    /* Target any div that contains the navigation */
+    div[data-testid="stHorizontalBlock"] {
+        margin-bottom: -2rem !important;
+        padding-bottom: 0rem !important;
+    }
+    
+    /* Target navigation wrapper */
+    .nav-wrapper {
+        margin-bottom: -2rem !important;
+        padding-bottom: 0rem !important;
+    }
+    
+    /* FORCE remove spacing from all elements after navigation */
+    .streamlit-option-menu ~ * {
+        margin-top: -2rem !important;
         padding-top: 0rem !important;
     }
     
-    /* Reduce spacing on chart container */
+    /* Target the specific container that holds navigation */
+    [data-testid="column"] > div:has(.streamlit-option-menu) {
+        margin-bottom: -2rem !important;
+    }
+    
+    /* Force reduce spacing on the main content area */
+    .main-content {
+        margin-top: -3rem !important;
+        padding-top: 0rem !important;
+    }
+    
+    /* Ensure chart containers have no top margin */
     .chart-container {
-        margin-top: -1rem !important;
+        margin-top: -2rem !important;
         padding-top: 0rem !important;
     }
     
-    /* Force reduce gap between navigation and content */
-    .element-container:has(.streamlit-option-menu) + .element-container {
-        margin-top: -1rem !important;
+    /* Additional universal spacing reduction */
+    .element-container {
+        margin-top: 0rem !important;
+        margin-bottom: 0rem !important;
+    }
+    
+    /* Target specific plotly containers */
+    .js-plotly-plot {
+        margin-top: 0rem !important;
+    }
+    
+    /* Ensure columns have minimal spacing */
+    [data-testid="column"] > div {
+        padding-top: 0rem !important;
+        margin-top: 0rem !important;
     }
 </style>
 """, unsafe_allow_html=True)
@@ -172,7 +204,8 @@ try:
 except ValueError:
     default_main_index = 0
 
-# Compact option menu
+# Compact option menu with wrapper class
+st.markdown('<div class="nav-wrapper">', unsafe_allow_html=True)
 selected_main_tab = option_menu(
     menu_title=None,
     options=main_tabs_list,
@@ -181,7 +214,7 @@ selected_main_tab = option_menu(
     default_index=default_main_index,
     orientation="horizontal",
     styles={
-        "container": {"padding": "0px !important", "background-color": "white", "margin-bottom": "0rem", "flex-wrap": "nowrap"},
+        "container": {"padding": "0px !important", "background-color": "white", "margin-bottom": "-2rem !important", "flex-wrap": "nowrap"},
         "nav-link": {
             "font-size": "14px", 
             "font-weight": "bold",
@@ -206,18 +239,19 @@ selected_main_tab = option_menu(
         }
     }
 )
+st.markdown('</div>', unsafe_allow_html=True)
 
 # Update session state if main tab changed
 if selected_main_tab != st.session_state.main_tab:
     st.session_state.main_tab = selected_main_tab
     st.rerun()
 
-# Main content area - compact layout with VERY reduced top margin
+# Main content area - FORCED minimal spacing
 st.markdown("""
-<div style="margin-top: -2rem !important; padding-top: 0rem !important;">
+<div class="main-content" style="margin-top: -3rem !important; padding-top: 0rem !important;">
 """, unsafe_allow_html=True)
 
-st.markdown('<div class="chart-container" style="margin-top: -1rem !important; padding-top: 0rem !important;">', unsafe_allow_html=True)
+st.markdown('<div class="chart-container" style="margin-top: -3rem !important; padding-top: 0rem !important;">', unsafe_allow_html=True)
 
 # Display content based on selected main tab
 if st.session_state.main_tab == 'Neraca Nasional':
@@ -529,6 +563,7 @@ elif st.session_state.main_tab == 'Kemiskinan':
         st.markdown("• Pemberdayaan ekonomi mikro perlu diperkuat")
         st.markdown("• Investasi SDM kunci pengentasan kemiskinan jangka panjang")
         st.markdown('</div>', unsafe_allow_html=True)
+        
 elif st.session_state.main_tab == 'IPM':
     # IPM Gender Data
     ipm_data = {
