@@ -57,7 +57,6 @@ st.markdown("""
         padding: 0px 10px 5px 10px;
         background-color: white;
         box-shadow: none;
-        margin-top: -30px !important;
     }
     .logo-container {
         display: flex;
@@ -154,7 +153,7 @@ selected_main_tab = option_menu(
     default_index=default_main_index,
     orientation="horizontal",
     styles={
-        "container": {"padding": "0px !important", "background-color": "white", "margin-bottom": "-20px !important", "flex-wrap": "nowrap"},
+        "container": {"padding": "0px !important", "background-color": "white", "margin-bottom": "0.5rem", "flex-wrap": "nowrap"},
         "nav-link": {
             "font-size": "14px", 
             "font-weight": "bold",
@@ -285,7 +284,7 @@ if st.session_state.main_tab == 'Neraca Nasional':
                 x=1,
                 font=dict(size=10)
             ),
-            margin=dict(l=50, r=50, t=-0, b=40)
+            margin=dict(l=50, r=50, t=60, b=40)
         )
         
         # Update x-axis
@@ -630,5 +629,4 @@ elif st.session_state.main_tab == 'IPM':
             
         st.markdown("• **Prioritas**: Percepatan IPM perempuan melalui pendidikan & kesehatan")
         st.markdown('</div>', unsafe_allow_html=True)
-
-st.markdown('</div>', unsafe_allow_html=True)
+        
