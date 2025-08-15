@@ -33,7 +33,7 @@ st.markdown("""
         align-items: center;
         padding: 5px 0px;
         background-color: white;
-        margin-bottom: 0.5rem;
+        margin-bottom: 0rem;
     }
     .logo-title {
         color: navy;
@@ -57,6 +57,7 @@ st.markdown("""
         padding: 0px 10px 5px 10px;
         background-color: white;
         box-shadow: none;
+        margin-top: -10px !important;
     }
     .logo-container {
         display: flex;
