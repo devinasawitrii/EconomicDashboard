@@ -52,7 +52,7 @@ st.markdown("""
         padding: 0px 10px 5px 10px;
         background-color: white;
         box-shadow: none;
-        margin-top: 0rem !important;
+        margin-top: -5rem !important;
     }
 
     /* Logo */
@@ -79,7 +79,7 @@ st.markdown("""
     
     /* Target jarak antara menu navigasi dan konten */
     .streamlit-option-menu + div {
-        margin-top: -0.5rem !important;
+        margin-top: -5rem !important;
     }
 </style>
 """, unsafe_allow_html=True)
