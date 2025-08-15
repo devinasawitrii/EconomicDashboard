@@ -95,24 +95,32 @@ st.markdown("""
         border-left: 4px solid #0070c0;
     }
     
-    /* REDUCE SPACING BETWEEN TABS AND CONTENT */
-    .stTabs [data-baseweb="tab-list"] {
-        margin-bottom: 0rem !important;
+    /* REDUCE SPACING BETWEEN TABS AND CONTENT - STRONGER SELECTORS */
+    [data-testid="stHorizontalBlock"]:has(.nav-link) {
+        margin-bottom: -1rem !important;
     }
     
-    /* Reduce margin after option menu */
-    .nav-link {
-        margin-bottom: 0px !important;
+    /* Force reduce spacing after option menu container */
+    .streamlit-option-menu {
+        margin-bottom: -0.5rem !important;
+        padding-bottom: 0rem !important;
     }
     
-    /* Reduce spacing after navigation */
-    div[data-testid="stHorizontalBlock"] + div {
+    /* Target element immediately after navigation */
+    .streamlit-option-menu + * {
         margin-top: -0.5rem !important;
+        padding-top: 0rem !important;
     }
     
-    /* Target the main content area to reduce top margin */
-    .main .block-container > div:first-child {
-        margin-top: -0.5rem !important;
+    /* Reduce spacing on chart container */
+    .chart-container {
+        margin-top: -1rem !important;
+        padding-top: 0rem !important;
+    }
+    
+    /* Force reduce gap between navigation and content */
+    .element-container:has(.streamlit-option-menu) + .element-container {
+        margin-top: -1rem !important;
     }
 </style>
 """, unsafe_allow_html=True)
@@ -204,8 +212,12 @@ if selected_main_tab != st.session_state.main_tab:
     st.session_state.main_tab = selected_main_tab
     st.rerun()
 
-# Main content area - compact layout with reduced top margin
-st.markdown('<div class="chart-container" style="margin-top: 0rem;">', unsafe_allow_html=True)
+# Main content area - compact layout with VERY reduced top margin
+st.markdown("""
+<div style="margin-top: -2rem !important; padding-top: 0rem !important;">
+""", unsafe_allow_html=True)
+
+st.markdown('<div class="chart-container" style="margin-top: -1rem !important; padding-top: 0rem !important;">', unsafe_allow_html=True)
 
 # Display content based on selected main tab
 if st.session_state.main_tab == 'Neraca Nasional':
@@ -363,7 +375,7 @@ if st.session_state.main_tab == 'Neraca Nasional':
             zmid=3,
             colorbar=dict(
                 title="Growth (%)",
-                titleside="right",
+                side="right",
                 len=0.7
             ),
             hovertemplate='<b>%{y} %{x}</b><br>Growth: %{z:.1f}%<extra></extra>',
@@ -650,4 +662,5 @@ elif st.session_state.main_tab == 'IPM':
         st.markdown("• **Prioritas**: Percepatan IPM perempuan melalui pendidikan & kesehatan")
         st.markdown('</div>', unsafe_allow_html=True)
 
+st.markdown('</div>', unsafe_allow_html=True)
 st.markdown('</div>', unsafe_allow_html=True)
