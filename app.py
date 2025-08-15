@@ -23,7 +23,7 @@ st.markdown("""
 <style>
     /* Remove all default padding and margins */
     .block-container { 
-        padding-top: 0rem !important;
+        padding-top: 0.5rem !important;
         padding-bottom: 0rem !important;
         max-width: 100% !important;
     }
@@ -33,7 +33,7 @@ st.markdown("""
         align-items: center;
         padding: 5px 0px;
         background-color: white;
-        margin-bottom: 0rem;
+        margin-bottom: 0.5rem;
     }
     .logo-title {
         color: navy;
@@ -57,7 +57,6 @@ st.markdown("""
         padding: 0px 10px 5px 10px;
         background-color: white;
         box-shadow: none;
-        margin-top: -20px !important;
     }
     .logo-container {
         display: flex;
@@ -94,24 +93,6 @@ st.markdown("""
         border-radius: 5px;
         margin-bottom: 10px;
         border-left: 4px solid #0070c0;
-    }
-    
-    /* Hilangin jarak setelah menu navigasi */
-    div[data-testid="stHorizontalBlock"] + div {
-        margin-top: -15px !important;
-        padding-top: 0 !important;
-    }
-
-
-
-    /* Reduce spacing after option menu */
-    .nav-tabs {
-        margin-bottom: -10px !important;
-    }
-    
-    /* Reduce spacing in plotly charts */
-    .js-plotly-plot .plotly .main-svg {
-        margin-top: -10px !important;
     }
 </style>
 """, unsafe_allow_html=True)
@@ -172,7 +153,7 @@ selected_main_tab = option_menu(
     default_index=default_main_index,
     orientation="horizontal",
     styles={
-        "container": {"padding": "0px !important", "background-color": "white", "margin-bottom": "-10px !important", "flex-wrap": "nowrap"},
+        "container": {"padding": "0px !important", "background-color": "white", "margin-bottom": "0.5rem", "flex-wrap": "nowrap"},
         "nav-link": {
             "font-size": "14px", 
             "font-weight": "bold",
