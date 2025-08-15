@@ -18,7 +18,7 @@ st.set_page_config(
 if 'main_tab' not in st.session_state:
     st.session_state.main_tab = 'Neraca Nasional'
 
-# TARGETED CSS - HANYA GAP TAB KE KONTEN
+# SIMPLE CSS + TARGETED JAVASCRIPT
 st.markdown("""
 <style>
     .block-container { 
@@ -67,17 +67,51 @@ st.markdown("""
     footer {visibility: hidden;}
     header {visibility: hidden;}
     .stDeployButton {display: none;}
-    
-    /* HANYA TARGET GAP SETELAH MENU NAVIGASI */
-    .streamlit-option-menu + div {
-        margin-top: -1rem !important;
-    }
-    
-    .nav-wrapper + .element-container {
-        margin-top: -1rem !important;
-    }
-    
 </style>
+
+<script>
+// Target HANYA gap setelah navigation menu
+setTimeout(function() {
+    // Cari elemen yang mengandung option menu
+    const navElements = document.querySelectorAll('div');
+    
+    navElements.forEach(function(element) {
+        // Jika element ini mengandung navigation menu
+        if (element.querySelector('.nav-link') || element.querySelector('.streamlit-option-menu')) {
+            console.log('Found nav element:', element);
+            
+            // Cari elemen berikutnya (yang berisi chart)
+            let nextSibling = element.nextElementSibling;
+            while (nextSibling) {
+                console.log('Checking next sibling:', nextSibling);
+                
+                // Jika elemen ini berisi chart atau konten utama
+                if (nextSibling.textContent.includes('Analisis Komprehensif') || 
+                    nextSibling.textContent.includes('Comprehensive Analysis') ||
+                    nextSibling.querySelector('.plotly')) {
+                    
+                    console.log('Found content element, reducing gap');
+                    nextSibling.style.marginTop = '-20px';
+                    nextSibling.style.paddingTop = '0px';
+                    break;
+                }
+                nextSibling = nextSibling.nextElementSibling;
+            }
+        }
+    });
+}, 1000);
+
+// Jalankan lagi setelah delay lebih lama
+setTimeout(function() {
+    const allDivs = document.querySelectorAll('div');
+    allDivs.forEach(function(div) {
+        if (div.textContent.includes('Analisis Komprehensif')) {
+            div.style.marginTop = '-20px';
+            div.style.paddingTop = '0px';
+        }
+    });
+}, 2000);
+</script>
 """, unsafe_allow_html=True)
 
 # Data PDB Indonesia
