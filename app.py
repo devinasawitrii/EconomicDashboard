@@ -23,7 +23,7 @@ st.markdown("""
 <style>
     /* Remove all default padding and margins */
     .block-container { 
-        padding-top: 0.5rem !important;
+        padding-top: 0rem !important;
         padding-bottom: 0rem !important;
         max-width: 100% !important;
     }
