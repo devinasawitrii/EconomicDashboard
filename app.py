@@ -252,7 +252,7 @@ if st.session_state.main_tab == 'Neraca Nasional':
         )
         
         # Zero line reference
-        fig1.add_hline(y=0, line_dash="solid", line_color="gray", line_width=1, opacity=0.5, yref='y1')
+        fig1.add_hline(y=0, line_dash="solid", line_color="gray", line_width=1, opacity=0.5, yref='y0')
         
         fig1.update_layout(
             title='Analisis Komprehensif: Pertumbuhan & Skala Ekonomi Indonesia',
