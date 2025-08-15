@@ -18,14 +18,16 @@ st.set_page_config(
 if 'main_tab' not in st.session_state:
     st.session_state.main_tab = 'Neraca Nasional'
 
-# ULTIMATE GAP KILLER CSS
 st.markdown("""
 <style>
+    /* Atur container utama */
     .block-container { 
         padding-top: 0.5rem !important;
         padding-bottom: 0rem !important;
         max-width: 100% !important;
     }
+
+    /* Judul & subtitle */
     .logo-title {
         color: navy;
         font-size: 28px;
@@ -42,6 +44,8 @@ st.markdown("""
         margin-top: -3px;
         margin-bottom: 0.5rem;
     }
+
+    /* Container chart */
     .chart-container {
         border: none;
         border-radius: 0px;
@@ -50,6 +54,8 @@ st.markdown("""
         box-shadow: none;
         margin-top: 0rem !important;
     }
+
+    /* Logo */
     .logo-container {
         display: flex;
         flex-direction: column;
@@ -57,50 +63,27 @@ st.markdown("""
         text-align: center;
         padding-top: 5px;
     }
+
+    /* Insight section */
     .insight-section {
         font-size: 14px;
         line-height: 1.2;
         padding: 10px;
     }
     
-    /* Hide streamlit elements */
+    /* Sembunyikan elemen default Streamlit */
     #MainMenu {visibility: hidden;}
     footer {visibility: hidden;}
     header {visibility: hidden;}
     .stDeployButton {display: none;}
     
-    /* NUCLEAR OPTION - Target everything */
-    .stApp > div {
-        gap: 0rem !important;
-    }
-    
-    .main .block-container {
-        padding-top: 0rem !important;
-        gap: 0rem !important;
-    }
-    
-    /* Target every possible Streamlit spacing */
-    .element-container,
-    div[data-testid="stVerticalBlock"],
-    div[data-testid="stVerticalBlockBorderWrapper"],
-    div[data-testid="stHorizontalBlock"],
-    .row-widget,
-    section[data-testid="stSidebar"] + div,
-    .stSelectbox,
-    .streamlit-option-menu {
-        margin: 0px !important;
-        padding-bottom: 0px !important;
-        gap: 0rem !important;
-    }
-    
-    /* ✅ Ganti jadi ini */
+    /* Target jarak antara menu navigasi dan konten */
     .streamlit-option-menu + div {
         margin-top: -0.5rem !important;
     }
-
-    
 </style>
 """, unsafe_allow_html=True)
+
 
 # Data PDB Indonesia
 pdb_data = {
