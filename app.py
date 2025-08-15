@@ -57,7 +57,6 @@ st.markdown("""
         padding: 0px 10px 5px 10px;
         background-color: white;
         box-shadow: none;
-        margin-top: -10px !important; /* Menaikkan konten lebih ke atas */
     }
     .logo-container {
         display: flex;
@@ -104,6 +103,16 @@ st.markdown("""
     /* Mengurangi margin bottom pada option menu container */
     div[data-testid="stHorizontalBlock"] {
         margin-bottom: -15px !important;
+    }
+    
+    /* Menaikkan konten yang ada setelah option menu */
+    .chart-container > div:first-child {
+        margin-top: -20px !important;
+    }
+    
+    /* Menaikkan semua elemen di dalam main content area */
+    .main .block-container > div:nth-child(n+4) {
+        margin-top: -15px !important;
     }
 </style>
 """, unsafe_allow_html=True)
@@ -195,8 +204,8 @@ if selected_main_tab != st.session_state.main_tab:
     st.session_state.main_tab = selected_main_tab
     st.rerun()
 
-# Main content area - compact layout dengan margin top yang dikurangi
-st.markdown('<div class="chart-container">', unsafe_allow_html=True)
+# Main content area - compact layout dengan konten yang dinaikkan
+st.markdown('<div class="chart-container" style="margin-top: -20px !important;">', unsafe_allow_html=True)
 
 # Display content based on selected main tab
 if st.session_state.main_tab == 'Neraca Nasional':
