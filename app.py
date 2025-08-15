@@ -154,7 +154,7 @@ selected_main_tab = option_menu(
     default_index=default_main_index,
     orientation="horizontal",
     styles={
-        "container": {"padding": "0px !important", "background-color": "white", "margin-bottom": "0rem", "flex-wrap": "nowrap"},
+        "container": {"padding": "0px !important", "background-color": "white", "margin-bottom": "-20px !important", "flex-wrap": "nowrap"},
         "nav-link": {
             "font-size": "14px", 
             "font-weight": "bold",
