@@ -18,7 +18,7 @@ st.set_page_config(
 if 'main_tab' not in st.session_state:
     st.session_state.main_tab = 'Neraca Nasional'
 
-# AGGRESSIVE CSS - MINIMIZE ALL GAPS
+# ULTIMATE GAP KILLER CSS
 st.markdown("""
 <style>
     .block-container { 
@@ -69,84 +69,39 @@ st.markdown("""
     header {visibility: hidden;}
     .stDeployButton {display: none;}
     
-    /* AGGRESSIVE GAP REMOVAL */
-    .nav-wrapper {
-        margin-bottom: 0px !important;
-        padding-bottom: 0px !important;
-    }
-    
-    .nav-wrapper + div {
-        margin-top: 0px !important;
-        padding-top: 0px !important;
-    }
-    
-    .main-content {
-        margin-top: 0px !important;
-        padding-top: 0px !important;
-    }
-    
-    .main-content .chart-container {
-        margin-top: 0px !important;
-        padding-top: 0px !important;
-    }
-    
-    /* Target Streamlit's internal spacing */
-    div[data-testid="stHorizontalBlock"] {
+    /* NUCLEAR OPTION - Target everything */
+    .stApp > div {
         gap: 0rem !important;
     }
     
-    .element-container {
-        margin-bottom: 0rem !important;
+    .main .block-container {
+        padding-top: 0rem !important;
+        gap: 0rem !important;
     }
     
-    /* Remove default Streamlit spacing after elements */
-    .stSelectbox > div {
-        margin-bottom: 0rem !important;
+    /* Target every possible Streamlit spacing */
+    .element-container,
+    div[data-testid="stVerticalBlock"],
+    div[data-testid="stVerticalBlockBorderWrapper"],
+    div[data-testid="stHorizontalBlock"],
+    .row-widget,
+    section[data-testid="stSidebar"] + div,
+    .stSelectbox,
+    .streamlit-option-menu {
+        margin: 0px !important;
+        padding-bottom: 0px !important;
+        gap: 0rem !important;
     }
+    
+    /* Specifically target the menu and content gap */
+    .streamlit-option-menu + div,
+    .nav-wrapper + div,
+    .nav-wrapper + .element-container {
+        margin-top: -1rem !important;
+        padding-top: 0px !important;
+    }
+    
 </style>
-
-<script>
-setTimeout(function() {
-    // More aggressive JavaScript gap removal
-    const navWrapper = document.querySelector('.nav-wrapper');
-    if (navWrapper) {
-        navWrapper.style.marginBottom = '0px';
-        navWrapper.style.paddingBottom = '0px';
-        
-        // Target ALL siblings after navigation
-        let nextEl = navWrapper.nextElementSibling;
-        while (nextEl) {
-            nextEl.style.marginTop = '0px';
-            nextEl.style.paddingTop = '0px';
-            nextEl = nextEl.nextElementSibling;
-        }
-    }
-    
-    // Target all potential content containers
-    const containers = document.querySelectorAll('.main-content, .chart-container, [data-testid="stHorizontalBlock"]');
-    containers.forEach(container => {
-        container.style.marginTop = '0px';
-        container.style.paddingTop = '0px';
-    });
-    
-    // Remove gaps from element containers
-    const elements = document.querySelectorAll('.element-container');
-    elements.forEach(el => {
-        el.style.marginBottom = '0px';
-        el.style.paddingBottom = '0px';
-    });
-    
-}, 100);
-
-// Run again after a longer delay to catch dynamically loaded content
-setTimeout(function() {
-    const containers = document.querySelectorAll('.main-content, .chart-container');
-    containers.forEach(container => {
-        container.style.marginTop = '0px !important';
-        container.style.paddingTop = '0px !important';
-    });
-}, 500);
-</script>
 """, unsafe_allow_html=True)
 
 # Data PDB Indonesia
