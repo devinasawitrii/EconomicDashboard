@@ -21,10 +21,10 @@ if 'main_tab' not in st.session_state:
 st.markdown("""
 <style>
     /* Atur container utama */
-    .block-container { 
-        padding-top: 0rem !important;
-        padding-bottom: 0rem !important;
-        max-width: 100% !important;
+    .block-container {
+        position: relative !important;
+        top: -50px !important; /* naikin 50px, atur sesuai kebutuhan */
+
     }
 
     /* Judul & subtitle */
