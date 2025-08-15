@@ -48,7 +48,7 @@ st.markdown("""
         font-size: 16px;
         text-align: center;
         font-style: italic;
-        margin-top: -100px;
+        margin-top: -3px;
         margin-bottom: 0px;
     }
     .chart-container {
