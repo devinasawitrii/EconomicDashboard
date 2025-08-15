@@ -95,7 +95,11 @@ st.markdown("""
         margin-bottom: 10px;
         border-left: 4px solid #0070c0;
     }
-    
+    div[data-testid="stHorizontalBlock"] {
+        margin-bottom: 0rem !important;
+        padding-bottom: 0rem !important;
+    }
+
     /* Reduce spacing after option menu */
     .nav-tabs {
         margin-bottom: -10px !important;
