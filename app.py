@@ -33,7 +33,7 @@ st.markdown("""
         align-items: center;
         padding: 5px 0px;
         background-color: white;
-        margin-bottom: 0.5rem;
+        margin-bottom: 0.2rem;
     }
     .logo-title {
         color: navy;
@@ -57,6 +57,7 @@ st.markdown("""
         padding: 0px 10px 5px 10px;
         background-color: white;
         box-shadow: none;
+        margin-top: 0.1rem !important;
     }
     .logo-container {
         display: flex;
@@ -83,7 +84,7 @@ st.markdown("""
     
     /* Reduce vertical spacing for all elements */
     .stMarkdown {
-        margin-bottom: 0.2rem !important;
+        margin-bottom: 0.1rem !important;
     }
     
     /* Custom styling for viz selector */
@@ -93,6 +94,22 @@ st.markdown("""
         border-radius: 5px;
         margin-bottom: 10px;
         border-left: 4px solid #0070c0;
+    }
+    
+    /* Reduce spacing between navigation and content */
+    div[data-testid="stHorizontalBlock"] {
+        margin-top: 0.1rem !important;
+        margin-bottom: 0.1rem !important;
+    }
+    
+    /* Target the option menu container specifically */
+    .nav-link {
+        margin-bottom: 0px !important;
+    }
+    
+    /* Reduce overall spacing between sections */
+    .main .block-container {
+        padding-top: 0.2rem !important;
     }
 </style>
 """, unsafe_allow_html=True)
@@ -119,7 +136,7 @@ with col1:
     # AIG Logo - Smaller size
     st.markdown("""
     <div class="logo-container">
-        <img src="aig_logo.png" alt="AIG Logo" style="width: 70px; height: 70px; object-fit: contain;">
+        <img src="https://placehold.co/70x70" alt="AIG corporate logo with shield symbol and blue color scheme" style="width: 70px; height: 70px; object-fit: contain;">
     </div>
     """, unsafe_allow_html=True)
 
@@ -132,7 +149,7 @@ with col3:
     # BPS Logo - Smaller size
     st.markdown("""
     <div class="logo-container">
-        <img src="bps_logo.png" alt="BPS Logo" style="width: 85px; height: 70px; object-fit: contain;">
+        <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/f9c8175d-50b4-49f3-be95-4b224bb97e76.png" alt="Indonesian Statistics Bureau BPS official logo with Indonesian coat of arms design" style="width: 85px; height: 70px; object-fit: contain;">
     </div>
     """, unsafe_allow_html=True)
 
@@ -153,7 +170,7 @@ selected_main_tab = option_menu(
     default_index=default_main_index,
     orientation="horizontal",
     styles={
-        "container": {"padding": "0px !important", "background-color": "white", "margin-bottom": "0.5rem", "flex-wrap": "nowrap"},
+        "container": {"padding": "0px !important", "background-color": "white", "margin-bottom": "0.1rem !important", "flex-wrap": "nowrap"},
         "nav-link": {
             "font-size": "14px", 
             "font-weight": "bold",
@@ -629,4 +646,6 @@ elif st.session_state.main_tab == 'IPM':
             
         st.markdown("• **Prioritas**: Percepatan IPM perempuan melalui pendidikan & kesehatan")
         st.markdown('</div>', unsafe_allow_html=True)
-        
+
+st.markdown('</div>', unsafe_allow_html=True)
+
