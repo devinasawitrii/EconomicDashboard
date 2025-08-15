@@ -18,22 +18,13 @@ st.set_page_config(
 if 'main_tab' not in st.session_state:
     st.session_state.main_tab = 'Neraca Nasional'
 
-# Custom CSS for styling - optimized for no scroll
+# ULTIMATE GAP KILLER CSS
 st.markdown("""
 <style>
-    /* Remove all default padding and margins */
     .block-container { 
         padding-top: 0.5rem !important;
         padding-bottom: 0rem !important;
         max-width: 100% !important;
-    }
-    .header-container {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 5px 0px;
-        background-color: white;
-        margin-bottom: 0.5rem;
     }
     .logo-title {
         color: navy;
@@ -49,7 +40,7 @@ st.markdown("""
         text-align: center;
         font-style: italic;
         margin-top: -3px;
-        margin-bottom: 0px;
+        margin-bottom: 0.5rem;
     }
     .chart-container {
         border: none;
@@ -57,6 +48,7 @@ st.markdown("""
         padding: 0px 10px 5px 10px;
         background-color: white;
         box-shadow: none;
+        margin-top: 0rem !important;
     }
     .logo-container {
         display: flex;
@@ -65,35 +57,48 @@ st.markdown("""
         text-align: center;
         padding-top: 5px;
     }
-    /* Hide streamlit elements that take up space */
+    .insight-section {
+        font-size: 14px;
+        line-height: 1.2;
+        padding: 10px;
+    }
+    
+    /* Hide streamlit elements */
     #MainMenu {visibility: hidden;}
     footer {visibility: hidden;}
     header {visibility: hidden;}
     .stDeployButton {display: none;}
     
-    /* Reduce spacing in sidebar and main content */
-    .css-1d391kg {padding-top: 0rem;}
-    .css-18e3th9 {padding-top: 0rem;}
-    
-    /* Make insights section more compact */
-    .insight-section {
-        font-size: 14px;
-        line-height: 1.2;
+    /* NUCLEAR OPTION - Target everything */
+    .stApp > div {
+        gap: 0rem !important;
     }
     
-    /* Reduce vertical spacing for all elements */
-    .stMarkdown {
-        margin-bottom: 0.2rem !important;
+    .main .block-container {
+        padding-top: 0rem !important;
+        gap: 0rem !important;
     }
     
-    /* Custom styling for viz selector */
-    .viz-selector {
-        background-color: #f0f8ff;
-        padding: 8px;
-        border-radius: 5px;
-        margin-bottom: 10px;
-        border-left: 4px solid #0070c0;
+    /* Target every possible Streamlit spacing */
+    .element-container,
+    div[data-testid="stVerticalBlock"],
+    div[data-testid="stVerticalBlockBorderWrapper"],
+    div[data-testid="stHorizontalBlock"],
+    .row-widget,
+    section[data-testid="stSidebar"] + div,
+    .stSelectbox,
+    .streamlit-option-menu {
+        margin: 0px !important;
+        padding-bottom: 0px !important;
+        gap: 0rem !important;
     }
+    
+    /* ✅ Ganti jadi ini */
+    .streamlit-option-menu + div {
+        margin-top: -0.5rem !important;
+    }
+
+    
 </style>
 """, unsafe_allow_html=True)
 
