@@ -18,7 +18,7 @@ st.set_page_config(
 if 'main_tab' not in st.session_state:
     st.session_state.main_tab = 'Neraca Nasional'
 
-# BRUTAL FORCE CSS - LANGSUNG SERANG GAP NYA
+# BASIC CSS - JANGAN SENTUH YANG LAIN, FOKUS TAB-CONTENT GAP AJA
 st.markdown("""
 <style>
     .block-container { 
@@ -68,56 +68,22 @@ st.markdown("""
     header {visibility: hidden;}
     .stDeployButton {display: none;}
     
-    /* DEATH TO GAP - BRUTAL APPROACH */
-    div.element-container:has(.streamlit-option-menu) + div.element-container {
-        margin-top: -3rem !important;
-        padding-top: 0px !important;
-    }
-    
-    /* Alternative brutal selectors */
-    [data-testid="stHorizontalBlock"]:first-of-type {
-        margin-bottom: -2rem !important;
-    }
-    
-    /* Nuclear option - remove ALL gaps from main content area */
-    .main .block-container > .element-container:nth-child(3) {
-        margin-top: -2rem !important;
-    }
-    
-    /* Streamlit option menu specific */
-    .streamlit-option-menu {
-        margin-bottom: -2rem !important;
-    }
 </style>
 
 <script>
-// JAVASCRIPT NUCLEAR OPTION
 setTimeout(function() {
-    // Find any element with option menu and kill the gap after it
-    const allElements = document.querySelectorAll('*');
-    allElements.forEach(el => {
-        if (el.classList.contains('streamlit-option-menu') || el.innerHTML.includes('Neraca Nasional')) {
-            const parent = el.closest('.element-container');
-            if (parent && parent.nextElementSibling) {
-                parent.nextElementSibling.style.marginTop = '-3rem';
-                parent.nextElementSibling.style.paddingTop = '0px';
+    // HANYA CARI KONTEN SETELAH NAV DAN PAKSA NAIK
+    const charts = document.querySelectorAll('*');
+    charts.forEach(el => {
+        if (el.textContent && el.textContent.includes('Analisis Komprehensif')) {
+            const container = el.closest('.element-container');
+            if (container) {
+                container.style.marginTop = '-2rem';
+                container.style.paddingTop = '0px';
             }
         }
     });
-    
-    // Brute force - target any large gap
-    const containers = document.querySelectorAll('.element-container');
-    for (let i = 1; i < containers.length; i++) {
-        const rect = containers[i].getBoundingClientRect();
-        const prevRect = containers[i-1].getBoundingClientRect();
-        const gap = rect.top - prevRect.bottom;
-        
-        if (gap > 30) { // If gap > 30px, KILL IT
-            containers[i].style.marginTop = '-2rem';
-            containers[i].style.paddingTop = '0px';
-        }
-    }
-}, 300);
+}, 500);
 </script>
 """, unsafe_allow_html=True)
 
