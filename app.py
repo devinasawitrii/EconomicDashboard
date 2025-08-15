@@ -18,7 +18,7 @@ st.set_page_config(
 if 'main_tab' not in st.session_state:
     st.session_state.main_tab = 'Neraca Nasional'
 
-# ULTIMATE GAP KILLER CSS
+# TARGETED CSS - ONLY TAB-TO-CONTENT GAP
 st.markdown("""
 <style>
     .block-container { 
@@ -48,7 +48,6 @@ st.markdown("""
         padding: 0px 10px 5px 10px;
         background-color: white;
         box-shadow: none;
-        margin-top: 0rem !important;
     }
     .logo-container {
         display: flex;
@@ -69,34 +68,13 @@ st.markdown("""
     header {visibility: hidden;}
     .stDeployButton {display: none;}
     
-    /* NUCLEAR OPTION - Target everything */
-    .stApp > div {
-        gap: 0rem !important;
+    /* ONLY TARGET: Gap between menu and content */
+    .streamlit-option-menu + div.element-container {
+        margin-top: -1rem !important;
+        padding-top: 0px !important;
     }
     
-    .main .block-container {
-        padding-top: 0rem !important;
-        gap: 0rem !important;
-    }
-    
-    /* Target every possible Streamlit spacing */
-    .element-container,
-    div[data-testid="stVerticalBlock"],
-    div[data-testid="stVerticalBlockBorderWrapper"],
-    div[data-testid="stHorizontalBlock"],
-    .row-widget,
-    section[data-testid="stSidebar"] + div,
-    .stSelectbox,
-    .streamlit-option-menu {
-        margin: 0px !important;
-        padding-bottom: 0px !important;
-        gap: 0rem !important;
-    }
-    
-    /* Specifically target the menu and content gap */
-    .streamlit-option-menu + div,
-    .nav-wrapper + div,
-    .nav-wrapper + .element-container {
+    .nav-wrapper + div {
         margin-top: -1rem !important;
         padding-top: 0px !important;
     }
