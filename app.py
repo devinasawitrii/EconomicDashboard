@@ -96,9 +96,12 @@ st.markdown("""
         border-left: 4px solid #0070c0;
     }
     
-    div[data-testid="stHorizontalBlock"] {
-        margin-bottom: -5px !important;
+    /* Hilangin jarak setelah menu navigasi */
+    div[data-testid="stHorizontalBlock"] + div {
+        margin-top: -15px !important;
+        padding-top: 0 !important;
     }
+
 
 
     /* Reduce spacing after option menu */
