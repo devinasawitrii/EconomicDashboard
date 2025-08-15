@@ -57,7 +57,7 @@ st.markdown("""
         padding: 0px 10px 5px 10px;
         background-color: white;
         box-shadow: none;
-        margin-top: -10px !important;
+        margin-top: -30px !important;
     }
     .logo-container {
         display: flex;
