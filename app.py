@@ -590,7 +590,7 @@ elif st.session_state.main_tab == 'IPM':
                 x=1,
                 font=dict(size=10)
             ),
-            margin=dict(l=50, r=50, t=60, b=40)
+            margin=dict(l=50, r=50, t=10, b=40)
         )
         
         # Update x-axis
