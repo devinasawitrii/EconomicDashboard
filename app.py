@@ -284,7 +284,7 @@ if st.session_state.main_tab == 'Neraca Nasional':
                 x=1,
                 font=dict(size=10)
             ),
-            margin=dict(l=50, r=50, t=0, b=40)
+            margin=dict(l=50, r=50, t=-50, b=40)
         )
         
         # Update x-axis
