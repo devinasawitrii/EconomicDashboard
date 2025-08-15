@@ -18,7 +18,7 @@ st.set_page_config(
 if 'main_tab' not in st.session_state:
     st.session_state.main_tab = 'Neraca Nasional'
 
-# TARGETED CSS - ONLY REMOVE TAB-TO-CONTENT SPACING
+# AGGRESSIVE CSS - MINIMIZE ALL GAPS
 st.markdown("""
 <style>
     .block-container { 
@@ -48,6 +48,7 @@ st.markdown("""
         padding: 0px 10px 5px 10px;
         background-color: white;
         box-shadow: none;
+        margin-top: 0rem !important;
     }
     .logo-container {
         display: flex;
@@ -68,40 +69,83 @@ st.markdown("""
     header {visibility: hidden;}
     .stDeployButton {display: none;}
     
-    /* SPECIFIC TARGET: Remove gap between navigation and content */
-    .nav-wrapper + div {
-        margin-top: -2rem !important;
+    /* AGGRESSIVE GAP REMOVAL */
+    .nav-wrapper {
+        margin-bottom: 0px !important;
+        padding-bottom: 0px !important;
     }
     
-    .main-content > .chart-container {
-        margin-top: 0rem !important;
-        padding-top: 0rem !important;
+    .nav-wrapper + div {
+        margin-top: 0px !important;
+        padding-top: 0px !important;
+    }
+    
+    .main-content {
+        margin-top: 0px !important;
+        padding-top: 0px !important;
+    }
+    
+    .main-content .chart-container {
+        margin-top: 0px !important;
+        padding-top: 0px !important;
+    }
+    
+    /* Target Streamlit's internal spacing */
+    div[data-testid="stHorizontalBlock"] {
+        gap: 0rem !important;
+    }
+    
+    .element-container {
+        margin-bottom: 0rem !important;
+    }
+    
+    /* Remove default Streamlit spacing after elements */
+    .stSelectbox > div {
+        margin-bottom: 0rem !important;
     }
 </style>
 
 <script>
 setTimeout(function() {
-    // Find the navigation wrapper and force remove bottom spacing
+    // More aggressive JavaScript gap removal
     const navWrapper = document.querySelector('.nav-wrapper');
     if (navWrapper) {
         navWrapper.style.marginBottom = '0px';
         navWrapper.style.paddingBottom = '0px';
         
-        // Target the next element after navigation
-        const nextEl = navWrapper.nextElementSibling;
-        if (nextEl) {
+        // Target ALL siblings after navigation
+        let nextEl = navWrapper.nextElementSibling;
+        while (nextEl) {
             nextEl.style.marginTop = '0px';
             nextEl.style.paddingTop = '0px';
+            nextEl = nextEl.nextElementSibling;
         }
     }
     
-    // Also target the main content directly
-    const mainContent = document.querySelector('.main-content');
-    if (mainContent) {
-        mainContent.style.marginTop = '0px';
-        mainContent.style.paddingTop = '0px';
-    }
+    // Target all potential content containers
+    const containers = document.querySelectorAll('.main-content, .chart-container, [data-testid="stHorizontalBlock"]');
+    containers.forEach(container => {
+        container.style.marginTop = '0px';
+        container.style.paddingTop = '0px';
+    });
+    
+    // Remove gaps from element containers
+    const elements = document.querySelectorAll('.element-container');
+    elements.forEach(el => {
+        el.style.marginBottom = '0px';
+        el.style.paddingBottom = '0px';
+    });
+    
 }, 100);
+
+// Run again after a longer delay to catch dynamically loaded content
+setTimeout(function() {
+    const containers = document.querySelectorAll('.main-content, .chart-container');
+    containers.forEach(container => {
+        container.style.marginTop = '0px !important';
+        container.style.paddingTop = '0px !important';
+    });
+}, 500);
 </script>
 """, unsafe_allow_html=True)
 
