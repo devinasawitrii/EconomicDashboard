@@ -571,37 +571,33 @@ elif st.session_state.main_tab == 'IPM':
         ))
         
         fig_ipm.update_layout(
-            title='Indeks Pembangunan Manusia Indonesia: Analisis Gender (2020-2023)',
-            height=400,
-            plot_bgcolor='white',
-            hovermode='x unified',
-            yaxis=dict(
-                title='IPM Score',
-                side='left',
-                showgrid=True,
-                gridcolor='lightgray',
-                range=[68, 80]
-            ),
-            legend=dict(
-                orientation="h",
-                yanchor="bottom",
-                y=1,
-                xanchor="right",
-                x=1,
-                font=dict(size=10)
-            ),
-            margin=dict(l=50, r=50, t=0, b=40)
-        )
-        
-        # Update x-axis
-        fig_ipm.update_xaxes(
-            title='Tahun',
+        title=dict(
+            text='Indeks Pembangunan Manusia Indonesia: Analisis Gender (2020-2023)',
+            x=0.5,     # tetap di tengah
+            y=0.98,    # naikin ke atas
+            yanchor='top'
+        ),
+        height=400,
+        plot_bgcolor='white',
+        hovermode='x unified',
+        yaxis=dict(
+            title='IPM Score',
+            side='left',
             showgrid=True,
             gridcolor='lightgray',
-            dtick=1
-        )
-        
-        st.plotly_chart(fig_ipm, use_container_width=True)
+            range=[68, 80]
+        ),
+        legend=dict(
+            orientation="h",
+            yanchor="bottom",
+            y=1,
+            xanchor="right",
+            x=1,
+            font=dict(size=10)
+        ),
+        margin=dict(l=50, r=50, t=50, b=40)  # t kecil biar judul & chart rapat
+    )
+
         
     with insight_col:
         st.markdown('<div class="insight-section">', unsafe_allow_html=True)
