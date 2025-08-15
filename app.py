@@ -57,7 +57,7 @@ st.markdown("""
         padding: 0px 10px 5px 10px;
         background-color: white;
         box-shadow: none;
-        margin-top: -10px !important;
+        margin-top: -20px !important;
     }
     .logo-container {
         display: flex;
@@ -94,6 +94,16 @@ st.markdown("""
         border-radius: 5px;
         margin-bottom: 10px;
         border-left: 4px solid #0070c0;
+    }
+    
+    /* Reduce spacing after option menu */
+    .nav-tabs {
+        margin-bottom: -10px !important;
+    }
+    
+    /* Reduce spacing in plotly charts */
+    .js-plotly-plot .plotly .main-svg {
+        margin-top: -10px !important;
     }
 </style>
 """, unsafe_allow_html=True)
