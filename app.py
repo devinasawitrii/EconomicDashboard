@@ -18,7 +18,7 @@ st.set_page_config(
 if 'main_tab' not in st.session_state:
     st.session_state.main_tab = 'Neraca Nasional'
 
-# TARGETED CSS - ONLY TAB-TO-CONTENT GAP
+# SMART CSS - Keep header spacing, minimize tab-content gap only
 st.markdown("""
 <style>
     .block-container { 
@@ -68,18 +68,44 @@ st.markdown("""
     header {visibility: hidden;}
     .stDeployButton {display: none;}
     
-    /* ONLY TARGET: Gap between menu and content */
-    .streamlit-option-menu + div.element-container {
-        margin-top: -1rem !important;
+    /* SURGICAL PRECISION: Only target content after navigation */
+    .nav-wrapper + .element-container,
+    .streamlit-option-menu + .element-container {
+        margin-top: -1.5rem !important;
         padding-top: 0px !important;
     }
     
-    .nav-wrapper + div {
+    /* Additional specific targeting */
+    .nav-wrapper ~ div[data-testid="stHorizontalBlock"] {
         margin-top: -1rem !important;
-        padding-top: 0px !important;
     }
     
 </style>
+
+<script>
+setTimeout(function() {
+    // PRECISE JavaScript targeting - only elements after nav
+    const navWrapper = document.querySelector('.nav-wrapper');
+    if (navWrapper) {
+        // Only target the IMMEDIATE next sibling
+        const nextEl = navWrapper.nextElementSibling;
+        if (nextEl) {
+            nextEl.style.marginTop = '-1.5rem';
+            nextEl.style.paddingTop = '0px';
+        }
+    }
+    
+    // Also target option menu specifically
+    const optionMenu = document.querySelector('.streamlit-option-menu');
+    if (optionMenu) {
+        const nextEl = optionMenu.parentElement.nextElementSibling;
+        if (nextEl) {
+            nextEl.style.marginTop = '-1.5rem';
+            nextEl.style.paddingTop = '0px';
+        }
+    }
+}, 200);
+</script>
 """, unsafe_allow_html=True)
 
 # Data PDB Indonesia
