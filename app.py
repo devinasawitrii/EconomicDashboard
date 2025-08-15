@@ -18,7 +18,7 @@ st.set_page_config(
 if 'main_tab' not in st.session_state:
     st.session_state.main_tab = 'Neraca Nasional'
 
-# SMART CSS - Keep header spacing, minimize tab-content gap only
+# BRUTAL FORCE CSS - LANGSUNG SERANG GAP NYA
 st.markdown("""
 <style>
     .block-container { 
@@ -68,43 +68,56 @@ st.markdown("""
     header {visibility: hidden;}
     .stDeployButton {display: none;}
     
-    /* SURGICAL PRECISION: Only target content after navigation */
-    .nav-wrapper + .element-container,
-    .streamlit-option-menu + .element-container {
-        margin-top: -1.5rem !important;
+    /* DEATH TO GAP - BRUTAL APPROACH */
+    div.element-container:has(.streamlit-option-menu) + div.element-container {
+        margin-top: -3rem !important;
         padding-top: 0px !important;
     }
     
-    /* Additional specific targeting */
-    .nav-wrapper ~ div[data-testid="stHorizontalBlock"] {
-        margin-top: -1rem !important;
+    /* Alternative brutal selectors */
+    [data-testid="stHorizontalBlock"]:first-of-type {
+        margin-bottom: -2rem !important;
     }
     
+    /* Nuclear option - remove ALL gaps from main content area */
+    .main .block-container > .element-container:nth-child(3) {
+        margin-top: -2rem !important;
+    }
+    
+    /* Streamlit option menu specific */
+    .streamlit-option-menu {
+        margin-bottom: -2rem !important;
+    }
 </style>
 
 <script>
+// JAVASCRIPT NUCLEAR OPTION
 setTimeout(function() {
-    // PRECISE JavaScript targeting - only elements after nav
-    const navWrapper = document.querySelector('.nav-wrapper');
-    if (navWrapper) {
-        // Only target the IMMEDIATE next sibling
-        const nextEl = navWrapper.nextElementSibling;
-        if (nextEl) {
-            nextEl.style.marginTop = '-1.5rem';
-            nextEl.style.paddingTop = '0px';
+    // Find any element with option menu and kill the gap after it
+    const allElements = document.querySelectorAll('*');
+    allElements.forEach(el => {
+        if (el.classList.contains('streamlit-option-menu') || el.innerHTML.includes('Neraca Nasional')) {
+            const parent = el.closest('.element-container');
+            if (parent && parent.nextElementSibling) {
+                parent.nextElementSibling.style.marginTop = '-3rem';
+                parent.nextElementSibling.style.paddingTop = '0px';
+            }
         }
-    }
+    });
     
-    // Also target option menu specifically
-    const optionMenu = document.querySelector('.streamlit-option-menu');
-    if (optionMenu) {
-        const nextEl = optionMenu.parentElement.nextElementSibling;
-        if (nextEl) {
-            nextEl.style.marginTop = '-1.5rem';
-            nextEl.style.paddingTop = '0px';
+    // Brute force - target any large gap
+    const containers = document.querySelectorAll('.element-container');
+    for (let i = 1; i < containers.length; i++) {
+        const rect = containers[i].getBoundingClientRect();
+        const prevRect = containers[i-1].getBoundingClientRect();
+        const gap = rect.top - prevRect.bottom;
+        
+        if (gap > 30) { // If gap > 30px, KILL IT
+            containers[i].style.marginTop = '-2rem';
+            containers[i].style.paddingTop = '0px';
         }
     }
-}, 200);
+}, 300);
 </script>
 """, unsafe_allow_html=True)
 
