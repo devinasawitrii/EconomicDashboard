@@ -18,16 +18,23 @@ st.set_page_config(
 if 'main_tab' not in st.session_state:
     st.session_state.main_tab = 'Neraca Nasional'
 
+# Custom CSS for styling - optimized for no scroll
 st.markdown("""
 <style>
-    /* Atur container utama */
-    .block-container {
-        position: relative !important;
-        top: -50px !important; /* naikin 50px, atur sesuai kebutuhan */
-
+    /* Remove all default padding and margins */
+    .block-container { 
+        padding-top: 0.5rem !important;
+        padding-bottom: 0rem !important;
+        max-width: 100% !important;
     }
-
-    /* Judul & subtitle */
+    .header-container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 5px 0px;
+        background-color: white;
+        margin-bottom: 0.5rem;
+    }
     .logo-title {
         color: navy;
         font-size: 28px;
@@ -42,20 +49,15 @@ st.markdown("""
         text-align: center;
         font-style: italic;
         margin-top: -3px;
-        margin-bottom: 0.5rem;
+        margin-bottom: 0px;
     }
-
-    /* Container chart */
     .chart-container {
         border: none;
         border-radius: 0px;
         padding: 0px 10px 5px 10px;
         background-color: white;
         box-shadow: none;
-        margin-top: -5rem !important;
     }
-
-    /* Logo */
     .logo-container {
         display: flex;
         flex-direction: column;
@@ -63,27 +65,37 @@ st.markdown("""
         text-align: center;
         padding-top: 5px;
     }
-
-    /* Insight section */
-    .insight-section {
-        font-size: 14px;
-        line-height: 1.2;
-        padding: 10px;
-    }
-    
-    /* Sembunyikan elemen default Streamlit */
+    /* Hide streamlit elements that take up space */
     #MainMenu {visibility: hidden;}
     footer {visibility: hidden;}
     header {visibility: hidden;}
     .stDeployButton {display: none;}
     
-    /* Target jarak antara menu navigasi dan konten */
-    .streamlit-option-menu + div {
-        margin-top: -5rem !important;
+    /* Reduce spacing in sidebar and main content */
+    .css-1d391kg {padding-top: 0rem;}
+    .css-18e3th9 {padding-top: 0rem;}
+    
+    /* Make insights section more compact */
+    .insight-section {
+        font-size: 14px;
+        line-height: 1.2;
+    }
+    
+    /* Reduce vertical spacing for all elements */
+    .stMarkdown {
+        margin-bottom: 0.2rem !important;
+    }
+    
+    /* Custom styling for viz selector */
+    .viz-selector {
+        background-color: #f0f8ff;
+        padding: 8px;
+        border-radius: 5px;
+        margin-bottom: 10px;
+        border-left: 4px solid #0070c0;
     }
 </style>
 """, unsafe_allow_html=True)
-
 
 # Data PDB Indonesia
 pdb_data = {
