@@ -525,7 +525,8 @@ elif st.session_state.main_tab == 'IPM':
             line=dict(color='rgba(255,255,255,0)'),
             name='Gender Gap',
             hoverinfo='skip',
-            showlegend=True
+            showlegend=True,
+            legendrank=1 
         ))
         
         # IPM Laki-laki line
@@ -558,6 +559,7 @@ elif st.session_state.main_tab == 'IPM':
             hovertemplate='<b>%{x}</b><br>Gender Gap: %{customdata:.2f} poin<extra></extra>',
             customdata=df_ipm['Gender_Gap'],
             showlegend=False
+            
         ))
         
         # Add trend line for total IPM
