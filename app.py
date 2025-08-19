@@ -558,8 +558,8 @@ elif st.session_state.main_tab == 'IPM':
             name='Gap Info',
             hovertemplate='<b>%{x}</b><br>Gender Gap: %{customdata:.2f} poin<extra></extra>',
             customdata=df_ipm['Gender_Gap'],
-            showlegend=False
-            
+            showlegend=False,
+            legendrank=1 
         ))
         
         # Add trend line for total IPM
