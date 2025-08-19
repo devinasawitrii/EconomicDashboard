@@ -474,29 +474,169 @@ elif st.session_state.main_tab == 'Ketenagakerjaan':
         st.markdown('</div>', unsafe_allow_html=True)
 
 elif st.session_state.main_tab == 'Kemiskinan':
-    chart_col, insight_col = st.columns([2.5, 1])
-    sample_data = pd.DataFrame({
-        'Period': ['Mar 2022', 'Sep 2022', 'Mar 2023', 'Sep 2023'],
-        'Value': np.random.uniform(9, 11, 4)
-    })
-    title = "Persentase penduduk miskin (%)"
+    # Data Kemiskinan Indonesia
+    kemiskinan_data = {
+        'Tahun': [2011]*2 + [2012]*2 + [2013]*2 + [2014]*2 + [2015]*2 + [2016]*2 + [2017]*2 + [2018]*2 + [2019]*2 + [2020]*2 + [2021]*2 + [2022]*2 + [2023, 2024]*2,
+        'Semester': ['Maret', 'September'] * 13 + ['Maret'] + ['Maret', 'September'],
+        'Jumlah_Miskin': [30.02, 29.89, 29.13, 28.59, 28.07, 28.55, 28.28, 27.73, 28.59, 28.51, 28.01, 27.76, 27.77, 26.58, 25.95, 25.67, 25.14, 24.79, 26.42, 27.55, 27.54, 26.5, 26.16, 26.36, 25.9, 25.22, 24.06],
+        'Persentase_Miskin': [12.49, 12.36, 11.96, 11.66, 11.37, 11.47, 11.25, 10.96, 11.22, 11.13, 10.86, 10.7, 10.64, 10.12, 9.82, 9.66, 9.41, 9.22, 9.78, 10.19, 10.14, 9.71, 9.54, 9.57, 9.36, 9.03, 8.57],
+        'Gini_Ratio': [0.41, 0.388, 0.41, 0.413, 0.413, 0.406, 0.406, 0.414, 0.408, 0.402, 0.397, 0.394, 0.393, 0.391, 0.389, 0.384, 0.382, 0.38, 0.381, 0.385, 0.384, 0.381, 0.384, 0.381, 0.388, 0.379, 0.381]
+    }
     
-    fig_sample = px.line(sample_data, x='Period', y='Value', title=title, markers=True)
-    fig_sample.update_traces(line=dict(color='teal', width=2), marker=dict(size=5, color='teal'))
-    fig_sample.update_layout(height=320, plot_bgcolor='white', margin=dict(l=30, r=30, t=40, b=30))
+    df_kemiskinan = pd.DataFrame(kemiskinan_data)
+    df_kemiskinan['Period'] = df_kemiskinan['Tahun'].astype(str) + ' ' + df_kemiskinan['Semester']
+    df_kemiskinan['Date'] = pd.to_datetime(df_kemiskinan['Tahun'].astype(str) + '-' + 
+                                         df_kemiskinan['Semester'].map({'Maret':'03', 'September':'09'}) + '-01')
     
-    with chart_col:
-        st.plotly_chart(fig_sample, use_container_width=True)
+    # Create two charts side by side
+    chart1_col, chart2_col, insight_col = st.columns([1.3, 1.3, 1])
+    
+    with chart1_col:
+        # Chart 1: Dual axis - Poverty Rate & Number of Poor
+        fig1 = go.Figure()
         
+        # Bar chart untuk jumlah penduduk miskin
+        colors = ['lightcoral' if x > 10 else 'gold' if x > 9 else 'lightgreen' 
+                 for x in df_kemiskinan['Persentase_Miskin']]
+        
+        fig1.add_trace(go.Bar(
+            x=df_kemiskinan['Date'],
+            y=df_kemiskinan['Jumlah_Miskin'],
+            name='Jumlah Penduduk Miskin (Juta)',
+            marker_color=colors,
+            opacity=0.6,
+            yaxis='y',
+            hovertemplate='<b>%{text}</b><br>Jumlah: %{y:.1f} Juta Jiwa<extra></extra>',
+            text=df_kemiskinan['Period']
+        ))
+        
+        # Line untuk persentase kemiskinan
+        fig1.add_trace(go.Scatter(
+            x=df_kemiskinan['Date'],
+            y=df_kemiskinan['Persentase_Miskin'],
+            name='Persentase Kemiskinan (%)',
+            line=dict(color='red', width=3),
+            marker=dict(size=6, color='red'),
+            yaxis='y2',
+            hovertemplate='<b>%{text}</b><br>Persentase: %{y:.2f}%<extra></extra>',
+            text=df_kemiskinan['Period']
+        ))
+        
+        # Add shaded areas untuk periode khusus
+        fig1.add_vrect(
+            x0="2020-01-01", x1="2021-12-31",
+            fillcolor="red", opacity=0.1,
+            line_width=0,
+        )
+        
+        fig1.update_layout(
+            title='Kemiskinan Indonesia: Jumlah vs Persentase (2011-2024)',
+            height=280,
+            plot_bgcolor='white',
+            hovermode='x unified',
+            yaxis=dict(
+                title='Jumlah Penduduk Miskin (Juta)',
+                side='left',
+                showgrid=True,
+                gridcolor='lightgray',
+                range=[20, 32]
+            ),
+            yaxis2=dict(
+                title='Persentase (%)',
+                side='right',
+                overlaying='y',
+                showgrid=False,
+                range=[8, 14]
+            ),
+            legend=dict(
+                orientation="h",
+                yanchor="bottom",
+                y=1.02,
+                xanchor="right",
+                x=1,
+                font=dict(size=9)
+            ),
+            margin=dict(l=40, r=40, t=50, b=30)
+        )
+        
+        fig1.update_xaxes(
+            tickangle=45,
+            tickmode='array',
+            tickvals=df_kemiskinan['Date'][::4],  # Show every 4th label
+            ticktext=[x.split()[0] + ' ' + x.split()[1][:3] for x in df_kemiskinan['Period'][::4]]
+        )
+        
+        st.plotly_chart(fig1, use_container_width=True)
+    
+    with chart2_col:
+        # Chart 2: Gini Ratio Trend with color coding
+        fig2 = go.Figure()
+        
+        # Color coding untuk Gini Ratio
+        gini_colors = ['darkred' if x >= 0.41 else 'red' if x >= 0.4 else 'orange' if x >= 0.385 else 'green' 
+                      for x in df_kemiskinan['Gini_Ratio']]
+        
+        fig2.add_trace(go.Scatter(
+            x=df_kemiskinan['Date'],
+            y=df_kemiskinan['Gini_Ratio'],
+            mode='lines+markers',
+            name='Gini Ratio',
+            line=dict(color='navy', width=2),
+            marker=dict(size=8, color=gini_colors, line=dict(width=2, color='navy')),
+            hovertemplate='<b>%{text}</b><br>Gini Ratio: %{y:.3f}<extra></extra>',
+            text=df_kemiskinan['Period']
+        ))
+        
+        # Add threshold lines
+        fig2.add_hline(y=0.4, line_dash="dash", line_color="red", line_width=1, 
+                      annotation_text="High Inequality (0.4)", annotation_position="right")
+        fig2.add_hline(y=0.385, line_dash="dot", line_color="orange", line_width=1,
+                      annotation_text="Moderate (0.385)", annotation_position="right")
+        
+        # Add trend area
+        fig2.add_trace(go.Scatter(
+            x=df_kemiskinan['Date'],
+            y=df_kemiskinan['Gini_Ratio'],
+            fill='tonexty',
+            fillcolor='rgba(0,0,128,0.1)',
+            line=dict(color='rgba(255,255,255,0)'),
+            showlegend=False,
+            hoverinfo='skip'
+        ))
+        
+        fig2.update_layout(
+            title='Indeks Gini: Ketimpangan Distribusi Pendapatan',
+            height=280,
+            plot_bgcolor='white',
+            yaxis=dict(
+                title='Gini Ratio',
+                showgrid=True,
+                gridcolor='lightgray',
+                range=[0.37, 0.42]
+            ),
+            margin=dict(l=40, r=40, t=50, b=30)
+        )
+        
+        fig2.update_xaxes(
+            tickangle=45,
+            tickmode='array',
+            tickvals=df_kemiskinan['Date'][::4],
+            ticktext=[x.split()[0] + ' ' + x.split()[1][:3] for x in df_kemiskinan['Period'][::4]]
+        )
+        
+        st.plotly_chart(fig2, use_container_width=True)
+    
     with insight_col:
         st.markdown('<div class="insight-section">', unsafe_allow_html=True)
-        st.markdown("#### Insight:")
-        st.markdown("• Angka kemiskinan menunjukkan tren penurunan gradual")
-        st.markdown("• Kesenjangan urban-rural masih signifikan")
-        st.markdown("• Program bantuan sosial efektif mengurangi kemiskinan")
-        st.markdown("• Pemberdayaan ekonomi mikro perlu diperkuat")
-        st.markdown("• Investasi SDM kunci pengentasan kemiskinan jangka panjang")
+        st.markdown("#### 📊 Key Insights:")
+        st.markdown("• **Historic Low**: 8.57% Sept 2024 (terendah sejak 2011)")
+        st.markdown("• **COVID Impact**: Naik 9.78%→10.19% (2020)")
+        st.markdown("• **Swift Recovery**: Kembali turun ke <10% (2021)")
+        st.markdown("• **Consistent Progress**: -3.92% poin (2011-2024)")
+        st.markdown("• **Gini Improvement**: 0.41→0.381 (ketimpangan turun)")
+        st.markdown("• **Target 2024**: On-track untuk <8.5%")
         st.markdown('</div>', unsafe_allow_html=True)
+
 elif st.session_state.main_tab == 'IPM':
     # IPM Gender Data
     ipm_data = {
