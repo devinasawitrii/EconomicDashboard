@@ -497,6 +497,7 @@ elif st.session_state.main_tab == 'Kemiskinan':
         st.markdown("• Pemberdayaan ekonomi mikro perlu diperkuat")
         st.markdown("• Investasi SDM kunci pengentasan kemiskinan jangka panjang")
         st.markdown('</div>', unsafe_allow_html=True)
+
 elif st.session_state.main_tab == 'IPM':
     # IPM Gender Data
     ipm_data = {
@@ -571,7 +572,14 @@ elif st.session_state.main_tab == 'IPM':
         ))
         
         fig_ipm.update_layout(
-            title='Indeks Pembangunan Manusia Indonesia: Analisis Gender (2020-2023)',
+            title=dict(
+                text='Indeks Pembangunan Manusia Indonesia: Analisis Gender (2020-2023)',
+                y=0.95,  # Move title higher (default is around 0.9)
+                x=0.5,   # Center horizontally
+                xanchor='center',
+                yanchor='top',
+                font=dict(size=16, color='navy')  # Make title more prominent
+            ),
             height=400,
             plot_bgcolor='white',
             hovermode='x unified',
@@ -585,12 +593,12 @@ elif st.session_state.main_tab == 'IPM':
             legend=dict(
                 orientation="h",
                 yanchor="bottom",
-                y=1.02,
+                y=1.05,  # Adjust legend position to accommodate higher title
                 xanchor="right",
                 x=1,
                 font=dict(size=10)
             ),
-            margin=dict(l=50, r=50, t=60, b=40)
+            margin=dict(l=50, r=50, t=80, b=40)  # Increase top margin for higher title
         )
         
         # Update x-axis
@@ -629,4 +637,5 @@ elif st.session_state.main_tab == 'IPM':
             
         st.markdown("• **Prioritas**: Percepatan IPM perempuan melalui pendidikan & kesehatan")
         st.markdown('</div>', unsafe_allow_html=True)
-        
+
+st.markdown('</div>', unsafe_allow_html=True)
