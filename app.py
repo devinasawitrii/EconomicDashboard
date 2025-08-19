@@ -497,7 +497,6 @@ elif st.session_state.main_tab == 'Kemiskinan':
         st.markdown("• Pemberdayaan ekonomi mikro perlu diperkuat")
         st.markdown("• Investasi SDM kunci pengentasan kemiskinan jangka panjang")
         st.markdown('</div>', unsafe_allow_html=True)
-
 elif st.session_state.main_tab == 'IPM':
     # IPM Gender Data
     ipm_data = {
@@ -571,20 +570,8 @@ elif st.session_state.main_tab == 'IPM':
             hovertemplate='<b>%{x}</b><br>IPM Rata-rata: %{y:.2f}<extra></extra>'
         ))
         
-        # Alternative: Add custom title as annotation instead of using title parameter
-        fig_ipm.add_annotation(
-            text="<b>Indeks Pembangunan Manusia Indonesia: Analisis Gender (2020-2023)</b>",
-            xref="paper", yref="paper",
-            x=0.5, y=1.15,  # Position outside the plot area
-            xanchor='center', yanchor='bottom',
-            font=dict(size=18, color='navy', family='Arial Black'),
-            showarrow=False,
-            bgcolor="white",
-            bordercolor="white"
-        )
-        
         fig_ipm.update_layout(
-            title=None,  # Remove the default title completely
+            title='Indeks Pembangunan Manusia Indonesia: Analisis Gender (2020-2023)',
             height=400,
             plot_bgcolor='white',
             hovermode='x unified',
@@ -598,12 +585,12 @@ elif st.session_state.main_tab == 'IPM':
             legend=dict(
                 orientation="h",
                 yanchor="bottom",
-                y=-0.15,  # Move legend to bottom to give more space for title
-                xanchor="center",
-                x=0.5,
-                font=dict(size=9)
+                y=1.02,
+                xanchor="right",
+                x=1,
+                font=dict(size=10)
             ),
-            margin=dict(l=50, r=50, t=120, b=60)  # Even bigger top margin for annotation
+            margin=dict(l=50, r=50, t=60, b=40)
         )
         
         # Update x-axis
@@ -642,5 +629,4 @@ elif st.session_state.main_tab == 'IPM':
             
         st.markdown("• **Prioritas**: Percepatan IPM perempuan melalui pendidikan & kesehatan")
         st.markdown('</div>', unsafe_allow_html=True)
-
-st.markdown('</div>', unsafe_allow_html=True)
+        
