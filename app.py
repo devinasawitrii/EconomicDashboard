@@ -497,7 +497,6 @@ elif st.session_state.main_tab == 'Kemiskinan':
         st.markdown("• Pemberdayaan ekonomi mikro perlu diperkuat")
         st.markdown("• Investasi SDM kunci pengentasan kemiskinan jangka panjang")
         st.markdown('</div>', unsafe_allow_html=True)
-
 elif st.session_state.main_tab == 'IPM':
     # IPM Gender Data
     ipm_data = {
@@ -514,16 +513,7 @@ elif st.session_state.main_tab == 'IPM':
     chart_col, insight_col = st.columns([2.5, 1])
     
     with chart_col:
-        # Add title OUTSIDE the chart using HTML - THIS WILL WORK!
-        st.markdown("""
-        <div style='text-align: center; margin-bottom: 10px;'>
-            <h3 style='color: navy; font-weight: bold; margin: 0; padding: 0; font-size: 18px;'>
-                Indeks Pembangunan Manusia Indonesia: Analisis Gender (2020-2023)
-            </h3>
-        </div>
-        """, unsafe_allow_html=True)
-        
-        # Create chart WITHOUT title
+        # Create single chart
         fig_ipm = go.Figure()
         
         # Gender Gap - filled area between lines
@@ -533,7 +523,7 @@ elif st.session_state.main_tab == 'IPM':
             fill='toself',
             fillcolor='rgba(255,0,0,0.2)',
             line=dict(color='rgba(255,255,255,0)'),
-            name='Gender Gap Area',
+            name='Gender Gap',
             hoverinfo='skip',
             showlegend=True
         ))
@@ -563,8 +553,8 @@ elif st.session_state.main_tab == 'IPM':
             x=df_ipm['Tahun'],
             y=df_ipm['IPM_Total'],
             mode='markers',
-            marker=dict(size=1, color='red', opacity=0),
-            name='',  # Empty name to avoid showing in legend
+            marker=dict(size=10, color='red', opacity=0),
+            name='Gap Info',
             hovertemplate='<b>%{x}</b><br>Gender Gap: %{customdata:.2f} poin<extra></extra>',
             customdata=df_ipm['Gender_Gap'],
             showlegend=False
@@ -581,8 +571,8 @@ elif st.session_state.main_tab == 'IPM':
         ))
         
         fig_ipm.update_layout(
-            title=None,  # NO TITLE - we use HTML above instead
-            height=350,  # Smaller height since title is outside
+            title='Indeks Pembangunan Manusia Indonesia: Analisis Gender (2020-2023)',
+            height=400,
             plot_bgcolor='white',
             hovermode='x unified',
             yaxis=dict(
@@ -595,12 +585,12 @@ elif st.session_state.main_tab == 'IPM':
             legend=dict(
                 orientation="h",
                 yanchor="bottom",
-                y=-0.15,
-                xanchor="center",
-                x=0.5,
-                font=dict(size=9)
+                y=1.02,
+                xanchor="right",
+                x=1,
+                font=dict(size=10)
             ),
-            margin=dict(l=50, r=50, t=20, b=60)  # Small top margin since title is outside
+            margin=dict(l=50, r=50, t=60, b=40)
         )
         
         # Update x-axis
@@ -639,5 +629,4 @@ elif st.session_state.main_tab == 'IPM':
             
         st.markdown("• **Prioritas**: Percepatan IPM perempuan melalui pendidikan & kesehatan")
         st.markdown('</div>', unsafe_allow_html=True)
-
-st.markdown('</div>', unsafe_allow_html=True)
+        
