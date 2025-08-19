@@ -476,8 +476,8 @@ elif st.session_state.main_tab == 'Ketenagakerjaan':
 elif st.session_state.main_tab == 'Kemiskinan':
     # Data Kemiskinan Indonesia
     kemiskinan_data = {
-        'Tahun': [2011]*2 + [2012]*2 + [2013]*2 + [2014]*2 + [2015]*2 + [2016]*2 + [2017]*2 + [2018]*2 + [2019]*2 + [2020]*2 + [2021]*2 + [2022]*2 + [2023, 2024]*2,
-        'Semester': ['Maret', 'September'] * 13 + ['Maret'] + ['Maret', 'September'],
+        'Tahun': [2011, 2011, 2012, 2012, 2013, 2013, 2014, 2014, 2015, 2015, 2016, 2016, 2017, 2017, 2018, 2018, 2019, 2019, 2020, 2020, 2021, 2021, 2022, 2022, 2023, 2024, 2024],
+        'Semester': ['Maret', 'September', 'Maret', 'September', 'Maret', 'September', 'Maret', 'September', 'Maret', 'September', 'Maret', 'September', 'Maret', 'September', 'Maret', 'September', 'Maret', 'September', 'Maret', 'September', 'Maret', 'September', 'Maret', 'September', 'Maret', 'Maret', 'September'],
         'Jumlah_Miskin': [30.02, 29.89, 29.13, 28.59, 28.07, 28.55, 28.28, 27.73, 28.59, 28.51, 28.01, 27.76, 27.77, 26.58, 25.95, 25.67, 25.14, 24.79, 26.42, 27.55, 27.54, 26.5, 26.16, 26.36, 25.9, 25.22, 24.06],
         'Persentase_Miskin': [12.49, 12.36, 11.96, 11.66, 11.37, 11.47, 11.25, 10.96, 11.22, 11.13, 10.86, 10.7, 10.64, 10.12, 9.82, 9.66, 9.41, 9.22, 9.78, 10.19, 10.14, 9.71, 9.54, 9.57, 9.36, 9.03, 8.57],
         'Gini_Ratio': [0.41, 0.388, 0.41, 0.413, 0.413, 0.406, 0.406, 0.414, 0.408, 0.402, 0.397, 0.394, 0.393, 0.391, 0.389, 0.384, 0.382, 0.38, 0.381, 0.385, 0.384, 0.381, 0.384, 0.381, 0.388, 0.379, 0.381]
