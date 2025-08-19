@@ -533,7 +533,7 @@ elif st.session_state.main_tab == 'IPM':
             fill='toself',
             fillcolor='rgba(255,0,0,0.2)',
             line=dict(color='rgba(255,255,255,0)'),
-            name='Gender Gap',
+            name='Gender Gap Area',
             hoverinfo='skip',
             showlegend=True
         ))
@@ -563,8 +563,8 @@ elif st.session_state.main_tab == 'IPM':
             x=df_ipm['Tahun'],
             y=df_ipm['IPM_Total'],
             mode='markers',
-            marker=dict(size=10, color='red', opacity=0),
-            name='Gap Info',
+            marker=dict(size=1, color='red', opacity=0),
+            name='',  # Empty name to avoid showing in legend
             hovertemplate='<b>%{x}</b><br>Gender Gap: %{customdata:.2f} poin<extra></extra>',
             customdata=df_ipm['Gender_Gap'],
             showlegend=False
