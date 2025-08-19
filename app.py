@@ -605,28 +605,5 @@ elif st.session_state.main_tab == 'IPM':
         
     with insight_col:
         st.markdown('<div class="insight-section">', unsafe_allow_html=True)
-        st.markdown("#### 📈 Key Insights:")
-        
-        # Calculate insights dengan detail angka untuk setiap tahun
-        male_growth = df_ipm['IPM_Laki_laki'].iloc[-1] - df_ipm['IPM_Laki_laki'].iloc[0]
-        female_growth = df_ipm['IPM_Perempuan'].iloc[-1] - df_ipm['IPM_Perempuan'].iloc[0]
-        gap_2023 = df_ipm['Gender_Gap'].iloc[-1]
-        gap_change = df_ipm['Gender_Gap'].iloc[-1] - df_ipm['Gender_Gap'].iloc[0]
-        
+        st.markdown("#### Insights:")
         st.markdown(f"• **Progress Positif**: IPM naik konsisten 2020-2023")
-        st.markdown(f"• **Laki-laki**: +{male_growth:.2f} poin (76.78→77.96)")
-        st.markdown(f"• **Perempuan**: +{female_growth:.2f} poin (70.14→71.95)")
-        
-        # Detail Gender Gap per tahun
-        st.markdown("• **Gender Gap Detail:**")
-        for _, row in df_ipm.iterrows():
-            st.markdown(f"  - {int(row['Tahun'])}: {row['Gender_Gap']:.2f} poin")
-        
-        if gap_change < 0:
-            st.markdown(f"• **✅ Tren Gap**: Menyempit {abs(gap_change):.2f} poin (2020-2023)")
-        else:
-            st.markdown(f"• **⚠️ Tren Gap**: Melebar {gap_change:.2f} poin (2020-2023)")
-            
-        st.markdown("• **Prioritas**: Percepatan IPM perempuan melalui pendidikan & kesehatan")
-        st.markdown('</div>', unsafe_allow_html=True)
-        
