@@ -571,15 +571,20 @@ elif st.session_state.main_tab == 'IPM':
             hovertemplate='<b>%{x}</b><br>IPM Rata-rata: %{y:.2f}<extra></extra>'
         ))
         
+        # Alternative: Add custom title as annotation instead of using title parameter
+        fig_ipm.add_annotation(
+            text="<b>Indeks Pembangunan Manusia Indonesia: Analisis Gender (2020-2023)</b>",
+            xref="paper", yref="paper",
+            x=0.5, y=1.15,  # Position outside the plot area
+            xanchor='center', yanchor='bottom',
+            font=dict(size=18, color='navy', family='Arial Black'),
+            showarrow=False,
+            bgcolor="white",
+            bordercolor="white"
+        )
+        
         fig_ipm.update_layout(
-            title=dict(
-                text='Indeks Pembangunan Manusia Indonesia: Analisis Gender (2020-2023)',
-                y=0.95,  # Move title higher (default is around 0.9)
-                x=0.5,   # Center horizontally
-                xanchor='center',
-                yanchor='top',
-                font=dict(size=16, color='navy')  # Make title more prominent
-            ),
+            title=None,  # Remove the default title completely
             height=400,
             plot_bgcolor='white',
             hovermode='x unified',
@@ -593,12 +598,12 @@ elif st.session_state.main_tab == 'IPM':
             legend=dict(
                 orientation="h",
                 yanchor="bottom",
-                y=1.05,  # Adjust legend position to accommodate higher title
-                xanchor="right",
-                x=1,
-                font=dict(size=10)
+                y=-0.15,  # Move legend to bottom to give more space for title
+                xanchor="center",
+                x=0.5,
+                font=dict(size=9)
             ),
-            margin=dict(l=50, r=50, t=80, b=40)  # Increase top margin for higher title
+            margin=dict(l=50, r=50, t=120, b=60)  # Even bigger top margin for annotation
         )
         
         # Update x-axis
