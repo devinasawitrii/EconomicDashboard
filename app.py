@@ -636,6 +636,7 @@ elif st.session_state.main_tab == 'Kemiskinan':
         st.markdown("• **Gini Improvement**: 0.41→0.381 (ketimpangan turun)")
         st.markdown("• **Target 2024**: On-track untuk <8.5%")
         st.markdown('</div>', unsafe_allow_html=True)
+        
 
 elif st.session_state.main_tab == 'IPM':
     # IPM Gender Data
