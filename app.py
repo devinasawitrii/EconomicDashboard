@@ -488,82 +488,22 @@ elif st.session_state.main_tab == 'Kemiskinan':
     df_kemiskinan['Date'] = pd.to_datetime(df_kemiskinan['Tahun'].astype(str) + '-' + 
                                          df_kemiskinan['Semester'].map({'Maret':'03', 'September':'09'}) + '-01')
     
-    # Create two charts side by side without insight column
-    chart1_col, chart2_col = st.columns([1, 1])
+    # Create two charts side by side
+    chart1_col, chart2_col, insight_col = st.columns([1.3, 1.3, 1])
     
     with chart1_col:
-        # Chart 1: Horizontal Bar Chart for Poverty Percentage with time labels
+        # Chart 1: Dual axis - Poverty Rate & Number of Poor
         fig1 = go.Figure()
         
-        # Create horizontal bar chart
-        colors = ['#ff4444' if x >= 11 else '#ff8800' if x >= 9.5 else '#44ff44' if x < 9 else '#ffdd00'
+        # Bar chart untuk jumlah penduduk miskin
+        colors = ['lightcoral' if x > 10 else 'gold' if x > 9 else 'lightgreen' 
                  for x in df_kemiskinan['Persentase_Miskin']]
         
         fig1.add_trace(go.Bar(
-            y=df_kemiskinan['Period'],
-            x=df_kemiskinan['Persentase_Miskin'],
-            orientation='h',
-            name='Persentase Kemiskinan (%)',
-            marker_color=colors,
-            text=df_kemiskinan['Persentase_Miskin'],
-            texttemplate='%{text:.1f}%',
-            textposition='outside',
-            hovertemplate='<b>%{y}</b><br>Persentase: %{x:.2f}%<extra></extra>'
-        ))
-        
-        # Add SDGs target line (SDGs target: reduce poverty to <3% by 2030, intermediate target ~7%)
-        fig1.add_vline(x=7, line_dash="dash", line_color="green", line_width=2,
-                      annotation_text="Target SDGs (~7%)", annotation_position="top")
-        
-        # Add COVID period highlighting
-        covid_periods = ['2020 Maret', '2020 September', '2021 Maret', '2021 September']
-        for period in covid_periods:
-            if period in df_kemiskinan['Period'].values:
-                idx = df_kemiskinan[df_kemiskinan['Period'] == period].index[0]
-                fig1.add_annotation(
-                    x=df_kemiskinan.loc[idx, 'Persentase_Miskin'] + 0.5,
-                    y=period,
-                    text="COVID",
-                    showarrow=True,
-                    arrowhead=2,
-                    arrowsize=1,
-                    arrowwidth=2,
-                    arrowcolor="red",
-                    font=dict(color="red", size=10),
-                    bgcolor="white",
-                    bordercolor="red",
-                    borderwidth=1
-                )
-        
-        fig1.update_layout(
-            title='Persentase Kemiskinan Indonesia (2011-2024)',
-            xaxis_title='Persentase Kemiskinan (%)',
-            yaxis_title='Periode',
-            height=800,
-            plot_bgcolor='white',
-            showlegend=False,
-            margin=dict(l=80, r=100, t=50, b=40)
-        )
-        
-        # Reverse y-axis to show latest data on top
-        fig1.update_yaxes(autorange="reversed", showgrid=True, gridcolor='lightgray')
-        fig1.update_xaxes(showgrid=True, gridcolor='lightgray', range=[0, 14])
-        
-        st.plotly_chart(fig1, use_container_width=True)
-    
-    with chart2_col:
-        # Chart 2: Time series with dual y-axis
-        fig2 = go.Figure()
-        
-        # Bar chart untuk jumlah penduduk miskin
-        colors_ts = ['#ff4444' if x >= 11 else '#ff8800' if x >= 9.5 else '#44ff44' if x < 9 else '#ffdd00'
-                    for x in df_kemiskinan['Persentase_Miskin']]
-        
-        fig2.add_trace(go.Bar(
             x=df_kemiskinan['Date'],
             y=df_kemiskinan['Jumlah_Miskin'],
             name='Jumlah Penduduk Miskin (Juta)',
-            marker_color=colors_ts,
+            marker_color=colors,
             opacity=0.6,
             yaxis='y',
             hovertemplate='<b>%{text}</b><br>Jumlah: %{y:.1f} Juta Jiwa<extra></extra>',
@@ -571,7 +511,7 @@ elif st.session_state.main_tab == 'Kemiskinan':
         ))
         
         # Line untuk persentase kemiskinan
-        fig2.add_trace(go.Scatter(
+        fig1.add_trace(go.Scatter(
             x=df_kemiskinan['Date'],
             y=df_kemiskinan['Persentase_Miskin'],
             name='Persentase Kemiskinan (%)',
@@ -582,22 +522,16 @@ elif st.session_state.main_tab == 'Kemiskinan':
             text=df_kemiskinan['Period']
         ))
         
-        # Add shaded area untuk periode COVID
-        fig2.add_vrect(
+        # Add shaded areas untuk periode khusus
+        fig1.add_vrect(
             x0="2020-01-01", x1="2021-12-31",
             fillcolor="red", opacity=0.1,
             line_width=0,
-            annotation_text="Periode COVID-19",
-            annotation_position="top left"
         )
         
-        # Add SDGs target line
-        fig2.add_hline(y=7, line_dash="dash", line_color="green", line_width=2, 
-                      annotation_text="Target SDGs (~7%)", annotation_position="left", yref='y2')
-        
-        fig2.update_layout(
-            title='Tren Kemiskinan Indonesia: Jumlah vs Persentase (2011-2024)',
-            height=400,
+        fig1.update_layout(
+            title='Kemiskinan Indonesia: Jumlah vs Persentase (2011-2024)',
+            height=280,
             plot_bgcolor='white',
             hovermode='x unified',
             yaxis=dict(
@@ -622,28 +556,86 @@ elif st.session_state.main_tab == 'Kemiskinan':
                 x=1,
                 font=dict(size=9)
             ),
-            margin=dict(l=40, r=40, t=50, b=40)
+            margin=dict(l=40, r=40, t=50, b=30)
         )
         
-        fig2.update_xaxes(
+        fig1.update_xaxes(
             tickangle=45,
             tickmode='array',
             tickvals=df_kemiskinan['Date'][::4],  # Show every 4th label
             ticktext=[x.split()[0] + ' ' + x.split()[1][:3] for x in df_kemiskinan['Period'][::4]]
         )
         
-        st.plotly_chart(fig2, use_container_width=True)
+        st.plotly_chart(fig1, use_container_width=True)
+    
+    with chart2_col:
+        # Chart 2: Gini Ratio Trend with color coding
+        fig2 = go.Figure()
         
-        # Color legend
-        st.markdown("""
-        <div style='background-color: #f0f8ff; padding: 10px; border-radius: 5px; margin-top: 10px;'>
-            <strong>Kode Warna:</strong><br>
-            🟢 <strong style='color: #44ff44;'>Hijau</strong>: <9% (Target tercapai)<br>
-            🟡 <strong style='color: #ffdd00;'>Kuning</strong>: 9-9.5% (Mendekati target)<br>
-            🟠 <strong style='color: #ff8800;'>Oranye</strong>: 9.5-11% (Perlu perhatian)<br>
-            🔴 <strong style='color: #ff4444;'>Merah</strong>: ≥11% (Tinggi)
-        </div>
-        """, unsafe_allow_html=True)
+        # Color coding untuk Gini Ratio
+        gini_colors = ['darkred' if x >= 0.41 else 'red' if x >= 0.4 else 'orange' if x >= 0.385 else 'green' 
+                      for x in df_kemiskinan['Gini_Ratio']]
+        
+        fig2.add_trace(go.Scatter(
+            x=df_kemiskinan['Date'],
+            y=df_kemiskinan['Gini_Ratio'],
+            mode='lines+markers',
+            name='Gini Ratio',
+            line=dict(color='navy', width=2),
+            marker=dict(size=8, color=gini_colors, line=dict(width=2, color='navy')),
+            hovertemplate='<b>%{text}</b><br>Gini Ratio: %{y:.3f}<extra></extra>',
+            text=df_kemiskinan['Period']
+        ))
+        
+        # Add threshold lines
+        fig2.add_hline(y=0.4, line_dash="dash", line_color="red", line_width=1, 
+                      annotation_text="High Inequality (0.4)", annotation_position="right")
+        fig2.add_hline(y=0.385, line_dash="dot", line_color="orange", line_width=1,
+                      annotation_text="Moderate (0.385)", annotation_position="right")
+        
+        # Add trend area
+        fig2.add_trace(go.Scatter(
+            x=df_kemiskinan['Date'],
+            y=df_kemiskinan['Gini_Ratio'],
+            fill='tonexty',
+            fillcolor='rgba(0,0,128,0.1)',
+            line=dict(color='rgba(255,255,255,0)'),
+            showlegend=False,
+            hoverinfo='skip'
+        ))
+        
+        fig2.update_layout(
+            title='Indeks Gini: Ketimpangan Distribusi Pendapatan',
+            height=280,
+            plot_bgcolor='white',
+            yaxis=dict(
+                title='Gini Ratio',
+                showgrid=True,
+                gridcolor='lightgray',
+                range=[0.37, 0.42]
+            ),
+            margin=dict(l=40, r=40, t=50, b=30)
+        )
+        
+        fig2.update_xaxes(
+            tickangle=45,
+            tickmode='array',
+            tickvals=df_kemiskinan['Date'][::4],
+            ticktext=[x.split()[0] + ' ' + x.split()[1][:3] for x in df_kemiskinan['Period'][::4]]
+        )
+        
+        st.plotly_chart(fig2, use_container_width=True)
+    
+    with insight_col:
+        st.markdown('<div class="insight-section">', unsafe_allow_html=True)
+        st.markdown("#### 📊 Key Insights:")
+        st.markdown("• **Historic Low**: 8.57% Sept 2024 (terendah sejak 2011)")
+        st.markdown("• **COVID Impact**: Naik 9.78%→10.19% (2020)")
+        st.markdown("• **Swift Recovery**: Kembali turun ke <10% (2021)")
+        st.markdown("• **Consistent Progress**: -3.92% poin (2011-2024)")
+        st.markdown("• **Gini Improvement**: 0.41→0.381 (ketimpangan turun)")
+        st.markdown("• **Target 2024**: On-track untuk <8.5%")
+        st.markdown('</div>', unsafe_allow_html=True)
 
 elif st.session_state.main_tab == 'IPM':
     # IPM Gender Data
