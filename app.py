@@ -400,15 +400,57 @@ elif st.session_state.main_tab == 'Indeks Harga':
 
 elif st.session_state.main_tab == 'Ekspor-Impor':
     chart_col, insight_col = st.columns([2.5, 1])
-    sample_data = pd.DataFrame({
-        'Period': pd.date_range('2023-01', periods=12, freq='M').strftime('%Y-%m'),
-        'Value': np.random.uniform(10000, 30000, 12)
-    })
-    title = "Nilai Ekspor Migas dan Non Migas (Juta USD)"
     
-    fig_sample = px.line(sample_data, x='Period', y='Value', title=title, markers=True)
-    fig_sample.update_traces(line=dict(color='teal', width=2), marker=dict(size=5, color='teal'))
-    fig_sample.update_layout(height=320, plot_bgcolor='white', margin=dict(l=30, r=30, t=40, b=30))
+    # Data Ekspor dan Impor 2020-2023
+    date_range = pd.date_range('2020-01', '2023-12', freq='M')
+    
+    sample_data = pd.DataFrame({
+        'Period': date_range.strftime('%Y-%m'),
+        'Ekspor': np.random.uniform(12000, 30000, len(date_range)),
+        'Impor': np.random.uniform(10000, 25000, len(date_range))
+    })
+    
+    title = "Nilai Ekspor dan Impor Migas & Non Migas (Juta USD)"
+    
+    # Membuat line chart dengan dua garis
+    fig_sample = go.Figure()
+    
+    # Garis Ekspor
+    fig_sample.add_trace(go.Scatter(
+        x=sample_data['Period'], 
+        y=sample_data['Ekspor'],
+        mode='lines+markers',
+        name='Ekspor',
+        line=dict(color='teal', width=2),
+        marker=dict(size=5, color='teal')
+    ))
+    
+    # Garis Impor
+    fig_sample.add_trace(go.Scatter(
+        x=sample_data['Period'], 
+        y=sample_data['Impor'],
+        mode='lines+markers',
+        name='Impor',
+        line=dict(color='orange', width=2),
+        marker=dict(size=5, color='orange')
+    ))
+    
+    fig_sample.update_layout(
+        title=title,
+        height=320, 
+        plot_bgcolor='white', 
+        margin=dict(l=30, r=30, t=40, b=30),
+        xaxis_title="Periode",
+        yaxis_title="Nilai (Juta USD)",
+        legend=dict(
+            orientation="h",
+            yanchor="bottom",
+            y=1.02,
+            xanchor="right",
+            x=1
+        ),
+        hovermode='x unified'
+    )
     
     with chart_col:
         st.plotly_chart(fig_sample, use_container_width=True)
