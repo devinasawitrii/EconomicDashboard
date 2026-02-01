@@ -426,7 +426,7 @@ elif st.session_state.main_tab == 'Ekspor-Impor':
 elif st.session_state.main_tab == 'APBN':
     chart_col, insight_col = st.columns([2.5, 1])
     sample_data = pd.DataFrame({
-        'Period': [f"2020"] + [f"2021"] + [f"2022"] + [f"2023"],
+        'Period': ['2020', '2021', '2022', '2023'],
         'Value': np.random.uniform(500, 1500, 8)
     })
     title = "Belanja Pegawai (Triliun Rupiah)"
