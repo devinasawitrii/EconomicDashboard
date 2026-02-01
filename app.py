@@ -426,7 +426,7 @@ elif st.session_state.main_tab == 'Ekspor-Impor':
 elif st.session_state.main_tab == 'APBN':
     chart_col, insight_col = st.columns([2.5, 1])
     sample_data = pd.DataFrame({
-        'Period': [f"2023 Q{i}" for i in range(1, 5)] + [f"2024 Q{i}" for i in range(1, 5)],
+        'Period': [f"2020"] + [f"2021"] + [f"2022"] + [f"2023"],
         'Value': np.random.uniform(500, 1500, 8)
     })
     title = "Belanja Pegawai (Triliun Rupiah)"
@@ -441,11 +441,7 @@ elif st.session_state.main_tab == 'APBN':
     with insight_col:
         st.markdown('<div class="insight-section">', unsafe_allow_html=True)
         st.markdown("#### Insight:")
-        st.markdown("• Belanja pegawai tumbuh seiring dengan reformasi birokrasi")
-        st.markdown("• Efisiensi anggaran masih dapat dioptimalkan")
-        st.markdown("• Alokasi untuk infrastruktur dan SDM prioritas")
-        st.markdown("• Fiscal sustainability tetap terjaga")
-        st.markdown("• Ruang fiskal masih tersedia untuk stimulus")
+        st.markdown("• ....")
         st.markdown('</div>', unsafe_allow_html=True)
 
 elif st.session_state.main_tab == 'Ketenagakerjaan':
