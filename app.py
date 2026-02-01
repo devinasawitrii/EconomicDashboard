@@ -451,7 +451,7 @@ elif st.session_state.main_tab == 'APBN':
 elif st.session_state.main_tab == 'Ketenagakerjaan':
     chart_col, insight_col = st.columns([2.5, 1])
     sample_data = pd.DataFrame({
-        'Period': ['Agu 2022', 'Feb 2023', 'Agu 2023', 'Feb 2024'],
+        'Period': ['Agu 2020', 'Agu 2021', 'Agu 2022', 'Agu 2023'],
         'Value': np.random.uniform(3, 7, 4)
     })
     title = "Tingkat Pengangguran Terbuka (%)"
