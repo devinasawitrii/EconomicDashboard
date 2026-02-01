@@ -441,20 +441,16 @@ elif st.session_state.main_tab == 'APBN':
     with insight_col:
         st.markdown('<div class="insight-section">', unsafe_allow_html=True)
         st.markdown("#### Insight:")
-        st.markdown("• Belanja pegawai tumbuh seiring dengan reformasi birokrasi")
-        st.markdown("• Efisiensi anggaran masih dapat dioptimalkan")
-        st.markdown("• Alokasi untuk infrastruktur dan SDM prioritas")
-        st.markdown("• Fiscal sustainability tetap terjaga")
-        st.markdown("• Ruang fiskal masih tersedia untuk stimulus")
+        st.markdown("• ....")
         st.markdown('</div>', unsafe_allow_html=True)
 
 elif st.session_state.main_tab == 'Ketenagakerjaan':
     chart_col, insight_col = st.columns([2.5, 1])
     sample_data = pd.DataFrame({
-        'Period': ['Agu 2022', 'Feb 2023', 'Agu 2023', 'Feb 2024'],
+        'Period': ['Des 2020', 'Des 2021', 'Des 2020', 'Des 2021],
         'Value': np.random.uniform(3, 7, 4)
     })
-    title = "TPT (%)"
+    title = "Tingkat Pengangguran Terbuka (%)"
     
     fig_sample = px.line(sample_data, x='Period', y='Value', title=title, markers=True)
     fig_sample.update_traces(line=dict(color='teal', width=2), marker=dict(size=5, color='teal'))
@@ -746,7 +742,7 @@ elif st.session_state.main_tab == 'IPM':
         ))
         
         fig_ipm.update_layout(
-            title='Indeks Pembangunan Manusia Indonesia: Analisis Gender (2020-2023)',
+            title='Indeks Pembangunan Manusia Indonesia',
             height=400,
             plot_bgcolor='white',
             hovermode='x unified',
