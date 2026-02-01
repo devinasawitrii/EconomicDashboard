@@ -1,5 +1,7 @@
+streamlit
+altair<5
+plotly
 pandas
 numpy
 matplotlib
-plotly
 streamlit-option-menu
