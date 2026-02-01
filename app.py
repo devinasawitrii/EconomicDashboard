@@ -404,7 +404,7 @@ elif st.session_state.main_tab == 'Ekspor-Impor':
         'Period': pd.date_range('2023-01', periods=12, freq='M').strftime('%Y-%m'),
         'Value': np.random.uniform(10000, 30000, 12)
     })
-    title = "Nilai ekspor (migas-non migas) (Juta USD)"
+    title = "Nilai Ekspor Migas dan Non Migas (Juta USD)"
     
     fig_sample = px.line(sample_data, x='Period', y='Value', title=title, markers=True)
     fig_sample.update_traces(line=dict(color='teal', width=2), marker=dict(size=5, color='teal'))
@@ -416,11 +416,7 @@ elif st.session_state.main_tab == 'Ekspor-Impor':
     with insight_col:
         st.markdown('<div class="insight-section">', unsafe_allow_html=True)
         st.markdown("#### Insight:")
-        st.markdown("• Nilai ekspor menunjukkan tren positif year-on-year")
-        st.markdown("• Komoditas unggulan masih mendominasi ekspor")
-        st.markdown("• Impor bahan baku industri terus meningkat") 
-        st.markdown("• Neraca perdagangan masih surplus namun menyempit")
-        st.markdown("• Diversifikasi pasar ekspor perlu diperkuat")
+        st.markdown("• ....")
         st.markdown('</div>', unsafe_allow_html=True)
 
 elif st.session_state.main_tab == 'APBN':
