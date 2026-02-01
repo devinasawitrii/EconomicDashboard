@@ -427,7 +427,7 @@ elif st.session_state.main_tab == 'APBN':
     chart_col, insight_col = st.columns([2.5, 1])
     sample_data = pd.DataFrame({
         'Period': ['2020', '2021', '2022', '2023'],
-        'Value': np.random.uniform(500, 1500, 8)
+        'Value': np.random.uniform(500, 1500, 4)
     })
     title = "Belanja Pegawai (Triliun Rupiah)"
     
