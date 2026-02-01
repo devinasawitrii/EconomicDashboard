@@ -743,7 +743,7 @@ elif st.session_state.main_tab == 'IPM':
         
         fig_ipm.update_layout(
             title='Indeks Pembangunan Manusia Indonesia',
-            height=400,
+            height=350,
             plot_bgcolor='white',
             hovermode='x unified',
             yaxis=dict(
