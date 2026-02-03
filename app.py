@@ -379,7 +379,7 @@ elif st.session_state.main_tab == 'Indeks Harga':
         'Period': ['2020', '2021', '2022', '2023'],
         'Value': np.random.uniform(-1, 5, 12)
     })
-    title = "Inflasi y-o-y (%)"
+    title = "Inflasi"
     
     fig_sample = px.line(sample_data, x='Period', y='Value', title=title, markers=True)
     fig_sample.update_traces(line=dict(color='teal', width=2), marker=dict(size=5, color='teal'))
