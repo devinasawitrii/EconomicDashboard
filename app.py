@@ -540,7 +540,6 @@ elif st.session_state.main_tab == 'Kemiskinan':
         fig1.add_trace(go.Bar(
             x=df_kemiskinan['Date'],
             y=df_kemiskinan['Jumlah_Miskin'],
-            name='Jumlah Penduduk Miskin (Juta)',
             marker_color=colors,
             opacity=0.6,
             yaxis='y',
@@ -552,7 +551,6 @@ elif st.session_state.main_tab == 'Kemiskinan':
         fig1.add_trace(go.Scatter(
             x=df_kemiskinan['Date'],
             y=df_kemiskinan['Persentase_Miskin'],
-            name='Persentase Kemiskinan (%)',
             line=dict(color='red', width=3),
             marker=dict(size=6, color='red'),
             yaxis='y2',
