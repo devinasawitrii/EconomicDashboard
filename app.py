@@ -401,47 +401,54 @@ elif st.session_state.main_tab == 'Indeks Harga':
 elif st.session_state.main_tab == 'Ekspor-Impor':
     chart_col, insight_col = st.columns([2.5, 1])
     
-    # Data Ekspor dan Impor 2020-2023
-    date_range = pd.date_range('2020-01', '2023-12', freq='M')
-    
+    # Data Ekspor dan Impor per tahun 2020-2023 (random)
+    np.random.seed(42)  # Agar konsisten setiap reload
     sample_data = pd.DataFrame({
-        'Period': date_range.strftime('%Y-%m'),
-        'Ekspor': np.random.uniform(12000, 30000, len(date_range)),
-        'Impor': np.random.uniform(10000, 25000, len(date_range))
+        'Tahun': ['2020', '2021', '2022', '2023'],
+        'Ekspor': np.random.uniform(180000, 230000, 4),  # dalam juta USD
+        'Impor': np.random.uniform(160000, 200000, 4)
     })
+    
+    # Hitung kontribusi terhadap total perdagangan
+    sample_data['Total'] = sample_data['Ekspor'] + sample_data['Impor']
+    sample_data['Ekspor_Kontribusi'] = (sample_data['Ekspor'] / sample_data['Total']) * 100
+    sample_data['Impor_Kontribusi'] = (sample_data['Impor'] / sample_data['Total']) * 100
     
     title = "Nilai Ekspor dan Impor Migas & Non Migas (Juta USD)"
     
-    # Membuat line chart dengan dua garis
+    # Membuat bar chart
     fig_sample = go.Figure()
     
-    # Garis Ekspor
-    fig_sample.add_trace(go.Scatter(
-        x=sample_data['Period'], 
+    # Bar Ekspor
+    fig_sample.add_trace(go.Bar(
+        x=sample_data['Tahun'], 
         y=sample_data['Ekspor'],
-        mode='lines+markers',
         name='Ekspor',
-        line=dict(color='teal', width=2),
-        marker=dict(size=5, color='teal')
+        marker_color='teal',
+        text=sample_data['Ekspor_Kontribusi'].apply(lambda x: f'{x:.1f}%'),
+        textposition='outside',
+        textfont=dict(size=10, color='teal')
     ))
     
-    # Garis Impor
-    fig_sample.add_trace(go.Scatter(
-        x=sample_data['Period'], 
+    # Bar Impor
+    fig_sample.add_trace(go.Bar(
+        x=sample_data['Tahun'], 
         y=sample_data['Impor'],
-        mode='lines+markers',
         name='Impor',
-        line=dict(color='orange', width=2),
-        marker=dict(size=5, color='orange')
+        marker_color='orange',
+        text=sample_data['Impor_Kontribusi'].apply(lambda x: f'{x:.1f}%'),
+        textposition='outside',
+        textfont=dict(size=10, color='orange')
     ))
     
     fig_sample.update_layout(
         title=title,
         height=320, 
         plot_bgcolor='white', 
-        margin=dict(l=30, r=30, t=40, b=30),
-        xaxis_title="Periode",
+        margin=dict(l=30, r=30, t=50, b=30),
+        xaxis_title="Tahun",
         yaxis_title="Nilai (Juta USD)",
+        barmode='group',  # Bar berdampingan
         legend=dict(
             orientation="h",
             yanchor="bottom",
@@ -449,7 +456,7 @@ elif st.session_state.main_tab == 'Ekspor-Impor':
             xanchor="right",
             x=1
         ),
-        hovermode='x unified'
+        hovertemplate='<b>%{x}</b><br>Nilai: %{y:,.0f} Juta USD<extra></extra>'
     )
     
     with chart_col:
@@ -458,7 +465,11 @@ elif st.session_state.main_tab == 'Ekspor-Impor':
     with insight_col:
         st.markdown('<div class="insight-section">', unsafe_allow_html=True)
         st.markdown("#### Insight:")
-        st.markdown("• ....")
+        latest = sample_data.iloc[-1]
+        st.markdown(f"• Kontribusi Ekspor 2023: **{latest['Ekspor_Kontribusi']:.1f}%**")
+        st.markdown(f"• Kontribusi Impor 2023: **{latest['Impor_Kontribusi']:.1f}%**")
+        trade_balance = latest['Ekspor'] - latest['Impor']
+        st.markdown(f"• Neraca Perdagangan: **{trade_balance:,.0f}** Juta USD")
         st.markdown('</div>', unsafe_allow_html=True)
 
 elif st.session_state.main_tab == 'APBN':
