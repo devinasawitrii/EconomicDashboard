@@ -574,7 +574,8 @@ elif st.session_state.main_tab == 'Kemiskinan':
     
     # Add shaded areas untuk periode COVID
     fig1.add_vrect(
-        x0="2020-01-01", x1="2021-12-31",
+        x0=pd.to_datetime("2020-01-01"),
+        x1=pd.to_datetime("2021-12-31"),
         fillcolor="red", opacity=0.1,
         line_width=0,
         annotation_text="Pandemi COVID-19",
