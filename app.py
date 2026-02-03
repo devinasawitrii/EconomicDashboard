@@ -411,7 +411,7 @@ elif st.session_state.main_tab == 'Ekspor-Impor':
     sample_data['Ekspor_Kontribusi'] = (sample_data['Ekspor'] / sample_data['Total']) * 100
     sample_data['Impor_Kontribusi'] = (sample_data['Impor'] / sample_data['Total']) * 100
     
-    title = "Kontribusi Ekspor dan Impor Migas & Non Migas (Juta USD)"
+    title = "Kontribusi Ekspor dan Impor Migas & Non Migas"
     
     # Membuat bar chart
     fig_sample = go.Figure()
