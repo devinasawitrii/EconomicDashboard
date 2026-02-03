@@ -427,7 +427,8 @@ elif st.session_state.main_tab == 'Ekspor-Impor':
         marker_color='teal',
         text=sample_data['Ekspor_Kontribusi'].apply(lambda x: f'{x:.1f}%'),
         textposition='outside',
-        textfont=dict(size=10, color='teal')
+        textfont=dict(size=10, color='teal'),
+        hovertemplate='<b>%{x}</b><br>Nilai: %{y:,.0f} Juta USD<extra></extra>'
     ))
     
     # Bar Impor
@@ -438,7 +439,8 @@ elif st.session_state.main_tab == 'Ekspor-Impor':
         marker_color='orange',
         text=sample_data['Impor_Kontribusi'].apply(lambda x: f'{x:.1f}%'),
         textposition='outside',
-        textfont=dict(size=10, color='orange')
+        textfont=dict(size=10, color='orange'),
+        hovertemplate='<b>%{x}</b><br>Nilai: %{y:,.0f} Juta USD<extra></extra>'
     ))
     
     fig_sample.update_layout(
@@ -448,15 +450,14 @@ elif st.session_state.main_tab == 'Ekspor-Impor':
         margin=dict(l=30, r=30, t=50, b=30),
         xaxis_title="Tahun",
         yaxis_title="Nilai (Juta USD)",
-        barmode='group',  # Bar berdampingan
+        barmode='group',
         legend=dict(
             orientation="h",
             yanchor="bottom",
             y=1.02,
             xanchor="right",
             x=1
-        ),
-        hovertemplate='<b>%{x}</b><br>Nilai: %{y:,.0f} Juta USD<extra></extra>'
+        )
     )
     
     with chart_col:
