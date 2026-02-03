@@ -537,15 +537,15 @@ elif st.session_state.main_tab == 'Kemiskinan':
         colors = ['lightcoral' if x > 10 else 'gold' if x > 9 else 'lightgreen' 
                  for x in df_kemiskinan['Persentase_Miskin']]
         
-        fig1.add_trace(go.Bar(
-            x=df_kemiskinan['Date'],
-            y=df_kemiskinan['Jumlah_Miskin'],
-            marker_color=colors,
-            opacity=0.6,
-            yaxis='y',
-            hovertemplate='<b>%{text}</b><br>Jumlah: %{y:.1f} Juta Jiwa<extra></extra>',
-            text=df_kemiskinan['Period']
-        ))
+        # fig1.add_trace(go.Bar(
+        #     x=df_kemiskinan['Date'],
+        #     y=df_kemiskinan['Jumlah_Miskin'],
+        #     marker_color=colors,
+        #     opacity=0.6,
+        #     yaxis='y',
+        #     hovertemplate='<b>%{text}</b><br>Jumlah: %{y:.1f} Juta Jiwa<extra></extra>',
+        #     text=df_kemiskinan['Period']
+        # ))
         
         # Line untuk persentase kemiskinan
         fig1.add_trace(go.Scatter(
