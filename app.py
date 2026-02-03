@@ -414,7 +414,7 @@ elif st.session_state.main_tab == 'Ekspor-Impor':
     sample_data['Ekspor_Kontribusi'] = (sample_data['Ekspor'] / sample_data['Total']) * 100
     sample_data['Impor_Kontribusi'] = (sample_data['Impor'] / sample_data['Total']) * 100
     
-    title = "Nilai Ekspor dan Impor Migas & Non Migas (Juta USD)"
+    title = "Kontribusi Ekspor dan Impor Migas & Non Migas (Juta USD)"
     
     # Membuat bar chart
     fig_sample = go.Figure()
@@ -467,10 +467,7 @@ elif st.session_state.main_tab == 'Ekspor-Impor':
         st.markdown('<div class="insight-section">', unsafe_allow_html=True)
         st.markdown("#### Insight:")
         latest = sample_data.iloc[-1]
-        st.markdown(f"• Kontribusi Ekspor 2023: **{latest['Ekspor_Kontribusi']:.1f}%**")
-        st.markdown(f"• Kontribusi Impor 2023: **{latest['Impor_Kontribusi']:.1f}%**")
-        trade_balance = latest['Ekspor'] - latest['Impor']
-        st.markdown(f"• Neraca Perdagangan: **{trade_balance:,.0f}** Juta USD")
+        st.markdown(f"•.....")
         st.markdown('</div>', unsafe_allow_html=True)
 
 elif st.session_state.main_tab == 'APBN':
