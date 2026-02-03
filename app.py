@@ -569,7 +569,7 @@ elif st.session_state.main_tab == 'Kemiskinan':
         
         fig1.update_layout(
             title='Kemiskinan Indonesia: Jumlah vs Persentase (2011-2024)',
-            height=280,
+            height=300,
             plot_bgcolor='white',
             hovermode='x unified',
             yaxis=dict(
