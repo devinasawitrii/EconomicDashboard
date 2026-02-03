@@ -377,13 +377,14 @@ elif st.session_state.main_tab == 'Indeks Harga':
     chart_col, insight_col = st.columns([2.5, 1])
     sample_data = pd.DataFrame({
         'Period': ['2020', '2021', '2022', '2023'],
-        'Value': np.random.uniform(-1, 5, 12)
+        'Value': np.random.uniform(-1, 5, 4)
     })
     title = "Inflasi"
     
     fig_sample = px.line(sample_data, x='Period', y='Value', title=title, markers=True)
     fig_sample.update_traces(line=dict(color='teal', width=2), marker=dict(size=5, color='teal'))
     fig_sample.update_layout(height=320, plot_bgcolor='white', margin=dict(l=30, r=30, t=40, b=30))
+    fig_sample.update_xaxes(type='category')
     
     with chart_col:
         st.plotly_chart(fig_sample, use_container_width=True)
@@ -477,6 +478,7 @@ elif st.session_state.main_tab == 'APBN':
     fig_sample = px.line(sample_data, x='Period', y='Value', title=title, markers=True)
     fig_sample.update_traces(line=dict(color='teal', width=2), marker=dict(size=5, color='teal'))
     fig_sample.update_layout(height=320, plot_bgcolor='white', margin=dict(l=30, r=30, t=40, b=30))
+    fig_sample.update_xaxes(type='category')
     
     with chart_col:
         st.plotly_chart(fig_sample, use_container_width=True)
