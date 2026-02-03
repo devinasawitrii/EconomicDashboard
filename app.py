@@ -376,7 +376,7 @@ if st.session_state.main_tab == 'Neraca Nasional':
 elif st.session_state.main_tab == 'Indeks Harga':
     chart_col, insight_col = st.columns([2.5, 1])
     sample_data = pd.DataFrame({
-        'Period': pd.date_range('2023-01', periods=12, freq='M').strftime('%Y-%m'),
+        'Period': ['2020', '2021', '2022', '2023'],
         'Value': np.random.uniform(-1, 5, 12)
     })
     title = "Inflasi y-o-y (%)"
@@ -391,11 +391,7 @@ elif st.session_state.main_tab == 'Indeks Harga':
     with insight_col:
         st.markdown('<div class="insight-section">', unsafe_allow_html=True)
         st.markdown("#### Insight:")
-        st.markdown("• Inflasi masih dalam target Bank Indonesia 2-4%")
-        st.markdown("• Tekanan inflasi inti relatif terkendali") 
-        st.markdown("• Volatile food prices menjadi perhatian utama")
-        st.markdown("• Kebijakan moneter masih akomodatif")
-        st.markdown("• Perlu monitoring harga komoditas global")
+        st.markdown("• ....")
         st.markdown('</div>', unsafe_allow_html=True)
 
 elif st.session_state.main_tab == 'Ekspor-Impor':
@@ -476,7 +472,7 @@ elif st.session_state.main_tab == 'APBN':
         'Period': ['2020', '2021', '2022', '2023'],
         'Value': np.random.uniform(500, 1500, 4)
     })
-    title = "Belanja Pegawai (Triliun Rupiah)"
+    title = "Belanja Pegawai"
     
     fig_sample = px.line(sample_data, x='Period', y='Value', title=title, markers=True)
     fig_sample.update_traces(line=dict(color='teal', width=2), marker=dict(size=5, color='teal'))
@@ -494,10 +490,10 @@ elif st.session_state.main_tab == 'APBN':
 elif st.session_state.main_tab == 'Ketenagakerjaan':
     chart_col, insight_col = st.columns([2.5, 1])
     sample_data = pd.DataFrame({
-        'Period': ['Agu 2020', 'Agu 2021', 'Agu 2022', 'Agu 2023'],
+        'Period': ['2020', '2021', '2022', '2023'],
         'Value': np.random.uniform(3, 7, 4)
     })
-    title = "Tingkat Pengangguran Terbuka (%)"
+    title = "Tingkat Pengangguran Terbuka"
     
     fig_sample = px.line(sample_data, x='Period', y='Value', title=title, markers=True)
     fig_sample.update_traces(line=dict(color='teal', width=2), marker=dict(size=5, color='teal'))
@@ -790,7 +786,7 @@ elif st.session_state.main_tab == 'IPM':
             plot_bgcolor='white',
             hovermode='x unified',
             yaxis=dict(
-                title='IPM Score',
+                title='Skor IPM',
                 side='left',
                 showgrid=True,
                 gridcolor='lightgray',
@@ -820,4 +816,4 @@ elif st.session_state.main_tab == 'IPM':
     with insight_col:
         st.markdown('<div class="insight-section">', unsafe_allow_html=True)
         st.markdown("#### Insights:")
-        st.markdown(f"• **Progress Positif**: IPM naik konsisten 2020-2023")
+        st.markdown(f"• ....")
