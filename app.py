@@ -665,12 +665,9 @@ elif st.session_state.main_tab == 'Kemiskinan':
     with insight_col:
         st.markdown('<div class="insight-section">', unsafe_allow_html=True)
         st.markdown("#### 📊 Key Insights:")
-        st.markdown("• **Historic Low**: 8.57% Sept 2024 (terendah sejak 2011)")
         st.markdown("• **COVID Impact**: Naik 9.78%→10.19% (2020)")
         st.markdown("• **Swift Recovery**: Kembali turun ke <10% (2021)")
-        st.markdown("• **Consistent Progress**: -3.92% poin (2011-2024)")
         st.markdown("• **Gini Improvement**: 0.41→0.381 (ketimpangan turun)")
-        st.markdown("• **Target 2024**: On-track untuk <8.5%")
         st.markdown('</div>', unsafe_allow_html=True)
 
         
