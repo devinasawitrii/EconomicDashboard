@@ -664,7 +664,7 @@ elif st.session_state.main_tab == 'Kemiskinan':
     
     with insight_col:
         st.markdown('<div class="insight-section">', unsafe_allow_html=True)
-        st.markdown("#### 📊 Key Insights:")
+        st.markdown("#### Insights:")
         st.markdown("• **COVID Impact**: Naik 9.78%→10.19% (2020)")
         st.markdown("• **Swift Recovery**: Kembali turun ke <10% (2021)")
         st.markdown("• **Gini Improvement**: 0.41→0.381 (ketimpangan turun)")
