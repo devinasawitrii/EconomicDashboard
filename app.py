@@ -137,7 +137,7 @@ with col3:
     """, unsafe_allow_html=True)
 
 # Main Navigation Menu - more compact
-main_tabs_list = ['Neraca Nasional', 'Indeks Harga', 'Ekspor-Impor', 'APBN', 'Ketenagakerjaan', 'Kemiskinan', 'IPM']
+main_tabs_list = ['', 'Indeks Harga', 'Ekspor-Impor', 'APBN', 'Ketenagakerjaan', 'Kemiskinan', 'IPM']
 
 try:
     default_main_index = main_tabs_list.index(st.session_state.main_tab)
@@ -209,43 +209,41 @@ if st.session_state.main_tab == 'Neraca Nasional':
             name='PDB Harga Konstan (Triliun Rp)',
             marker_color=colors,
             opacity=0.6,
-            yaxis='y',
+            yaxis='y1',
             hovertemplate='<b>%{x}</b><br>PDB HK: %{y:.0f}T Rp<extra></extra>'
         ))
         
-        # Y-o-Y line (primary overlay)
+        # Y-o-Y line (overlay on same x-axis)
         fig.add_trace(go.Scatter(
-            x=df_valid['Date'],
+            x=df_valid['Period'],  # Pakai Period yang sama dengan bar
             y=df_valid['y_o_y'],
             name='Pertumbuhan Y-o-Y (%)',
             line=dict(color='red', width=3),
             marker=dict(size=6, color='red'),
             yaxis='y2',
-            hovertemplate='<b>%{text}</b><br>Y-o-Y: %{y:.2f}%<extra></extra>',
-            text=df_valid['Period']
+            hovertemplate='<b>%{x}</b><br>Y-o-Y: %{y:.2f}%<extra></extra>'
         ))
         
-        # Q-to-Q line (secondary overlay)
+        # Q-to-Q line (overlay on same x-axis)
         df_qtq_valid = df_valid[df_valid['q_to_q'].notna()]
         fig.add_trace(go.Scatter(
-            x=df_qtq_valid['Date'],
+            x=df_qtq_valid['Period'],  # Pakai Period yang sama dengan bar
             y=df_qtq_valid['q_to_q'],
             name='Pertumbuhan Q-to-Q (%)',
             line=dict(color='navy', width=2, dash='dot'),
             marker=dict(size=4, color='navy'),
             yaxis='y2',
-            hovertemplate='<b>%{text}</b><br>Q-to-Q: %{y:.2f}%<extra></extra>',
-            text=df_qtq_valid['Period']
+            hovertemplate='<b>%{x}</b><br>Q-to-Q: %{y:.2f}%<extra></extra>'
         ))
         
         # Add shaded areas untuk periode khusus
         fig.add_vrect(
-            x0="2020-01-01", x1="2020-12-31",
+            x0="2020-I", x1="2020-IV",
             fillcolor="red", opacity=0.1,
             line_width=0,
         )
         fig.add_vrect(
-            x0="2021-01-01", x1="2021-12-31",
+            x0="2021-I", x1="2021-IV",
             fillcolor="green", opacity=0.1,
             line_width=0,
         )
