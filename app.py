@@ -190,12 +190,11 @@ st.markdown('<div class="chart-container">', unsafe_allow_html=True)
 # Display content based on selected main tab
 if st.session_state.main_tab == 'Neraca Nasional':
     
-    # Create 3 charts in rows - compact layout
-    # Chart 1: Combined Time Series + Bar Chart
-    chart1_col, insight1_col = st.columns([2.5, 1])
+    # Create single combined chart
+    chart_col, insight_col = st.columns([2.5, 1])
     
-    with chart1_col:
-        fig1 = go.Figure()
+    with chart_col:
+        fig = go.Figure()
         
         # Filter data yang valid
         df_valid = df_pdb[df_pdb['y_o_y'].notna()].copy()
@@ -204,7 +203,7 @@ if st.session_state.main_tab == 'Neraca Nasional':
         colors = ['lightcoral' if x < 0 else 'lightblue' if x < 3 else 'lightgreen' if x < 5 else 'darkgreen' 
                  for x in df_valid['y_o_y']]
         
-        fig1.add_trace(go.Bar(
+        fig.add_trace(go.Bar(
             x=df_valid['Period'],
             y=df_valid['PDB_HK']/1000,  # Konversi ke triliun
             name='PDB Harga Konstan (Triliun Rp)',
@@ -215,7 +214,7 @@ if st.session_state.main_tab == 'Neraca Nasional':
         ))
         
         # Y-o-Y line (primary overlay)
-        fig1.add_trace(go.Scatter(
+        fig.add_trace(go.Scatter(
             x=df_valid['Date'],
             y=df_valid['y_o_y'],
             name='Pertumbuhan Y-o-Y (%)',
@@ -228,7 +227,7 @@ if st.session_state.main_tab == 'Neraca Nasional':
         
         # Q-to-Q line (secondary overlay)
         df_qtq_valid = df_valid[df_valid['q_to_q'].notna()]
-        fig1.add_trace(go.Scatter(
+        fig.add_trace(go.Scatter(
             x=df_qtq_valid['Date'],
             y=df_qtq_valid['q_to_q'],
             name='Pertumbuhan Q-to-Q (%)',
@@ -240,24 +239,24 @@ if st.session_state.main_tab == 'Neraca Nasional':
         ))
         
         # Add shaded areas untuk periode khusus
-        fig1.add_vrect(
+        fig.add_vrect(
             x0="2020-01-01", x1="2020-12-31",
             fillcolor="red", opacity=0.1,
             line_width=0,
         )
-        fig1.add_vrect(
+        fig.add_vrect(
             x0="2021-01-01", x1="2021-12-31",
             fillcolor="green", opacity=0.1,
             line_width=0,
         )
         
         # Zero line reference
-        fig1.add_hline(y=0, line_dash="solid", line_color="gray", line_width=1, opacity=0.5, yref='y2')
+        fig.add_hline(y=0, line_dash="solid", line_color="gray", line_width=1, opacity=0.5, yref='y2')
         
-        fig1.update_layout(
+        fig.update_layout(
             title='Analisis Komprehensif: Pertumbuhan & Skala Ekonomi Indonesia',
             xaxis_title='Periode',
-            height=280,
+            height=500,
             plot_bgcolor='white',
             hovermode='x unified',
             yaxis=dict(
@@ -288,17 +287,17 @@ if st.session_state.main_tab == 'Neraca Nasional':
         )
         
         # Update x-axis
-        fig1.update_xaxes(
+        fig.update_xaxes(
             tickangle=45,
             tickmode='array',
-            tickvals=df_valid['Period'][::6],  # Show every 6th label for cleaner look
+            tickvals=df_valid['Period'][::6],  # Show every 6th label
             showgrid=True,
             gridcolor='lightgray'
         )
         
-        st.plotly_chart(fig1, use_container_width=True)
+        st.plotly_chart(fig, use_container_width=True)
         
-    with insight1_col:
+    with insight_col:
         st.markdown('<div class="insight-section">', unsafe_allow_html=True)
         st.markdown("#### 📊 Comprehensive Analysis:")
         st.markdown("• **Economic Scale**: PDB riil 1.8T→5.5T Rp (2011-2024)")
