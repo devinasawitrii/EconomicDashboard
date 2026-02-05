@@ -137,7 +137,7 @@ with col3:
     """, unsafe_allow_html=True)
 
 # Main Navigation Menu - more compact
-main_tabs_list = ['', 'Indeks Harga', 'Ekspor-Impor', 'APBN', 'Ketenagakerjaan', 'Kemiskinan', 'IPM']
+main_tabs_list = ['Neraca Nasional', 'Indeks Harga', 'Ekspor-Impor', 'APBN', 'Ketenagakerjaan', 'Kemiskinan', 'IPM']
 
 try:
     default_main_index = main_tabs_list.index(st.session_state.main_tab)
