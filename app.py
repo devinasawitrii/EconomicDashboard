@@ -373,6 +373,7 @@ if st.session_state.main_tab == 'Neraca Nasional':
         st.markdown("• **Normalized**: 2022+ hijau stabil (~5%)")
         st.markdown('</div>', unsafe_allow_html=True)
         
+
 elif st.session_state.main_tab == 'Indeks Harga':
     chart_col, insight_col = st.columns([2.5, 1])
     sample_data = pd.DataFrame({
