@@ -254,7 +254,7 @@ if st.session_state.main_tab == 'Neraca Nasional':
         fig.update_layout(
             title='Pertumbuhan & Skala Ekonomi Indonesia',
             xaxis_title='Periode',
-            height=400,
+            height=320,
             plot_bgcolor='white',
             hovermode='x unified',
             yaxis=dict(
