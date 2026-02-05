@@ -47,7 +47,6 @@ st.markdown("""
         color: #0070c0;
         font-size: 16px;
         text-align: center;
-        font-style: italic;
         margin-top: -3px;
         margin-bottom: 0px;
     }
@@ -119,7 +118,7 @@ with col1:
     # AIG Logo - Smaller size
     st.markdown("""
     <div class="logo-container">
-        <img src="aig_logo.png" alt="AIG Logo" style="width: 70px; height: 70px; object-fit: contain;">
+        <img src="aig_logo.png" alt="AIG Logo" style="width: 70px; : 70px; object-fit: contain;">
     </div>
     """, unsafe_allow_html=True)
 
@@ -132,7 +131,7 @@ with col3:
     # BPS Logo - Smaller size
     st.markdown("""
     <div class="logo-container">
-        <img src="bps_logo.png" alt="BPS Logo" style="width: 85px; height: 70px; object-fit: contain;">
+        <img src="bps_logo.png" alt="BPS Logo" style="width: 85px; : 70px; object-fit: contain;">
     </div>
     """, unsafe_allow_html=True)
 
@@ -254,7 +253,7 @@ if st.session_state.main_tab == 'Neraca Nasional':
         fig.update_layout(
             title='Pertumbuhan & Skala Ekonomi Indonesia',
             xaxis_title='Periode',
-            height=320,
+            height=350,
             plot_bgcolor='white',
             hovermode='x unified',
             yaxis=dict(
