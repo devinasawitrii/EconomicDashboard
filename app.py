@@ -252,9 +252,9 @@ if st.session_state.main_tab == 'Neraca Nasional':
         fig.add_hline(y=0, line_dash="solid", line_color="gray", line_width=1, opacity=0.5, yref='y2')
         
         fig.update_layout(
-            title='Analisis Komprehensif: Pertumbuhan & Skala Ekonomi Indonesia',
+            title='Pertumbuhan & Skala Ekonomi Indonesia',
             xaxis_title='Periode',
-            height=500,
+            height=400,
             plot_bgcolor='white',
             hovermode='x unified',
             yaxis=dict(
@@ -297,7 +297,7 @@ if st.session_state.main_tab == 'Neraca Nasional':
         
     with insight_col:
         st.markdown('<div class="insight-section">', unsafe_allow_html=True)
-        st.markdown("#### 📊 Comprehensive Analysis:")
+        st.markdown("#### Analysis:")
         st.markdown("• **Economic Scale**: PDB riil 1.8T→5.5T Rp (2011-2024)")
         st.markdown("• **2020 Crisis**: Kontraksi terdalam -5.32% Q2")
         st.markdown("• **V-Recovery**: Cepat ke 7.08% Q2 2021")
