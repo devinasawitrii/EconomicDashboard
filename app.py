@@ -137,7 +137,7 @@ with col3:
     """, unsafe_allow_html=True)
 
 # Main Navigation Menu - more compact
-main_tabs_list = ['Neraca Nasional', 'Indeks Harga', 'Ekspor-Impor', 'APBN', 'Ketenagakerjaan', 'Kemiskinan', 'IPM']
+main_tabs_list = ['', 'Indeks Harga', 'Ekspor-Impor', 'APBN', 'Ketenagakerjaan', 'Kemiskinan', 'IPM']
 
 try:
     default_main_index = main_tabs_list.index(st.session_state.main_tab)
@@ -190,136 +190,71 @@ st.markdown('<div class="chart-container">', unsafe_allow_html=True)
 # Display content based on selected main tab
 if st.session_state.main_tab == 'Neraca Nasional':
     
-    # Create 3 charts in rows - compact layout
-    # Chart 1: Combined Time Series + Bar Chart
-    chart1_col, insight1_col = st.columns([2.5, 1])
+    # Create single comprehensive chart with insights
+    chart_col, insight_col = st.columns([2.5, 1])
     
-    with chart1_col:
-        fig1 = go.Figure()
+    with chart_col:
+        # Create figure with subplots (2 rows: time series + heatmap)
+        from plotly.subplots import make_subplots
         
-        # Filter data yang valid
+        fig = make_subplots(
+            rows=2, cols=1,
+            row_heights=[0.55, 0.45],
+            subplot_titles=(
+                'Analisis Komprehensif: Pertumbuhan & Skala Ekonomi Indonesia',
+                'Pola Musiman Pertumbuhan Ekonomi (2011-2024)'
+            ),
+            specs=[[{"secondary_y": True}], [{"secondary_y": False}]],
+            vertical_spacing=0.12
+        )
+        
+        # ========== SUBPLOT 1: Time Series + Bar Chart ==========
         df_valid = df_pdb[df_pdb['y_o_y'].notna()].copy()
         
-        # Bar chart untuk PDB Harga Konstan (background)
+        # Bar chart untuk PDB Harga Konstan
         colors = ['lightcoral' if x < 0 else 'lightblue' if x < 3 else 'lightgreen' if x < 5 else 'darkgreen' 
                  for x in df_valid['y_o_y']]
         
-        fig1.add_trace(go.Bar(
+        fig.add_trace(go.Bar(
             x=df_valid['Period'],
-            y=df_valid['PDB_HK']/1000,  # Konversi ke triliun
+            y=df_valid['PDB_HK']/1000,
             name='PDB Harga Konstan (Triliun Rp)',
             marker_color=colors,
             opacity=0.6,
-            yaxis='y',
-            hovertemplate='<b>%{x}</b><br>PDB HK: %{y:.0f}T Rp<extra></extra>'
-        ))
+            hovertemplate='<b>%{x}</b><br>PDB HK: %{y:.0f}T Rp<extra></extra>',
+            showlegend=True
+        ), row=1, col=1, secondary_y=False)
         
-        # Y-o-Y line (primary overlay)
-        fig1.add_trace(go.Scatter(
+        # Y-o-Y line
+        fig.add_trace(go.Scatter(
             x=df_valid['Date'],
             y=df_valid['y_o_y'],
             name='Pertumbuhan Y-o-Y (%)',
             line=dict(color='red', width=3),
             marker=dict(size=6, color='red'),
-            yaxis='y2',
             hovertemplate='<b>%{text}</b><br>Y-o-Y: %{y:.2f}%<extra></extra>',
-            text=df_valid['Period']
-        ))
+            text=df_valid['Period'],
+            showlegend=True
+        ), row=1, col=1, secondary_y=True)
         
-        # Q-to-Q line (secondary overlay)
+        # Q-to-Q line
         df_qtq_valid = df_valid[df_valid['q_to_q'].notna()]
-        fig1.add_trace(go.Scatter(
+        fig.add_trace(go.Scatter(
             x=df_qtq_valid['Date'],
             y=df_qtq_valid['q_to_q'],
             name='Pertumbuhan Q-to-Q (%)',
             line=dict(color='navy', width=2, dash='dot'),
             marker=dict(size=4, color='navy'),
-            yaxis='y2',
             hovertemplate='<b>%{text}</b><br>Q-to-Q: %{y:.2f}%<extra></extra>',
-            text=df_qtq_valid['Period']
-        ))
+            text=df_qtq_valid['Period'],
+            showlegend=True
+        ), row=1, col=1, secondary_y=True)
         
-        # Add shaded areas untuk periode khusus
-        fig1.add_vrect(
-            x0="2020-01-01", x1="2020-12-31",
-            fillcolor="red", opacity=0.1,
-            line_width=0,
-        )
-        fig1.add_vrect(
-            x0="2021-01-01", x1="2021-12-31",
-            fillcolor="green", opacity=0.1,
-            line_width=0,
-        )
-        
-        # Zero line reference
-        fig1.add_hline(y=0, line_dash="solid", line_color="gray", line_width=1, opacity=0.5, yref='y2')
-        
-        fig1.update_layout(
-            title='Analisis Komprehensif: Pertumbuhan & Skala Ekonomi Indonesia',
-            xaxis_title='Periode',
-            height=280,
-            plot_bgcolor='white',
-            hovermode='x unified',
-            yaxis=dict(
-                title='PDB Harga Konstan (Triliun Rp)',
-                side='left',
-                showgrid=True,
-                gridcolor='lightgray',
-                range=[0, 6000]
-            ),
-            yaxis2=dict(
-                title='Pertumbuhan (%)',
-                side='right',
-                overlaying='y',
-                showgrid=False,
-                zeroline=True,
-                zerolinecolor='gray',
-                range=[-8, 8]
-            ),
-            legend=dict(
-                orientation="h",
-                yanchor="bottom",
-                y=1.02,
-                xanchor="right",
-                x=1,
-                font=dict(size=10)
-            ),
-            margin=dict(l=50, r=50, t=60, b=40)
-        )
-        
-        # Update x-axis
-        fig1.update_xaxes(
-            tickangle=45,
-            tickmode='array',
-            tickvals=df_valid['Period'][::6],  # Show every 6th label for cleaner look
-            showgrid=True,
-            gridcolor='lightgray'
-        )
-        
-        st.plotly_chart(fig1, use_container_width=True)
-        
-    with insight1_col:
-        st.markdown('<div class="insight-section">', unsafe_allow_html=True)
-        st.markdown("#### 📊 Comprehensive Analysis:")
-        st.markdown("• **Economic Scale**: PDB riil 1.8T→5.5T Rp (2011-2024)")
-        st.markdown("• **2020 Crisis**: Kontraksi terdalam -5.32% Q2")
-        st.markdown("• **V-Recovery**: Cepat ke 7.08% Q2 2021")
-        st.markdown("• **Stable Growth**: 5-5.2% sejak 2022")
-        st.markdown("• **Color Code**: Merah=kontraksi, Biru=<3%, Hijau=sehat")
-        st.markdown('</div>', unsafe_allow_html=True)
-    
-    # Chart 2: Seasonal Heatmap - Fixed version
-    chart2_col, insight2_col = st.columns([2.5, 1])
-    
-    with chart2_col:
-        # Prepare data untuk heatmap - simplified approach
+        # ========== SUBPLOT 2: Heatmap ==========
         df_heatmap = df_pdb[df_pdb['y_o_y'].notna()].copy()
-        
-        # Create matrix manually
         years = sorted(df_heatmap['Tahun'].unique())
         quarters = ['I', 'II', 'III', 'IV']
         
-        # Initialize matrix
         z_matrix = []
         y_labels = []
         
@@ -335,42 +270,118 @@ if st.session_state.main_tab == 'Neraca Nasional':
             z_matrix.append(row)
             y_labels.append(str(year))
         
-        fig2 = go.Figure(data=go.Heatmap(
+        fig.add_trace(go.Heatmap(
             z=z_matrix,
             x=['Q1', 'Q2', 'Q3', 'Q4'],
             y=y_labels,
             colorscale='RdYlGn',
             zmid=3,
             colorbar=dict(
-                title="Growth (%)",
+                title="Growth<br>(%)",
                 titleside="right",
-                len=0.7
+                len=0.35,
+                y=0.2,
+                yanchor='middle'
             ),
             hovertemplate='<b>%{y} %{x}</b><br>Growth: %{z:.1f}%<extra></extra>',
-            showscale=True
-        ))
+            showscale=True,
+            showlegend=False
+        ), row=2, col=1)
         
-        fig2.update_layout(
-            title='Pola Musiman Pertumbuhan Ekonomi (2011-2024)',
-            xaxis_title='Triwulan',
-            yaxis_title='Tahun',
-            height=280,
+        # Update layout
+        fig.update_layout(
+            height=650,
             plot_bgcolor='white',
-            margin=dict(l=50, r=80, t=60, b=40)
+            hovermode='x unified',
+            legend=dict(
+                orientation="h",
+                yanchor="bottom",
+                y=1.02,
+                xanchor="right",
+                x=1,
+                font=dict(size=10)
+            ),
+            margin=dict(l=50, r=100, t=80, b=40)
         )
         
-        fig2.update_yaxes(autorange='reversed')  # Latest year on top
+        # Update axes - Subplot 1
+        fig.update_xaxes(
+            tickangle=45,
+            tickmode='array',
+            tickvals=df_valid['Period'][::6],
+            showgrid=True,
+            gridcolor='lightgray',
+            row=1, col=1
+        )
         
-        st.plotly_chart(fig2, use_container_width=True)
+        fig.update_yaxes(
+            title_text='PDB Harga Konstan (Triliun Rp)',
+            showgrid=True,
+            gridcolor='lightgray',
+            range=[0, 6000],
+            row=1, col=1,
+            secondary_y=False
+        )
         
-    with insight2_col:
+        fig.update_yaxes(
+            title_text='Pertumbuhan (%)',
+            showgrid=False,
+            range=[-8, 8],
+            row=1, col=1,
+            secondary_y=True
+        )
+        
+        # Update axes - Subplot 2
+        fig.update_xaxes(title_text='Triwulan', row=2, col=1)
+        fig.update_yaxes(
+            title_text='Tahun',
+            autorange='reversed',
+            row=2, col=1
+        )
+        
+        # Add shaded areas untuk periode khusus (subplot 1 only)
+        fig.add_vrect(
+            x0="2020-01-01", x1="2020-12-31",
+            fillcolor="red", opacity=0.1,
+            line_width=0,
+            row=1, col=1
+        )
+        fig.add_vrect(
+            x0="2021-01-01", x1="2021-12-31",
+            fillcolor="green", opacity=0.1,
+            line_width=0,
+            row=1, col=1
+        )
+        
+        # Zero line reference
+        fig.add_hline(
+            y=0, line_dash="solid", line_color="gray", 
+            line_width=1, opacity=0.5,
+            row=1, col=1,
+            secondary_y=True
+        )
+        
+        st.plotly_chart(fig, use_container_width=True)
+        
+    with insight_col:
         st.markdown('<div class="insight-section">', unsafe_allow_html=True)
+        
+        st.markdown("#### 📊 Comprehensive Analysis:")
+        st.markdown("• **Economic Scale**: PDB riil 1.8T→5.5T Rp (2011-2024)")
+        st.markdown("• **2020 Crisis**: Kontraksi terdalam -5.32% Q2")
+        st.markdown("• **V-Recovery**: Cepat ke 7.08% Q2 2021")
+        st.markdown("• **Stable Growth**: 5-5.2% sejak 2022")
+        st.markdown("• **Color Code**: Merah=kontraksi, Biru=<3%, Hijau=sehat")
+        
+        st.markdown("---")
+        
         st.markdown("#### 🔥 Seasonal Patterns:")
         st.markdown("• **Q2 Dominance**: Konsisten hijau (konsumsi/ekspor)")
         st.markdown("• **Q4 Moderation**: Kuning-oranye (seasonal adj)")
         st.markdown("• **2020 Crisis**: Merah Q2-Q3 (lockdown)")
         st.markdown("• **2021 Bounce**: Hijau terang Q2 (stimulus)")
         st.markdown("• **Normalized**: 2022+ hijau stabil (~5%)")
+        
         st.markdown('</div>', unsafe_allow_html=True)
         
 
